@@ -21,7 +21,6 @@ set nowrap "wrap long lines
 set autoindent
 set shiftwidth=4
 set tabstop=4
-set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 
 "Langauge specific formatting
 "Python
