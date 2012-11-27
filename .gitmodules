@@ -2,5 +2,14 @@
 	path = .vim/bundle/delmitmate
 	url = git://github.com/Raimondi/delimitMate.git
 [submodule ".vim/bundle/pyflakes-vim"]
-	path = .vim/bundle/pyflakes-vim
+	path = .vim/bundle/pyflakes
 	url = https://github.com/kevinw/pyflakes-vim.git
+[submodule ".vim/bundle/snipmate"]
+	path = .vim/bundle/snipmate
+	url = git://github.com/msanders/snipmate.vim.git
+[submodule ".vim/bundle/closetag"]
+	path = .vim/bundle/closetag
+	url = git://github.com/docunext/closetag.vim.git
+[submodule ".vim/bundle/nerdcommenter"]
+	path = .vim/bundle/nerdcommenter
+	url = git://github.com/scrooloose/nerdcommenter.git
