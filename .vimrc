@@ -39,3 +39,8 @@ autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set s
 "Html
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
+
+"Key Maps
+map <F2> :tabprev<CR>
+:source ~/.x
+
