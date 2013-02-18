@@ -29,6 +29,7 @@ set pastetoggle=<F10> "Turn off auto indent for a paste
 "Langauge specific formatting
 "Python
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4 
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 
 
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
@@ -41,6 +42,11 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 "Key Maps
-map <F2> :tabprev<CR>
-:source ~/.x
+map <F2> :tabprev <CR>
+map <F3> :CommandT <CR>
+let BlogPressPassFile="~/.x"
+if filereadable(BlogPressPassFile) | exe "source" . BlogPressPassFile | endif
 
+"flag lines over 80
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
