@@ -26,7 +26,7 @@ set tw=80
 set autoindent
 set shiftwidth=4
 set tabstop=4
-set pastetoggle=<F10> "Turn off auto indent for a paste
+set pastetoggle=<F8> "Turn off auto indent for a paste
 "Langauge specific formatting
 "Python
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4 
