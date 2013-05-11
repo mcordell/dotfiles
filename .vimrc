@@ -21,11 +21,12 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
 "formatting
-set nowrap "wrap long lines
+set wrap "wrap long lines
+set tw=80
 set autoindent
 set shiftwidth=4
 set tabstop=4
-set pastetoggle=<F10> "Turn off auto indent for a paste
+set pastetoggle=<F8> "Turn off auto indent for a paste
 "Langauge specific formatting
 "Python
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4 
@@ -44,9 +45,4 @@ autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bu
 "Key Maps
 map <F2> :tabprev <CR>
 map <F3> :CommandT <CR>
-let BlogPressPassFile="~/.x"
-if filereadable(BlogPressPassFile) | exe "source" . BlogPressPassFile | endif
 
-"flag lines over 80
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
