@@ -4,6 +4,8 @@ set nocompatible 	"Don't try to be compatible with vi
 filetype on		"Next three turns on file type
 filetype plugin on
 filetype indent on 
+set tw=80 "wrap lines at 80 characters
+set wrap
 
 "Typo fixes
 :command WQ wq
@@ -21,7 +23,6 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
 "formatting
-set nowrap "wrap long lines
 set autoindent
 set shiftwidth=4
 set tabstop=4
@@ -48,5 +49,12 @@ let BlogPressPassFile="~/.x"
 if filereadable(BlogPressPassFile) | exe "source" . BlogPressPassFile | endif
 
 "flag lines over 80
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+"match OverLength /\%81v.\+/
+
+fun! RubyStyleCorrect()
+	:%s/\([^ ]\)\([=~+\-]\+\)\([^ ]\)/\1 \2 \3/g
+	:%s/,\([^ ]\)/, \1/g
+	:%s/{\([^ ]\)/{ \1/g
+	:%s/\([^ ]\)}/\1 }/g
+endfun
