@@ -10,3 +10,7 @@
 	rh = reset HEAD
 	cob = checkout -b
 	co = checkout
+[core]
+	editor = vim
+[push]
+	default = simple
