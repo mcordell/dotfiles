@@ -12,5 +12,6 @@
 	co = checkout
 [core]
 	editor = vim
+	excludesfile = /Users/michael/.gitignore_global
 [push]
 	default = simple
