@@ -1,20 +1,22 @@
-# Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Example aliases
 alias zshconfig="subl ~/.zshrc"
 alias maxhoa="cd ~/rails_projects/maxhoa"
 alias lg='nocorrect git lg'
+alias rspec='nocorrect rspec'
+alias berspec='nocorrect bundle exec rspec'
 alias bp='bundle exec rails_best_practices --format html; open rails_best_practices_output.html'
 alias showhidden='defaults write com.apple.Finder AppleShowAllFiles YES'
 alias hidehidden='defaults write com.apple.Finder AppleShowAllFiles NO'
 alias ws='cd ~/rails_projects/wine_scraper'
+alias of='cd ~/rails_projects/offers'
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -48,6 +50,8 @@ alias ws='cd ~/rails_projects/wine_scraper'
 plugins=(git rails ruby)
 
 source $ZSH/oh-my-zsh.sh
+
+DEFAULT_USER='michael'
 
 # Customize to your needs...
 export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$HOME/.rbenv/bin:$PATH"
