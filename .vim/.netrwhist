@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/michael/rails_projects/trick_stack/spec'
-let g:netrw_dirhist_2='/Users/michael/rails_projects/trick_stack/spec/requests'
-let g:netrw_dirhist_3='/Users/michael/.dotfiles'
-let g:netrw_dirhist_4='/Users/michael/.dotfiles/.git'
-let g:netrw_dirhist_5='/Users/michael/rails_projects/maxhoa/vendor/assets/app-strap/theme/css'
