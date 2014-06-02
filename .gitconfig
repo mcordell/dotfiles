@@ -3,15 +3,20 @@
 	email = surpher@gmail.com
 [alias]	
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	ir = !git rebase -i origin/master
+	ir = rebase -i @{u}
 	a = add
 	c = commit
 	s = status
 	rh = reset HEAD
 	cob = checkout -b
 	co = checkout
+	staged = diff --cached
+	rc = rebase --continue
+	dtc = diff --name-only HEAD HEAD~1
 [core]
 	editor = vim
 	excludesfile = /Users/michael/.gitignore_global
 [push]
 	default = simple
+[github]
+	user = mcordell
