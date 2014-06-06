@@ -17,6 +17,8 @@ alias bp='bundle exec rails_best_practices --format html; open rails_best_practi
 alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES'
 alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO'
 alias s='subl .'
+alias v='vim .'
+alias desk='cd ~/Desktop'
 
 #projects
 alias of='cd ~/rails_projects/offers'
