@@ -69,3 +69,7 @@
 	path = .vim/bundle/vim-multiple-cursors
 	url = git@github.com:terryma/vim-multiple-cursors.git
 	ignore = dirty
+[submodule ".vim/bundle/vim-spec-finder"]
+	path = .vim/bundle/vim-spec-finder
+	url = git@github.com:skwp/vim-spec-finder.git
+	ignore = dirty
