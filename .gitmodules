@@ -62,3 +62,10 @@
 [submodule ".vim/bundle/ctrp"]
 	path = .vim/bundle/ctrp
 	url = git@github.com:kien/ctrlp.vim.git
+[submodule ".vim/bundle/tagbar"]
+	path = .vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar.git
+[submodule ".vim/bundle/vim-multiple-cursors"]
+	path = .vim/bundle/vim-multiple-cursors
+	url = git@github.com:terryma/vim-multiple-cursors.git
+	ignore = dirty
