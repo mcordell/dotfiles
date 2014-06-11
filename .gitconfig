@@ -21,4 +21,6 @@
 [github]
 	user = mcordell
 [merge]
-    tool = vimdiff
+	tool = fugitive
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
