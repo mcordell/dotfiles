@@ -1,8 +1,13 @@
+"Set up Pathogen for plugin management
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
 "Basic
-syntax on 		"syntax highlighting on
+syntax enable 		"syntax highlighting on
 set nocompatible 	"Don't try to be compatible with vi
 
-filetype on		"Next three turns on file type
+"Next three turns on file type
+filetype on
 filetype plugin on
 filetype indent on
 
@@ -25,9 +30,6 @@ highlight SpellBad cterm=underline
 "Turn Mouse on
 set mouse=a
 
-"Set up Pathogen for plugin management
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
 
 "formatting
 set wrap "wrap long lines
@@ -54,14 +56,23 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 "Key Maps
+
+"plugin specific
 map <C-t> :CommandT <CR>
 map <space>t :CommandT <CR>
-map <Leader>p :tabprev <CR>
-map <space>n :tabnext <CR>
 noremap <space>t :NERDTreeToggle <CR>
 noremap <space>gs :Gstatus<CR>
+noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
 nnoremap \ :Ag<SPACE>
+
+"movement between buffers
+map <Leader>p :tabprev <CR>
+map <space>n :tabnext <CR>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 "Command-T specific
 "Switch to open in tab by default
@@ -93,13 +104,26 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
+  "let g:ctrlp_use_caching = 0
 endif
 
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+"window opening
+set splitright
+
+inoremap <Up> <ESC><C-W><C-K>i
+inoremap <Down> <ESC><C-W><C-J>i
+inoremap <Left> <ESC><C-W><C-H>i
+inoremap <Right> <ESC><C-W><C-L>i
+
+nnoremap <Up> <ESC><C-W><C-K>i
+nnoremap <Down> <ESC><C-W><C-J>i
+nnoremap <Left> <ESC><C-W><C-H>i
+nnoremap <Right> <ESC><C-W><C-L>i
