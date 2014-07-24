@@ -21,9 +21,9 @@ alias v='vim .'
 alias desk='cd ~/Desktop'
 
 #projects
-alias of='cd ~/rails_projects/offers'
+alias of='cd ~/rails-projects/offers'
 alias adcon='cd ~/Dropbox/Ruby/adcon-upi-client'
-alias vine='cd ~/rails_projects/winestat'
+alias vine='cd ~/rails-projects/winestat'
 alias blog='cd /Users/michael/Dropbox/blog'
 
 #monk
@@ -78,3 +78,4 @@ DEFAULT_USER='michael'
 export PATH="/usr/local/bin:/Users/michael/.pear/bin:/Applications/Postgres.app/Contents/MacOS/bin:$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export EDITOR='vim'
+

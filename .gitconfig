@@ -13,6 +13,7 @@
 	staged = diff --cached
 	rc = rebase --continue
 	dtc = diff --name-only HEAD HEAD~1
+	df = diff --name-only
 [core]
 	editor = vim
 	excludesfile = /Users/michael/.gitignore_global

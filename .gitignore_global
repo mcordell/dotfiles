@@ -5,3 +5,6 @@ dump.rdb
 *.sublime-workspace
 *.sublime-project
 *.swp
+codeception.yml
+projections.json
+tests
