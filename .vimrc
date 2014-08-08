@@ -1,6 +1,52 @@
-"Set up Pathogen for plugin management
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'docunext/closetag.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'wincent/Command-T'
+Plugin 'Raimondi/delimitMate'
+Plugin 'mattn/emmet-vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tobyS/pdv'
+Plugin 'malkomalko/projections.vim'
+Plugin 'kevinw/pyflakes-vim'
+Plugin 'ervandew/supertab'
+Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'tpope/vim-bundler'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'heartsentwined/vim-emblem'
+Plugin 'tpope/vim-fugitive'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'amiorin/vim-project'
+Plugin 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'ecomba/vim-ruby-refactoring'
+Plugin 'kshenoy/vim-signature'
+Plugin 'skwp/vim-spec-finder'
+Plugin 'tpope/vim-surround'
+Plugin 'tobyS/vmustache'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'editorconfig/editorconfig-vim'
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 
 " :A on lib/foo.rb -> unit/lib/foo_spec.rb
 autocmd User Rails/lib/* let b:rails_alternate = 'spec/lib/' . rails#buffer().name()[0:-4] . '_spec.rb'
@@ -10,15 +56,12 @@ autocmd User Rails/spec/lib/* let b:rails_alternate = rails#buffer().name()[5:-9
 
 "Basic
 syntax enable 		"syntax highlighting on
-set nocompatible 	"Don't try to be compatible with vi
 
 "Next three turns on file type
 filetype on
 filetype plugin on
 filetype indent on
 let @e = 'A;:w'
-let @f = 'A {O'
-let @s = 'viw:s/\(\%V\u\l*\)/ €kb-\L\!€kb1/g'
 
 " Strip whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
@@ -55,7 +98,8 @@ autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set s
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
+"autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
+
 
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
 " Remove trailing whitespaces and ^M chars
@@ -99,7 +143,7 @@ colorscheme solarized
 
 "Syntastic specific
 let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_php_checkers =  ['phpcs']
+let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-n -s"
 
@@ -123,17 +167,17 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
-  "let g:ctrlp_use_caching = 0
+  let g:ctrlp_use_caching = 0
 endif
 
 "Tagbar
 "
 noremap <space>c :TagbarToggle<CR>
 
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap K :Ag -i <C-R><C-W><CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -152,14 +196,49 @@ nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
 
 call project#rc()
-Project '~/Dropbox/Ruby/noaa', 'noaa'
 Project '~/monkdev/mcms-vagrant/mcms', 'mcms'
+Callback 'mcms' , ['AddMcmsPaths']
+
+Project '~/monkdev/carpenter', 'carpenter'
+Project '~/rails-projects/winestat', 'vineweather'
+Project '~/Dropbox/Ruby/noaa', 'noaa'
 Project '~/monkdev/mchk', 'mchks'
 Project '~/Dropbox/Websites/mikecordell', 'website'
-Project '~/rails-projects/crm', 'crm'
+
+function! AddMcmsPaths(...) abort
+  setlocal path+=Library
+  setlocal path+=model
+  setlocal suffixesadd=.php
+endfunction
+
 let g:project_use_nerdtree = 0
 
 call project#config#callback("noaa", project#utils#alternate(
   \  [{'regex': '^lib', 'string': 'spec/lib', 'suffix': '+_spec'},
   \   {'regex': '^spec/lib', 'string': 'lib', 'suffix': '-_spec'}]
   \  ))
+"call project#config#callback("mcms", project#utils#alternate(
+"  \  [{'regex': '^Module\/\([a-zA-z]*\)\/Page\/Capture\/\([a-zA-z]*\).content.php', 'string': 'Module/\1/Process/Capture/\2.php'},
+"  \   {'regex': '^Module\/\([a-zA-z]*\)\/Process\/Capture\/\([a-zA-z]*\).php', 'string': 'Module/\1/Page/Capture/\2.content.php'}]
+"  \  ))
+
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:snips_author = "Michael Cordell <michael@monkdevelopment.com>"
+
+
+set guifont=Inconsolata\ for\ Powerline:h15
+let g:Powerline_symbols = 'fancy'
+set encoding=utf-8
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+set term=xterm-256color
+set termencoding=utf-8

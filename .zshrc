@@ -19,6 +19,7 @@ alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO'
 alias s='subl .'
 alias v='vim .'
 alias desk='cd ~/Desktop'
+alias phpcbf='/Users/michael/Documents/PHP_CodeSniffer/scripts/phpcbf'
 
 #projects
 alias of='cd ~/rails-projects/offers'
