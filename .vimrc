@@ -40,6 +40,7 @@ Plugin 'tobyS/vmustache'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'tpope/vim-unimpaired'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 
