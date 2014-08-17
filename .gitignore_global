@@ -7,4 +7,3 @@ dump.rdb
 *.swp
 codeception.yml
 projections.json
-tests

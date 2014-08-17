@@ -17,6 +17,7 @@ Plugin 'mattn/emmet-vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tobyS/pdv'
+Plugin 'tobyS/Vmustache'
 Plugin 'malkomalko/projections.vim'
 Plugin 'kevinw/pyflakes-vim'
 Plugin 'ervandew/supertab'
@@ -131,6 +132,8 @@ noremap <space>v  :s/@/$/g<CR>
 "movement between buffers
 map <space>p :tabprev <CR>
 map <space>n :tabnext <CR>
+map <space>w :w<CR>
+map <space>n :tabnext <CR>
 map <space>l :Git! log<CR>gg
 nnoremap <C-F> yiw <ESC>:Git commit --fixup=<C-r>"<CR>
 nnoremap <C-J> <C-W><C-J>
@@ -139,14 +142,15 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 "Color scheme
-let g:solarized_termtrans = 1
+"let g:solarized_termtrans = 1
+set background=light
 colorscheme solarized
 
 "Syntastic specific
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_aggregate_errors = 1
-let g:syntastic_php_phpcs_args="-n -s"
+let g:syntastic_php_phpcs_args="-n -s --report=csv --standard=/Users/Michael/monkdev/MonkStandard"
 
 "quick function for adding character at end of line
 imap <silent><F2> <Esc>v`^me<Esc>gi<C-o>:call Ender()<CR>
@@ -160,7 +164,7 @@ let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
 let NERDTreeShowBookmarks=1
 
 let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-nnoremap <space>d :call pdv#DocumentCurrentLine()<CR>
+nnoremap <space>d :call pdv#DocumentWithSnip()<CR>
 
 " The Silver Searcher
 if executable('ag')
@@ -236,12 +240,12 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:snips_author = "Michael Cordell <michael@monkdevelopment.com>"
 
 
-set guifont=Inconsolata\ for\ Powerline:h15
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
 set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
+"set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+let g:syntastic_javascript_jshint_conf="~/.jshintrc"
