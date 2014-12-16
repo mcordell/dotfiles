@@ -7,7 +7,8 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="agnoster"
 
 # Example aliases
-alias zshconfig="subl ~/.zshrc"
+alias zshconfig="vim ~/.zshrc"
+alias reloadz="source ~/.zshrc"
 alias lt="tree -L 1"
 alias lg='nocorrect git lg'
 alias rspec='nocorrect rspec'
@@ -32,12 +33,10 @@ alias mk='cd ~/monkdev/'
 alias mcms='cd ~/monkdev/mcms-vagrant/mcms'
 alias mchk='cd ~/monkdev/mchk'
 alias mdnt='cd ~/monkdev/mdnt'
+alias carp='cd ~/monkdev/carpenter'
 
 #glados
 alias sshGlad='ssh 192.168.1.150'
-
-#syncSites
-
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -76,7 +75,11 @@ source ~/.nvm/nvm.sh
 DEFAULT_USER='michael'
 
 # Customize to your needs...
-export PATH="/usr/local/bin:/Users/michael/.pear/bin:/Applications/Postgres.app/Contents/MacOS/bin:$HOME/.rbenv/bin:$PATH"
+export PATH="/usr/local/bin:/Users/michael/.pear/bin:/Applications/Postgres.app/Contents/MacOS/bin:$HOME/.chefdk:/opt/chefdk/bin:$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export EDITOR='vim'
 
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"

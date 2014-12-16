@@ -3,7 +3,7 @@
 	email = surpher@gmail.com
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	ir = rebase -i @{u}
+	ir = rebase -i --autosquash @{u}
 	a = add
 	c = commit
 	s = status
@@ -11,10 +11,12 @@
 	cob = checkout -b
 	co = checkout
 	staged = diff --cached
+	rebase = rebase --autosquash
 	rc = rebase --continue
 	dtc = diff --name-only HEAD HEAD~1
 	df = diff --name-only
 	compare = log --left-right --graph --cherry-pick --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --no-merges
+	g = grep --break --heading --line-number
 [core]
 	editor = vim
 	excludesfile = /Users/michael/.gitignore_global
@@ -26,3 +28,5 @@
 	tool = fugitive
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+[init]
+	templatedir = ~/.git_template

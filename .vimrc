@@ -3,6 +3,10 @@ filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+
+"hide buffers with unwritten changes
+set hidden
+
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -26,7 +30,8 @@ Plugin 'majutsushi/tagbar'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'tpope/vim-bundler'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'altercation/vim-colors-solarized'
+"Plugin 'altercation/vim-colors-solarized'
+Plugin 'morhetz/gruvbox'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
@@ -42,13 +47,15 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'rizzatti/dash.vim'
+Plugin 'vim-scripts/Specky'
+"Plugin 'vim-scripts/TaskList.vim'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-
 
 " :A on lib/foo.rb -> unit/lib/foo_spec.rb
 autocmd User Rails/lib/* let b:rails_alternate = 'spec/lib/' . rails#buffer().name()[0:-4] . '_spec.rb'
@@ -77,6 +84,7 @@ set number
 :command Q q
 :command Vimrc tabe ~/.vimrc
 :command Source source ~/.vimrc
+:command FixEqual s/\(\S\)=\(\S\)/\1 = \2/g
 
 "Change highlighting to underline
 highlight clear SpellBad
@@ -109,16 +117,17 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
 "autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig"
 
 "Html
-autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
-autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
+autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,mako source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
 
 "Key Maps
 
 "plugin specific
 "map <C-t> :CommandT <CR>
+noremap <space>a  :TaskList<CR>
 noremap <space>t :CommandT <CR>
-noremap <space>T :NERDTreeToggle <CR>
-noremap <C-t> :NERDTreeToggle <CR>
+noremap <space>n :NERDTreeToggle <CR>
+"noremap <C-t> :NERDTreeToggle <CR>
 noremap <space>gs :Gstatus<CR>
 noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
@@ -128,12 +137,13 @@ noremap <space>i  :s/\.\([a-z\-]*\)/@include \1/g<CR>
 noremap <space>m  :s/\.\([a-z\-]*\)/@mixin \1/g<CR>
 noremap <space>v  :s/@/$/g<CR>
 
+vnoremap <C-c> "*y
+noremap <C-p> "*p
+
 
 "movement between buffers
 map <space>p :tabprev <CR>
-map <space>n :tabnext <CR>
 map <space>w :w<CR>
-map <space>n :tabnext <CR>
 map <space>l :Git! log<CR>gg
 nnoremap <C-F> yiw <ESC>:Git commit --fixup=<C-r>"<CR>
 nnoremap <C-J> <C-W><C-J>
@@ -141,16 +151,13 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-"Color scheme
-"let g:solarized_termtrans = 1
-set background=light
-colorscheme solarized
-
 "Syntastic specific
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-n -s --report=csv --standard=/Users/Michael/monkdev/MonkStandard"
+let g:syntastic_javascript_jshint_args = '--config /Users/michael/.jshintrc'
+let g:syntastic_javascript_jscs_args = '-c /Users/michael/.jscs.json'
 
 "quick function for adding character at end of line
 imap <silent><F2> <Esc>v`^me<Esc>gi<C-o>:call Ender()<CR>
@@ -178,8 +185,14 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
+nnoremap <space>. :CtrlPTag<CR>
+nnoremap <space>b :CtrlPBuffer<CR>
+
+
 "Tagbar
 "
+let g:tagbar_usearrows = 1
+
 noremap <space>c :TagbarToggle<CR>
 
 nnoremap K :Ag -i <C-R><C-W><CR>
@@ -199,6 +212,9 @@ nnoremap <Up> <ESC><C-W><C-K>i
 nnoremap <Down> <ESC><C-W><C-J>i
 nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
+nnoremap <space>j :!php codecept.phar run unit<CR>
+nnoremap <space>k :Gdiff forms<CR>
+
 
 call project#rc()
 Project '~/monkdev/mcms-vagrant/mcms', 'mcms'
@@ -240,12 +256,31 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:snips_author = "Michael Cordell <michael@monkdevelopment.com>"
 
 
+
+let g:speckyBannerKey        = "<C-R>b"
+let g:speckyQuoteSwitcherKey = "<C-R>'"
+let g:speckyRunRdocKey       = "<C-R>r"
+let g:speckySpecSwitcherKey  = "<C-R>x"
+let g:speckyRunSpecKey       = "<C-R>s"
+let g:speckyRunRdocCmd       = "fri -L -f plain"
+let g:speckyRunSpecCmd       = "bundle exec rspec -r ~/.vim/bundle/Specky/ruby/specky_formatter.rb -f SpeckyFormatter"
+let g:speckyWindowType       = 2
+
+
+"Display stuff
+let g:gruvbox_italic=0
+set background=dark
+colorscheme gruvbox
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
-set t_Co=256
+"set t_Co=256
 "set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
+"set term=xterm-256color
 set termencoding=utf-8
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
-let g:syntastic_javascript_jshint_conf="~/.jshintrc"
+
+"Color scheme
+"let g:solarized_termtrans = 1
+"let g:solarized_termcolors = 256
+
