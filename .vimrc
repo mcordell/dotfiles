@@ -228,6 +228,9 @@ nnoremap <space>j :!php codecept.phar run unit<CR>
 nnoremap <space>k :Gdiff forms<CR>
 
 
+let g:project_enable_welcome = 0
+let g:project_use_nerdtree = 1
+
 call project#rc()
 Project '~/monkdev/mcms-vagrant/mcms', 'mcms'
 Callback 'mcms' , ['AddMcmsPaths']
