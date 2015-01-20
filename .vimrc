@@ -248,12 +248,12 @@ function! AddMcmsPaths(...) abort
   setlocal suffixesadd=.php
 endfunction
 
-let g:project_use_nerdtree = 0
 
 call project#config#callback("noaa", project#utils#alternate(
   \  [{'regex': '^lib', 'string': 'spec/lib', 'suffix': '+_spec'},
   \   {'regex': '^spec/lib', 'string': 'lib', 'suffix': '-_spec'}]
   \  ))
+
 "call project#config#callback("mcms", project#utils#alternate(
 "  \  [{'regex': '^Module\/\([a-zA-z]*\)\/Page\/Capture\/\([a-zA-z]*\).content.php', 'string': 'Module/\1/Process/Capture/\2.php'},
 "  \   {'regex': '^Module\/\([a-zA-z]*\)\/Process\/Capture\/\([a-zA-z]*\).php', 'string': 'Module/\1/Page/Capture/\2.content.php'}]
