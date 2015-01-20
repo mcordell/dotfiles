@@ -164,7 +164,7 @@ let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
-let g:syntastic_php_phpcs_args="-n -s --report=csv --standard=/Users/Michael/monkdev/MonkStandard"
+let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
 let g:syntastic_javascript_jshint_args = '--config /Users/michael/.jshintrc'
 let g:syntastic_javascript_jscs_args = '-c /Users/michael/.jscs.json'
 let g:syntastic_always_populate_loc_list = 1
