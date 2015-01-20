@@ -162,6 +162,7 @@ nnoremap <C-H> <C-W><C-H>
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_elixir_checkers = ['elixir']
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
