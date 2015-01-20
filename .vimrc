@@ -161,6 +161,8 @@ nnoremap <C-H> <C-W><C-H>
 "Syntastic specific
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
+let g:syntastic_elixir_checkers = ['elixir']
+let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-n -s --report=csv --standard=/Users/Michael/monkdev/MonkStandard"
 let g:syntastic_javascript_jshint_args = '--config /Users/michael/.jshintrc'
