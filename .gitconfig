@@ -27,6 +27,6 @@
 [merge]
 	tool = fugitive
 [mergetool "fugitive"]
-	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+	cmd = vim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiff\" \"$MERGED\"
 [init]
 	templatedir = ~/.git_template

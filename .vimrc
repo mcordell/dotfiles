@@ -22,7 +22,8 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/syntastic'
 Plugin 'docunext/closetag.vim'
-
+Plugin 'tpope/vim-repeat'
+Plugin 'joonty/vim-phpunitqf'
 Plugin 'morhetz/gruvbox'
 
 Plugin 'majutsushi/tagbar'
@@ -91,7 +92,7 @@ set number
 :command Q q
 :command Vimrc tabe ~/.vimrc
 :command Source source ~/.vimrc
-:command FixEqual s/\(\S\)=\(\S\)/\1 = \2/g
+:command FixEqual s/\(\S\)\([+=-\.]*=\)\(\S\)/\1 \2 \3/g
 
 "Change highlighting to underline
 highlight clear SpellBad
@@ -140,7 +141,7 @@ noremap <space>gs :Gstatus<CR>
 noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
 noremap <space>s  :Ag<SPACE>
-noremap <space>j  :!php codecept.phar run<CR>
+noremap <space>j  :Test run unit<CR>
 noremap <space>i  :s/\.\([a-z\-]*\)/@include \1/g<CR>
 noremap <space>m  :s/\.\([a-z\-]*\)/@mixin \1/g<CR>
 noremap <space>v  :s/@/$/g<CR>
@@ -170,7 +171,9 @@ let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
 let g:syntastic_javascript_jshint_args = '--config /Users/michael/.jshintrc'
 let g:syntastic_javascript_jscs_args = '-c /Users/michael/.jscs.json'
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
+if !exists("g:fugitivediff")
+	let g:syntastic_check_on_open = 1
+endif
 let g:syntastic_check_on_wq = 0
 
 "quick function for adding character at end of line
@@ -326,4 +329,6 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 "let g:solarized_termtrans = 1
 "let g:solarized_termcolors = 256
 
+silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
+let g:phpunit_cmd = 'MCMS_ENV=test php /Users/michael/monkdev/mcms-vagrant/mcms/codecept.phar'
