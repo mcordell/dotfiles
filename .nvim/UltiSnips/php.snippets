@@ -1,0 +1,126 @@
+snippet php "php opening"
+<?php
+${0}
+endsnippet
+#getter/setter method
+snippet gsm
+/**
+ * Sets the value of ${1:foo}
+ *
+ * @param $2 ${3:description}
+ *
+ * @return ${4:`!p snip.rv = re.match(r'.*(?=\.)', fn).group()`}
+ */
+${5:public} function set${1/.*/\u$0/}(${2/(boolean|string|integer)//}$$1)
+{
+	$this->${8:$1} = $$1;
+	return $this;
+}
+
+/**
+ * Gets the value of $1
+ *
+ * @return $2
+ */
+${11:$5} function get${1/.*/\u$0/}()
+{
+	return $this->${11:$1};
+}
+endsnippet
+
+snippet '* cov' "Covers doc in unit test" b
+* @covers ${1:ClassName}::${2:Method}
+endsnippet
+
+snippet test "phpunit test class" b
+
+/**
+ * @author ${1:`!v g:snips_author`}
+ * @coversDefaultClass `!p snip.rv = re.match(r'.*(?=\.)', fn).group()`
+*/
+class `!p
+snip.rv = re.match(r'.*(?=\.)', fn).group()
+`Test extends \PHPUnit_Framework_TestCase
+{
+}
+endsnippet
+
+snippet go "Single object getter"
+public static function getBy${1:attributes}($${2}, $filter = null)
+{
+    $QueryBuilder = Database::getQueryBuilder();
+    $QueryBuilder->select(self::DATABASE . '.' . self::TABLE . '.*')
+                 ->from(self::DATABASE . '.' . self::TABLE)
+				 ->where(self::${3}, $$2);
+
+    $DataMapperFilter = self::filter($QueryBuilder, $filter);
+
+    return self::fetch($DataMapperFilter);
+}
+endsnippet
+
+snippet ga "Multi object getter"
+public static function getBy${1:attributes}($${2}, $filter = null)
+{
+    $QueryBuilder = Database::getQueryBuilder();
+    $QueryBuilder->select(self::DATABASE . '.' . self::TABLE . '.*')
+                 ->from(self::DATABASE . '.' . self::TABLE)
+				 ->where(self::${3}, $$2);
+
+    $DataMapperFilter = self::filter($QueryBuilder, $filter);
+
+    return self::fetchAll($DataMapperFilter);
+}
+endsnippet
+snippet mgsm "Model getter setter"
+public function get${1}()
+{
+	return $this->${1/.*/\l$0/};
+}
+
+public function set$1($${1/.*/\l$0/})
+{
+	if ($this->${1/.*/\l$0/} !== $${1/.*/\l$0/}) {
+		$this->${1/.*/\l$0/} = $${1/.*/\l$0/};
+		$this->setColumnAsModified(
+			${2}Mapper::DATABASE,
+			$2Mapper::TABLE,
+			$2Mapper::${1/([A-Z][a-z]*)*/\U$0\E/}
+		);
+	}
+
+	return $this;
+}
+endsnippet
+
+snippet dqb "Database get query builder" b
+$QueryBuilder = Database::getQueryBuilder();
+$QueryBuilder->${1:}
+endsnippet
+
+snippet dtab "database and table" w
+${1}Mapper::DATABASE . '.' . $1Mapper::TABLE
+endsnippet
+
+snippet def "define var" b
+define('${1:}_${2:}', $1_DATABASE . '.' . $1_TABLE . '.' . '${2/(.*)/\L$0\E/}');
+const $2 = $1_$2;
+endsnippet
+
+snippet ij "innerjoin" b
+$QueryBuilder->innerJoin(${1:}Mapper::DATABASE . '.' . $1Mapper::TABLE, $1Mapper::ID . '=' . ${2:}::${3:});
+endsnippet
+
+snippet ij "left join" b
+$QueryBuilder->leftJoin(${1:}Mapper::DATABASE . '.' . $1Mapper::TABLE, $1Mapper::ID . '=' . ${2:}::${3:});
+endsnippet
+
+snippet wh "where" b
+$QueryBuilder->where(${1:}::${2:}, ${3:});
+endsnippet
+
+snippet dmfdb "DMF debug" b
+error_log(var_export($DataMapperFilter->getQueryBuilder()->getQueryString(false), true));
+endsnippet
+
+
