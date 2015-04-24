@@ -11,7 +11,6 @@
 	cob = checkout -b
 	co = checkout
 	staged = diff --cached
-	rebase = rebase --autosquash
 	rc = rebase --continue
 	dtc = diff --name-only HEAD HEAD~1
 	df = diff --name-only
