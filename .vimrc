@@ -2,67 +2,71 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
 
 "hide buffers with unwritten changes
 set hidden
 
-call vundle#begin()
+call plug#begin('~/.nvim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'kien/ctrlp.vim'
-"Plugin 'wincent/Command-T'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/syntastic'
-Plugin 'docunext/closetag.vim'
-Plugin 'tpope/vim-repeat'
-Plugin 'joonty/vim-phpunitqf'
-Plugin 'morhetz/gruvbox'
+"Plugin essentials
+Plug 'tpope/vim-fugitive'
+Plug 'kien/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
 
-Plugin 'majutsushi/tagbar'
+Plug 'mattboehm/vim-accordion'
+Plug 'mattboehm/vim-unstack'
+"Plug 'wincent/Command-T'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-unimpaired'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/syntastic'
+Plug 'docunext/closetag.vim'
+Plug 'tpope/vim-repeat'
+Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
+Plug 'morhetz/gruvbox'
 
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'ervandew/supertab'
-Plugin 'Raimondi/delimitMate'
+Plug 'malkomalko/projections.vim'
+Plug 'amiorin/vim-project'
 
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'kevinw/pyflakes-vim'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'mattn/emmet-vim'
-Plugin 'tobyS/Vmustache'
+Plug 'majutsushi/tagbar'
 
-Plugin 'tobyS/pdv'
-Plugin 'malkomalko/projections.vim'
-Plugin 'heartsentwined/vim-emblem'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'amiorin/vim-project'
-Plugin 'tpope/vim-rails'
-Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'kshenoy/vim-signature'
-Plugin 'skwp/vim-spec-finder'
-Plugin 'tobyS/vmustache'
-Plugin 'rizzatti/dash.vim'
-Plugin 'vim-scripts/Specky'
-Plugin 'burke/matcher'
+Plug 'Valloric/YouCompleteMe'
+Plug 'ervandew/supertab'
+Plug 'Raimondi/delimitMate'
 
-"Plugin 'scrooloose/nerdcommenter'
-"Plugin 'tpope/vim-bundler'
-"Plugin 'marijnh/tern_for_vim'
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'vim-scripts/TaskList.vim'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
+Plug 'tobyS/vmustache', { 'for': 'html' }
+Plug 'tobyS/pdv', { 'for': 'php' }
+Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
+Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
+Plug 'vim-scripts/Specky', { 'for': 'ruby' }
+Plug 'tpope/vim-rails'
+
+Plug 'terryma/vim-multiple-cursors'
+Plug 'kshenoy/vim-signature'
+Plug 'rizzatti/dash.vim'
+Plug 'burke/matcher'
+Plug 'gabesoft/vim-ags'
+
+"Plug 'scrooloose/nerdcommenter'
+"Plug 'tpope/vim-bundler'
+"Plug 'marijnh/tern_for_vim'
+"Plug 'altercation/vim-colors-solarized'
+"Plug 'vim-scripts/TaskList.vim'
+"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plug 'bling/vim-airline'
 
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" All of your Plugs must be added before the following line
+call plug#end()            " required
+
 filetype plugin indent on    " required
 
 " :A on lib/foo.rb -> unit/lib/foo_spec.rb
@@ -78,6 +82,8 @@ syntax enable 		"syntax highlighting on
 filetype on
 filetype plugin on
 filetype indent on
+
+
 let @e = 'A;:w'
 
 " Strip whitespace on save
@@ -92,7 +98,8 @@ set number
 :command Q q
 :command Vimrc tabe ~/.vimrc
 :command Source source ~/.vimrc
-:command FixEqual s/\(\S\)\([+=-\.]*=\)\(\S\)/\1 \2 \3/g
+:command FixEqual s/\(\S\)\([+=.-]\?=\)\(\S\)/\1 \2 \3/g
+:command FixSpace s/\(\S\)\([.]\)\(\S\)/\1 \2 \3/g
 
 "Change highlighting to underline
 highlight clear SpellBad
@@ -116,7 +123,8 @@ autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set s
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
-"autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
@@ -148,7 +156,6 @@ noremap <space>v  :s/@/$/g<CR>
 
 vnoremap <C-c> "*y
 noremap <C-p> "*p
-
 
 "movement between buffers
 map <space>p :tabprev <CR>
@@ -237,7 +244,7 @@ let g:tagbar_usearrows = 1
 
 noremap <space>c :TagbarToggle<CR>
 
-nnoremap K :Ag -i <C-R><C-W><CR>
+nnoremap K :Ags -i <C-R><C-W><CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -316,7 +323,7 @@ let g:speckyWindowType       = 2
 let g:gruvbox_italic=0
 set background=dark
 colorscheme gruvbox
-let g:Powerline_symbols = 'fancy'
+let g:airline_powerline_fonts = 1
 set encoding=utf-8
 "set term=xterm-256color
 set t_Co=256
@@ -332,3 +339,6 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 let g:phpunit_cmd = 'MCMS_ENV=test php /Users/michael/monkdev/mcms-vagrant/mcms/codecept.phar'
+
+nmap <space>hs <Plug>GitGutterStageHunk
+nmap <space>hr <Plug>GitGutterRevertHunk
