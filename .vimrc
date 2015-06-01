@@ -1,8 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-
 "hide buffers with unwritten changes
 set hidden
 
@@ -27,6 +25,7 @@ Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
 Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-dispatch', { 'for': 'ruby' }
 
 Plug 'malkomalko/projections.vim'
 Plug 'amiorin/vim-project'
@@ -46,8 +45,9 @@ Plug 'tobyS/vmustache', { 'for': 'html' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
 Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
-Plug 'vim-scripts/Specky', { 'for': 'ruby' }
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'tpope/vim-rails'
+Plug 'elzr/vim-json'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'kshenoy/vim-signature'
@@ -55,12 +55,6 @@ Plug 'rizzatti/dash.vim'
 Plug 'burke/matcher'
 Plug 'gabesoft/vim-ags'
 
-"Plug 'scrooloose/nerdcommenter'
-"Plug 'tpope/vim-bundler'
-"Plug 'marijnh/tern_for_vim'
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'vim-scripts/TaskList.vim'
-"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'bling/vim-airline'
 
 
@@ -83,12 +77,10 @@ filetype on
 filetype plugin on
 filetype indent on
 
-
-let @e = 'A;:w'
-
 " Strip whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
-"show line numbers
+"show relative line numbers
+set relativenumber
 set number
 
 "Typo fixes
@@ -118,19 +110,12 @@ set tabstop=4
 set pastetoggle=<F8> "Turn off auto indent for a paste
 
 "Langauge specific formatting
-"Python
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype gitcommit setlocal spell textwidth=72
-
-
-"set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-" Remove trailing whitespaces and ^M chars
-"autocmd FileType c,cpp,java,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-"autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig"
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
@@ -233,8 +218,6 @@ if executable('matcher')
 	endfunction
 end
 
-
-
 nnoremap <space>. :CtrlPTag<CR>
 nnoremap <space>b :CtrlPBuffer<CR>
 
@@ -261,7 +244,6 @@ nnoremap <Up> <ESC><C-W><C-K>i
 nnoremap <Down> <ESC><C-W><C-J>i
 nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
-nnoremap <space>j :!php codecept.phar run unit<CR>
 nnoremap <space>k :Gdiff forms<CR>
 
 
@@ -269,32 +251,15 @@ let g:project_enable_welcome = 0
 let g:project_use_nerdtree = 1
 
 call project#rc()
-Project '~/monkdev/mcms-vagrant/mcms', 'mcms'
-Callback 'mcms' , ['AddMcmsPaths']
 
-Project '~/monkdev/carpenter', 'carpenter'
 Project '~/rails-projects/winestat', 'vineweather'
 Project '~/Dropbox/Ruby/noaa', 'noaa'
-Project '~/monkdev/mchk', 'mchks'
 Project '~/Dropbox/Websites/mikecordell', 'website'
-
-function! AddMcmsPaths(...) abort
-  setlocal path+=Library
-  setlocal path+=model
-  setlocal suffixesadd=.php
-endfunction
-
 
 call project#config#callback("noaa", project#utils#alternate(
   \  [{'regex': '^lib', 'string': 'spec/lib', 'suffix': '+_spec'},
   \   {'regex': '^spec/lib', 'string': 'lib', 'suffix': '-_spec'}]
   \  ))
-
-"call project#config#callback("mcms", project#utils#alternate(
-"  \  [{'regex': '^Module\/\([a-zA-z]*\)\/Page\/Capture\/\([a-zA-z]*\).content.php', 'string': 'Module/\1/Process/Capture/\2.php'},
-"  \   {'regex': '^Module\/\([a-zA-z]*\)\/Process\/Capture\/\([a-zA-z]*\).php', 'string': 'Module/\1/Page/Capture/\2.content.php'}]
-"  \  ))
-
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -305,9 +270,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:snips_author = "Michael Cordell <michael@monkdevelopment.com>"
-
-
+let g:snips_author = "Michael Cordell <surpher@gmail.com>"
 
 let g:speckyBannerKey        = "<C-R>b"
 let g:speckyQuoteSwitcherKey = "<C-R>'"
@@ -317,7 +280,6 @@ let g:speckyRunSpecKey       = "<C-R>s"
 let g:speckyRunRdocCmd       = "fri -L -f plain"
 let g:speckyRunSpecCmd       = "bundle exec rspec -r ~/.vim/bundle/Specky/ruby/specky_formatter.rb -f SpeckyFormatter"
 let g:speckyWindowType       = 2
-
 
 "Display stuff
 let g:gruvbox_italic=0
@@ -333,12 +295,16 @@ set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 "Color scheme
-"let g:solarized_termtrans = 1
-"let g:solarized_termcolors = 256
-
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-
-let g:phpunit_cmd = 'MCMS_ENV=test php /Users/michael/monkdev/mcms-vagrant/mcms/codecept.phar'
 
 nmap <space>hs <Plug>GitGutterStageHunk
 nmap <space>hr <Plug>GitGutterRevertHunk
+
+"Close that scratch buffer window that opens on autocompleting
+autocmd CompleteDone * pclose
+
+let g:rspec_command = "Dispatch bundle exec rspec {spec}"
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>

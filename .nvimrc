@@ -1,6 +1,6 @@
-set nocompatible              " be iMproved, required
+set nocompatible
 filetype off                  " required
-
+set backspace=2
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 
@@ -9,6 +9,7 @@ set hidden
 
 call plug#begin('~/.nvim/plugged')
 
+"Plugin essentials
 Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
@@ -18,13 +19,16 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
 Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
-Plug 'joonty/vim-phpunitqf'
+Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
+
+Plug 'malkomalko/projections.vim'
+Plug 'amiorin/vim-project'
 
 Plug 'majutsushi/tagbar'
 
@@ -32,25 +36,21 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
-Plug 'elixir-lang/vim-elixir'
-Plug 'kevinw/pyflakes-vim'
-Plug 'vim-ruby/vim-ruby'
-Plug 'kchmck/vim-coffee-script'
-Plug 'mattn/emmet-vim'
-Plug 'tobyS/Vmustache'
-
-Plug 'tobyS/pdv'
-Plug 'malkomalko/projections.vim'
-Plug 'heartsentwined/vim-emblem'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'amiorin/vim-project'
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
+Plug 'tobyS/vmustache', { 'for': 'html' }
+Plug 'tobyS/pdv', { 'for': 'php' }
+Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
+Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
+Plug 'vim-scripts/Specky', { 'for': 'ruby' }
 Plug 'tpope/vim-rails'
-Plug 'ecomba/vim-ruby-refactoring'
+
+Plug 'terryma/vim-multiple-cursors'
 Plug 'kshenoy/vim-signature'
-Plug 'skwp/vim-spec-finder'
-Plug 'tobyS/vmustache'
 Plug 'rizzatti/dash.vim'
-Plug 'vim-scripts/Specky'
 Plug 'burke/matcher'
 
 "Plug 'scrooloose/nerdcommenter'
@@ -159,7 +159,7 @@ nnoremap <C-F> yiw <ESC>:Git commit --fixup=<C-r>"<CR>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+nnoremap <space>h <C-W><C-H>
 
 "Syntastic specific
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
