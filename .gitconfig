@@ -16,6 +16,7 @@
 	df = diff --name-only
 	compare = log --left-right --graph --cherry-pick --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --no-merges
 	g = grep --break --heading --line-number
+	uncommit = reset --soft HEAD~1
 [core]
 	editor = vim
 	excludesfile = /Users/michael/.gitignore_global
