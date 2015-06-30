@@ -9,3 +9,21 @@ trait :${1} do
   ${2}
 end
 endsnippet
+
+snippet let "let"
+let(:${1}) { ${2} }
+endsnippet
+
+snippet featj "Rspec feature with js"
+RSpec.feature '${1}', :js  do
+  ${2}
+end
+endsnippet
+
+snippet ts "translate"
+I18n.t('${1}')
+endsnippet
+
+snippet lt "visual let"
+let(:${1}) { ${VISUAL:# let value} }
+endsnippet

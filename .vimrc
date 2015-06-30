@@ -48,7 +48,9 @@ Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
 Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
 Plug 'elzr/vim-json'
 
 Plug 'terryma/vim-multiple-cursors'
@@ -65,11 +67,11 @@ call plug#end()            " required
 
 filetype plugin indent on    " required
 
-" :A on lib/foo.rb -> unit/lib/foo_spec.rb
-autocmd User Rails/lib/* let b:rails_alternate = 'spec/lib/' . rails#buffer().name()[0:-4] . '_spec.rb'
-
-" :A on unit/lib/foo_spec.rb -> lib/foo.rb
-autocmd User Rails/spec/lib/* let b:rails_alternate = rails#buffer().name()[5:-9] . '.rb'
+"" :A on lib/foo.rb -> unit/lib/foo_spec.rb
+"autocmd User Rails/lib/* let b:rails_alternate = 'spec/lib/' . rails#buffer().name()[0:-4] . '_spec.rb'
+"
+"" :A on unit/lib/foo_spec.rb -> lib/foo.rb
+"autocmd User Rails/spec/lib/* let b:rails_alternate = rails#buffer().name()[5:-9] . '.rb'
 
 "Basic
 syntax enable 		"syntax highlighting on
@@ -159,6 +161,7 @@ let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_yaml_checkers = ['jsyaml']
 let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
@@ -176,6 +179,10 @@ function Ender()
   let endchar = nr2char(getchar())
   execute "normal \<End>a".endchar
   normal `e
+endfunction
+
+function Paster()
+	return @+
 endfunction
 
 let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
@@ -248,7 +255,6 @@ nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
 nnoremap <space>k :Gdiff forms<CR>
 
-
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -268,6 +274,11 @@ let g:speckyRunSpecKey       = "<C-R>s"
 let g:speckyRunRdocCmd       = "fri -L -f plain"
 let g:speckyRunSpecCmd       = "bundle exec rspec -r ~/.vim/bundle/Specky/ruby/specky_formatter.rb -f SpeckyFormatter"
 let g:speckyWindowType       = 2
+
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 
 "Display stuff
 let g:gruvbox_italic=0
@@ -297,4 +308,6 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
-runtime! macros/matchit.vim
+set backspace=indent,eol,start
+
+runtime macros/matchit.vim
