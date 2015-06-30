@@ -12,8 +12,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 
 Plug 'mattboehm/vim-accordion'
-Plug 'mattboehm/vim-unstack'
-"Plug 'wincent/Command-T'
+"Plug 'mattboehm/vim-unstack'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -27,15 +26,18 @@ Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-dispatch', { 'for': 'ruby' }
 
-Plug 'malkomalko/projections.vim'
-Plug 'amiorin/vim-project'
+"Plug 'malkomalko/projections.vim'
+"Plug 'amiorin/vim-project'
+Plug 'tpope/vim-projectionist'
 
 Plug 'majutsushi/tagbar'
+Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
 
 Plug 'Valloric/YouCompleteMe'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'tpope/vim-rake'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -247,20 +249,6 @@ nnoremap <Right> :tabnext<CR>
 nnoremap <space>k :Gdiff forms<CR>
 
 
-let g:project_enable_welcome = 0
-let g:project_use_nerdtree = 1
-
-call project#rc()
-
-Project '~/rails-projects/winestat', 'vineweather'
-Project '~/Dropbox/Ruby/noaa', 'noaa'
-Project '~/Dropbox/Websites/mikecordell', 'website'
-
-call project#config#callback("noaa", project#utils#alternate(
-  \  [{'regex': '^lib', 'string': 'spec/lib', 'suffix': '+_spec'},
-  \   {'regex': '^spec/lib', 'string': 'lib', 'suffix': '-_spec'}]
-  \  ))
-
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -308,3 +296,5 @@ map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
+
+runtime! macros/matchit.vim
