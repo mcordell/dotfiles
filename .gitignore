@@ -1,3 +1,4 @@
 .netrwhist
 .vim/bundle/
 .nvim/plugged/
+.DS_Store
