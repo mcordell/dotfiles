@@ -1,0 +1,14 @@
+# Example aliases
+alias zshconfig="vim ~/.zshrc"
+alias reloadz="source ~/.zshrc"
+alias lt="tree -L 1"
+alias lg='nocorrect git lg'
+alias rspec='nocorrect rspec'
+alias berspec='nocorrect bundle exec rspec'
+alias be='bundle exec'
+alias s='subl .'
+alias v='vim'
+
+#glados
+alias sshGlad='ssh 192.168.1.150'
+
