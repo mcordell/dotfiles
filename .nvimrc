@@ -1,8 +1,5 @@
 set nocompatible
 filetype off                  " required
-set backspace=2
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
 
 "hide buffers with unwritten changes
 set hidden
@@ -14,28 +11,33 @@ Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 
-"Plug 'wincent/Command-T'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
 Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
 Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-dispatch', { 'for': 'ruby' }
+Plug 'tpope/vim-vinegar'
+Plug 'jtratner/vim-flavored-markdown'
 
-Plug 'malkomalko/projections.vim'
-Plug 'amiorin/vim-project'
+"Plug 'malkomalko/projections.vim'
+"Plug 'amiorin/vim-project'
+Plug 'tpope/vim-projectionist'
 
 Plug 'majutsushi/tagbar'
+Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
 
 Plug 'Valloric/YouCompleteMe'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'tpope/vim-rake'
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -45,20 +47,18 @@ Plug 'tobyS/vmustache', { 'for': 'html' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
 Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
-Plug 'vim-scripts/Specky', { 'for': 'ruby' }
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
+Plug 'elzr/vim-json'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'kshenoy/vim-signature'
 Plug 'rizzatti/dash.vim'
 Plug 'burke/matcher'
+Plug 'gabesoft/vim-ags'
 
-"Plug 'scrooloose/nerdcommenter'
-"Plug 'tpope/vim-bundler'
-"Plug 'marijnh/tern_for_vim'
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'vim-scripts/TaskList.vim'
-"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'bling/vim-airline'
 
 
@@ -67,11 +67,6 @@ call plug#end()            " required
 
 filetype plugin indent on    " required
 
-" :A on lib/foo.rb -> unit/lib/foo_spec.rb
-autocmd User Rails/lib/* let b:rails_alternate = 'spec/lib/' . rails#buffer().name()[0:-4] . '_spec.rb'
-
-" :A on unit/lib/foo_spec.rb -> lib/foo.rb
-autocmd User Rails/spec/lib/* let b:rails_alternate = rails#buffer().name()[5:-9] . '.rb'
 
 "Basic
 syntax enable 		"syntax highlighting on
@@ -80,11 +75,11 @@ syntax enable 		"syntax highlighting on
 filetype on
 filetype plugin on
 filetype indent on
-let @e = 'A;:w'
 
 " Strip whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
-"show line numbers
+"show relative line numbers
+set relativenumber
 set number
 
 "Typo fixes
@@ -94,7 +89,6 @@ set number
 :command Q q
 :command Vimrc tabe ~/.nvimrc
 :command Source source ~/.nvimrc
-:command FixEqual s/\(\S\)\([+=-\.]*=\)\(\S\)/\1 \2 \3/g
 
 "Change highlighting to underline
 highlight clear SpellBad
@@ -113,18 +107,12 @@ set tabstop=4
 set pastetoggle=<F8> "Turn off auto indent for a paste
 
 "Langauge specific formatting
-"Python
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
-"autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
-
-
-"set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
-" Remove trailing whitespaces and ^M chars
-"autocmd FileType c,cpp,java,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
-"autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig"
+autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
@@ -159,13 +147,14 @@ nnoremap <C-F> yiw <ESC>:Git commit --fixup=<C-r>"<CR>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <space>h <C-W><C-H>
+nnoremap <C-H> <C-W><C-H>
 
 "Syntastic specific
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_elixir_checkers = ['elixir']
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_yaml_checkers = ['jsyaml']
 let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
@@ -183,6 +172,10 @@ function Ender()
   let endchar = nr2char(getchar())
   execute "normal \<End>a".endchar
   normal `e
+endfunction
+
+function Paster()
+	return @+
 endfunction
 
 let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
@@ -227,8 +220,6 @@ if executable('matcher')
 	endfunction
 end
 
-
-
 nnoremap <space>. :CtrlPTag<CR>
 nnoremap <space>b :CtrlPBuffer<CR>
 
@@ -238,7 +229,7 @@ let g:tagbar_usearrows = 1
 
 noremap <space>c :TagbarToggle<CR>
 
-nnoremap K :Ag -i <C-R><C-W><CR>
+nnoremap K :Ags -i <C-R><C-W><CR>
 
 " bind \ (backward slash) to grep shortcut
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -255,40 +246,7 @@ nnoremap <Up> <ESC><C-W><C-K>i
 nnoremap <Down> <ESC><C-W><C-J>i
 nnoremap <Left> :tabprev<CR>
 nnoremap <Right> :tabnext<CR>
-nnoremap <space>j :!php codecept.phar run unit<CR>
 nnoremap <space>k :Gdiff forms<CR>
-
-
-let g:project_enable_welcome = 0
-let g:project_use_nerdtree = 1
-
-call project#rc()
-Project '~/monkdev/mcms-vagrant/mcms', 'mcms'
-Callback 'mcms' , ['AddMcmsPaths']
-
-Project '~/monkdev/carpenter', 'carpenter'
-Project '~/rails-projects/winestat', 'vineweather'
-Project '~/Dropbox/Ruby/noaa', 'noaa'
-Project '~/monkdev/mchk', 'mchks'
-Project '~/Dropbox/Websites/mikecordell', 'website'
-
-function! AddMcmsPaths(...) abort
-  setlocal path+=Library
-  setlocal path+=model
-  setlocal suffixesadd=.php
-endfunction
-
-
-call project#config#callback("noaa", project#utils#alternate(
-  \  [{'regex': '^lib', 'string': 'spec/lib', 'suffix': '+_spec'},
-  \   {'regex': '^spec/lib', 'string': 'lib', 'suffix': '-_spec'}]
-  \  ))
-
-"call project#config#callback("mcms", project#utils#alternate(
-"  \  [{'regex': '^Module\/\([a-zA-z]*\)\/Page\/Capture\/\([a-zA-z]*\).content.php', 'string': 'Module/\1/Process/Capture/\2.php'},
-"  \   {'regex': '^Module\/\([a-zA-z]*\)\/Process\/Capture\/\([a-zA-z]*\).php', 'string': 'Module/\1/Page/Capture/\2.content.php'}]
-"  \  ))
-
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -299,9 +257,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:snips_author = "Michael Cordell <michael@monkdevelopment.com>"
-
-
+let g:snips_author = "Michael Cordell <surpher@gmail.com>"
 
 let g:speckyBannerKey        = "<C-R>b"
 let g:speckyQuoteSwitcherKey = "<C-R>'"
@@ -312,6 +268,10 @@ let g:speckyRunRdocCmd       = "fri -L -f plain"
 let g:speckyRunSpecCmd       = "bundle exec rspec -r ~/.vim/bundle/Specky/ruby/specky_formatter.rb -f SpeckyFormatter"
 let g:speckyWindowType       = 2
 
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 
 "Display stuff
 let g:gruvbox_italic=0
@@ -327,13 +287,25 @@ set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 "Color scheme
-"let g:solarized_termtrans = 1
-"let g:solarized_termcolors = 256
-
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-
-let g:phpunit_cmd = 'MCMS_ENV=test php /Users/michael/monkdev/mcms-vagrant/mcms/codecept.phar'
 
 nmap <space>hs <Plug>GitGutterStageHunk
 nmap <space>hr <Plug>GitGutterRevertHunk
 
+"Close that scratch buffer window that opens on autocompleting
+autocmd CompleteDone * pclose
+
+let g:rspec_command = "Dispatch bundle exec rspec {spec}"
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+set backspace=indent,eol,start
+
+augroup markdown
+	au!
+	au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
+runtime macros/matchit.vim

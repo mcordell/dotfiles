@@ -25,6 +25,8 @@ Plug 'tpope/vim-repeat'
 Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-dispatch', { 'for': 'ruby' }
+Plug 'tpope/vim-vinegar'
+Plug 'jtratner/vim-flavored-markdown'
 
 "Plug 'malkomalko/projections.vim'
 "Plug 'amiorin/vim-project'
@@ -33,7 +35,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'majutsushi/tagbar'
 Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
 
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
@@ -299,10 +301,13 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 nmap <space>hs <Plug>GitGutterStageHunk
 nmap <space>hr <Plug>GitGutterRevertHunk
 
+vmap <space>y  "+y
+nmap <space>p  "+p
+
 "Close that scratch buffer window that opens on autocompleting
 autocmd CompleteDone * pclose
 
-let g:rspec_command = "Dispatch bundle exec rspec {spec}"
+let g:rspec_command = "Dispatch ./bin/rspec {spec}"
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
