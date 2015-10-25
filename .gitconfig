@@ -17,8 +17,9 @@
 	compare = log --left-right --graph --cherry-pick --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --no-merges
 	g = grep --break --heading --line-number
 	uncommit = reset --soft HEAD~1
+	ctags = !.git/hooks/ctags
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = /Users/michael/.gitignore_global
 [push]
 	default = simple
@@ -27,6 +28,10 @@
 [merge]
 	tool = fugitive
 [mergetool "fugitive"]
-	cmd = vim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiff\" \"$MERGED\"
+	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiff\" \"$MERGED\"
 [init]
 	templatedir = ~/.git_template
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
