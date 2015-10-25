@@ -1,6 +1,5 @@
 snippet dm "Describe model"
 require 'rails_helper'
-
 endsnippet
 
 snippet  nv "not valid"
@@ -12,5 +11,15 @@ endsnippet
 snippet  bt "expect to be be true"
 it "is returns true" do
   expect(${1}).to be_truthy
+end
+endsnippet
+
+snippet ise "it is expected" b
+it { is_expected.to ${1} }
+endsnippet
+
+snippet rdesc "RSpec Describe"
+RSpec.describe ${1} do
+  ${2}
 end
 endsnippet
