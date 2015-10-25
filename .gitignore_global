@@ -6,4 +6,4 @@ dump.rdb
 *.sublime-project
 *.swp
 codeception.yml
-projections.json
+.projections.json
