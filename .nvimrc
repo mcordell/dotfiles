@@ -33,6 +33,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'mcordell/vim-dispatch'
 Plug 'tpope/vim-rake'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
