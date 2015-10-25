@@ -1,4 +1,3 @@
-set nocompatible
 filetype off                  " required
 
 "hide buffers with unwritten changes
@@ -22,12 +21,9 @@ Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
 Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-dispatch', { 'for': 'ruby' }
-Plug 'tpope/vim-vinegar'
-Plug 'jtratner/vim-flavored-markdown'
-
-"Plug 'malkomalko/projections.vim'
-"Plug 'amiorin/vim-project'
+Plug 'janko-m/vim-test'
+Plug 'kassio/neoterm'
+Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
 
 Plug 'majutsushi/tagbar'
@@ -38,6 +34,7 @@ Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
 Plug 'tpope/vim-rake'
+Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -76,6 +73,11 @@ filetype on
 filetype plugin on
 filetype indent on
 
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
 " Strip whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 "show relative line numbers
@@ -109,10 +111,12 @@ set pastetoggle=<F8> "Turn off auto indent for a paste
 "Langauge specific formatting
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype jade setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype gitcommit setlocal spell textwidth=72
+autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
@@ -168,7 +172,7 @@ let g:syntastic_check_on_wq = 0
 
 "quick function for adding character at end of line
 imap <silent><F2> <Esc>v`^me<Esc>gi<C-o>:call Ender()<CR>
-function Ender()
+function! Ender()
   let endchar = nr2char(getchar())
   execute "normal \<End>a".endchar
   normal `e
@@ -181,8 +185,7 @@ endfunction
 let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
 let NERDTreeShowBookmarks=1
 
-let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-nnoremap <space>d :call pdv#DocumentWithSnip()<CR>
+nnoremap <space>d :Dispatch -newbuf ./bin/rspec --format d %<CR>
 
 " The Silver Searcher
 if executable('ag')
@@ -227,7 +230,7 @@ nnoremap <space>b :CtrlPBuffer<CR>
 "
 let g:tagbar_usearrows = 1
 
-noremap <space>c :TagbarToggle<CR>
+noremap <space>c :Copen<CR>
 
 nnoremap K :Ags -i <C-R><C-W><CR>
 
@@ -259,15 +262,6 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:snips_author = "Michael Cordell <surpher@gmail.com>"
 
-let g:speckyBannerKey        = "<C-R>b"
-let g:speckyQuoteSwitcherKey = "<C-R>'"
-let g:speckyRunRdocKey       = "<C-R>r"
-let g:speckySpecSwitcherKey  = "<C-R>x"
-let g:speckyRunSpecKey       = "<C-R>s"
-let g:speckyRunRdocCmd       = "fri -L -f plain"
-let g:speckyRunSpecCmd       = "bundle exec rspec -r ~/.vim/bundle/Specky/ruby/specky_formatter.rb -f SpeckyFormatter"
-let g:speckyWindowType       = 2
-
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
@@ -279,10 +273,7 @@ set background=dark
 colorscheme gruvbox
 let g:airline_powerline_fonts = 1
 set encoding=utf-8
-"set term=xterm-256color
-set t_Co=256
 set fillchars+=stl:\ ,stlnc:\
-set termencoding=utf-8
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
@@ -292,20 +283,71 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 nmap <space>hs <Plug>GitGutterStageHunk
 nmap <space>hr <Plug>GitGutterRevertHunk
 
+vmap <space>y "+y
+nmap <space>p "+p
+
 "Close that scratch buffer window that opens on autocompleting
 autocmd CompleteDone * pclose
 
-let g:rspec_command = "Dispatch bundle exec rspec {spec}"
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+
+"vim-test
+let test#ruby#rspec#executable = './bin/rspec'
+let test#strategy = "dispatch"
+nmap <silent> <leader>s :TestNearest<CR>
+nmap <silent> <leader>t :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
 
 set backspace=indent,eol,start
-
-augroup markdown
-	au!
-	au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
-augroup END
-
 runtime macros/matchit.vim
+
+let g:neoterm_position = 'vertical'
+let g:neoterm_automap_keys = ',tt'
+
+" run set test lib
+nnoremap <silent> ,rt :call neoterm#test#run('all')<cr>
+nnoremap <silent> ,rf :call neoterm#test#run('file')<cr>
+nnoremap <silent> ,rn :call neoterm#test#run('current')<cr>
+nnoremap <silent> ,rr :call neoterm#test#rerun()<cr>
+
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+function! Changer()
+	norm cs])
+	norm ?(
+	norm i %i
+	norm f(
+	norm vf)
+endfunction
+
+" changes Ruby symbol hash from [:zzz, :xx] to %i(zzz xx)
+function! SymbolArrayToi()
+    normal ?[r(/]r)v%:s/\%V[:,]//ggvi%i
+endfunction
+
+nnoremap <C-W>O :call MaximizeToggle()<CR>
+nnoremap <C-W>o :call MaximizeToggle()<CR>
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
