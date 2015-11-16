@@ -25,6 +25,7 @@ Plug 'janko-m/vim-test'
 Plug 'kassio/neoterm'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
+Plug 'mcordell/vim-dispatch'
 
 Plug 'majutsushi/tagbar'
 Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
@@ -122,6 +123,7 @@ autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,mako source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
+autocmd BufNewFile,BufRead *_spec.rb set ft=rspec.ruby
 
 "Key Maps
 
@@ -137,9 +139,6 @@ noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
 noremap <space>s  :Ag<SPACE>
 noremap <space>j  :Test run unit<CR>
-noremap <space>i  :s/\.\([a-z\-]*\)/@include \1/g<CR>
-noremap <space>m  :s/\.\([a-z\-]*\)/@mixin \1/g<CR>
-noremap <space>v  :s/@/$/g<CR>
 
 vnoremap <C-c> "*y
 noremap <C-p> "*p
