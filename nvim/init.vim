@@ -3,7 +3,7 @@ filetype off                  " required
 "hide buffers with unwritten changes
 set hidden
 
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 "Plugin essentials
 Plug 'tpope/vim-fugitive'
@@ -91,8 +91,8 @@ set number
 :command Wq wq
 :command W w
 :command Q q
-:command Vimrc tabe ~/.nvimrc
-:command Source source ~/.nvimrc
+:command Vimrc tabe ~/.config/nvim/init.vim
+:command Source source ~/.config/nvim/init.vim
 
 "Change highlighting to underline
 highlight clear SpellBad
