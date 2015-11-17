@@ -1,0 +1,2 @@
+export PATH="/Users/michael/Library/Python/2.7/bin:$PATH"
+source "$HOME/.nvim/plugged/gruvbox/gruvbox_256palette_osx.sh"
