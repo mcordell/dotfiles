@@ -3,6 +3,16 @@ filetype off                  " required
 "hide buffers with unwritten changes
 set hidden
 
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py
+  endif
+endfunction
+
 call plug#begin('~/.config/nvim/plugged')
 
 "Plugin essentials
@@ -30,7 +40,7 @@ Plug 'mcordell/vim-dispatch'
 Plug 'majutsushi/tagbar'
 Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
 
-Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
@@ -270,7 +280,7 @@ autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 "Display stuff
 let g:gruvbox_italic=0
 set background=dark
-colorscheme gruvbox
+silent! colorscheme gruvbox
 let g:airline_powerline_fonts = 1
 set encoding=utf-8
 set fillchars+=stl:\ ,stlnc:\
