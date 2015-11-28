@@ -32,7 +32,12 @@ case $SYSTEM in
 		Linux*)
 		echo 'Allo linux'
 		PKG_MANAGER='sudo apt-get'
-		specific_packages=('vim-nox' 'silversearcher-ag')
+		specific_packages=('silversearcher-ag')
+		sudo apt-get install -y software-properties-common
+		sudo add-apt-repository ppa:neovim-ppa/unstable
+		sudo apt-get update
+		sudo apt-get install -y neovim python-pip
+		sudo pip2 install neovim
 	;;
 esac
 
