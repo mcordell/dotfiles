@@ -22,7 +22,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 
-Plug 'editorconfig/editorconfig-vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
@@ -39,15 +38,11 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
 Plug 'mcordell/vim-dispatch'
 
-Plug 'majutsushi/tagbar'
-Plug 'jgdavey/vim-blockle', { 'for': 'ruby'}
 
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
-Plug 'mcordell/vim-dispatch'
-Plug 'tpope/vim-rake'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
@@ -57,16 +52,16 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
 Plug 'tobyS/vmustache', { 'for': 'html' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }
-Plug 'skwp/vim-spec-finder', { 'for': 'ruby' }
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
+Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
 
 Plug 'terryma/vim-multiple-cursors'
+
+"Used to display markers
 Plug 'kshenoy/vim-signature'
-Plug 'rizzatti/dash.vim'
+
 Plug 'burke/matcher'
 Plug 'gabesoft/vim-ags'
 
