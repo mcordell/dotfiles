@@ -369,6 +369,9 @@ function! MaximizeToggle()
   endif
 endfunction
 
+let NERDTreeIgnore=['tmp$[[dir]]']
+
+let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 autocmd! BufWritePost *.js Neomake
 
 function! s:activate() abort
