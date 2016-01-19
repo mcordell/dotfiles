@@ -23,3 +23,37 @@ RSpec.describe ${1} do
   ${2}
 end
 endsnippet
+
+snippet descm "describe class method" b
+describe '.${1:class_method_name}' do
+  subject { described_class.$1 }
+
+  it '${2}' do
+    ${3}
+  end
+end
+endsnippet
+
+snippet desi "describe instance method" b
+describe '#${1:instance_method}' do
+  subject { described_class.new.$1 }
+
+  it '${2}' do
+    ${3}
+  end
+end
+endsnippet
+
+snippet rmatch "Define rspec matcher"
+RSpec::Matchers.define :${1:matcher_name} do |expected|
+  match do |actual|
+    ${2}
+  end
+end
+endsnippet
+
+snippet fail "define failure message in matcher"
+failure_message_for_should do |actual|
+  "expected that #{actual} would ${1} #{expected}"
+end
+endsnippet
