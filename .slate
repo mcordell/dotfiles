@@ -15,7 +15,7 @@ config windowHintsSpread true
 
 # Monitor Aliases
 alias mon-laptop      1440x900
-alias mon-dell        2560x1440
+alias mon-asus        1920x1080
 
 # Alias' directive
 alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
@@ -30,6 +30,8 @@ alias topleft corner top-left resize:screenSizeX/2;screenSizeY/2
 alias topright corner top-right resize:screenSizeX/2;screenSizeY/2
 alias bottomleft corner bottom-left resize:screenSizeX/2;screenSizeY/2
 alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
+alias threequartercenter move 0;0 1024;768
+bind pad5:cmd;ctrl ${threequartercenter}
 
 #aliases for keymaps
 alias hyper ctrl;cmd;shift;alt
@@ -37,18 +39,19 @@ alias hyper ctrl;cmd;shift;alt
 #Layouts
 layout 2monitors 'iTunes' ${full} ${mon-laptop}
 layout 2monitors 'Slack' ${full} ${mon-laptop}
-layout 2monitors 'iTerm' ${full} ${mon-laptop}
-layout 2monitors 'Google Chrome' ${righthalf} ${mon-dell}
-layout 2monitors 'Sublime Text 2' ${lefthalf} ${mon-dell}
+layout 2monitors 'Google Chrome' ${righthalf} ${mon-asus}
+layout 2monitors 'iTerm' ${lefthalf} ${mon-asus}
 
 # Default Layouts
-#default 2monitors resolutions:${mon-laptop};${mon-dell}
+#default 2monitors resolutions:${mon-laptop};${mon-asus}
 #default 1monitor  resolutions:${mon-laptop}
 
 
+bind h:${hyper} ${lefthalf}
+bind l:${hyper} ${righthalf}
 bind left:cmd;ctrl ${lefthalf}
 bind right:cmd;ctrl ${righthalf}
-bind up:cmd;ctrl ${full}
+bind k:${hyper} ${full}
 bind e:cmd hint QWERTYUIOP
 bind c:${hyper} focus 'Google Chrome'
 bind i:${hyper} focus 'iTerm'
