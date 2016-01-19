@@ -1,0 +1,74 @@
+snippet imp "import"
+import ${1} from '${2}';
+endsnippet
+
+snippet impe "import ember"
+import Ember from 'ember';
+endsnippet
+
+snippet ase "assert equal"
+assert.equal(${1}, ${2}, '${3}');
+endsnippet
+
+snippet asne "assert not equal"
+assert.notEqual(${1}, ${2}, '${3}');
+endsnippet
+
+snippet testmo "simple model test"
+test('${1:description}', function(assert) {
+  let ${2} = this.subject();
+  ${3}
+});
+endsnippet
+
+snippet testbt "test belongs to"
+test('should belong to a ${1}', function(assert) {
+  const ${2} = this.store().modelFor('$2');
+  const relationship = Ember.get($2, 'relationshipsByName').get('$1');
+
+  assert.equal(relationship.key, '$1', 'has relationship with $1');
+  assert.equal(relationship.kind, 'belongsTo', 'kind of relationship is belongsTo');
+});
+endsnippet
+
+snippet testhm "test has many"
+test('should have many ${1}', function(assert) {
+  const ${2} = this.store().modelFor('$2');
+  const relationship = Ember.get($2, 'relationshipsByName').get('$1');
+
+  assert.equal(relationship.key, '$1', 'has relationship with $1');
+  assert.equal(relationship.kind, 'hasMany', 'kind of relationship is hasMany');
+});
+endsnippet
+
+snippet fact "factory"
+import FactoryGuy from 'ember-data-factory-guy';
+
+FactoryGuy.define('${1}', {
+  default: {
+    ${2}: FactoryGuy.generate(function(i) { return \`${3}\`; })
+  },
+  traits: {
+  }
+});
+endsnippet
+
+snippet afun "anonymous function" i
+function(${1}) {
+  ${2}
+}
+endsnippet
+
+snippet actions "actions for ember"
+actions: {
+  ${1}() {
+    ${2};
+  },
+},
+endsnippet
+
+snippet comp "computed attribute" b
+${1:attr_name}: Ember.computed('${2:dependent}', ${3}function() {
+  ${4}
+})
+endsnippet
