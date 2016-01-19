@@ -402,3 +402,5 @@ nnoremap <leader>a :A<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>, <C-^>
 
+"Set so that fugitive opens vertically on diff
+set diffopt+=vertical
