@@ -332,11 +332,14 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 function! Changer()
-	norm cs])
-	norm ?(
-	norm i %i
-	norm f(
-	norm vf)
+	exec '?['
+	norm %r)
+	exec '?['
+	norm r(i %i
+	norm 2lvi(
+	norm gq
+	norm gv
+	exec "s/[:,]//g"
 endfunction
 
 " changes Ruby symbol hash from [:zzz, :xx] to %i(zzz xx)
