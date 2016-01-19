@@ -4,6 +4,7 @@ filetype off                  " required
 set hidden
 let mapleader=","
 
+set nohlsearch
 
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
