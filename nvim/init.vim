@@ -2,6 +2,8 @@ filetype off                  " required
 
 "hide buffers with unwritten changes
 set hidden
+let mapleader=","
+
 
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
@@ -361,3 +363,7 @@ function! MaximizeToggle()
     only
   endif
 endfunction
+
+nnoremap <leader>a :A<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>, <C-^>
