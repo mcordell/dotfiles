@@ -41,6 +41,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'mcordell/vim-dispatch'
 
 
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
@@ -370,6 +371,31 @@ endfunction
 
 autocmd! BufWritePost *.js Neomake
 
+function! s:activate() abort
+  let is_ember = 0
+  for [root, value] in projectionist#query('ember')
+    if value == 'true'
+		let is_ember = 1
+    endif
+	break
+  endfor
+  if is_ember
+	  for [root, value] in projectionist#query('type')
+		if value == 'controller'
+			nnoremap <space>r :Etemplate
+		elseif value == 'component'
+			nnoremap <space>r :Etemplatecomponent
+		elseif value == 'template_component'
+			nnoremap <space>r :Ecomponent
+		endif
+		break
+	  endfor
+  endif
+endfunction
+
+autocmd User ProjectionistActivate call s:activate()
+
 nnoremap <leader>a :A<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>, <C-^>
+
