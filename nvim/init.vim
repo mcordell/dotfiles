@@ -132,7 +132,7 @@ autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
-autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,mako source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,mako source ~/.config/nvim/plugged/closetag.vim/plugin/closetag.vim
 autocmd BufNewFile,BufRead *_spec.rb set ft=rspec.ruby
 
 "Key Maps
