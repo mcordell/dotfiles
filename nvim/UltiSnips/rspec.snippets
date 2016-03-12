@@ -57,3 +57,56 @@ failure_message_for_should do |actual|
   "expected that #{actual} would ${1} #{expected}"
 end
 endsnippet
+
+snippet rnc "require namespace creator" b
+require 'support/namespace_creator'
+endsnippet
+
+global !p
+def snake_case_humanize(snake_cased):
+    result = ''
+    for part in snake_cased.split('_'):
+	   result += part.capitalize()
+
+    return result
+
+def transform_namespace_exceptions(item):
+    exceptions = {
+	  'Ncdr': 'NCDR',
+	  'CathPci': 'CathPCI'
+	}
+
+    for exception, new in exceptions.items():
+       item = string.replace(item, exception, new)
+
+    return item
+endglobal
+
+snippet libdesc
+require 'support/namespace_creator'
+require '`!p result = string.replace(path, '_spec.rb', '')
+cleaned_path = string.replace(result, 'spec/lib/', '')
+snip.rv = cleaned_path
+`'
+
+module `!p path_parts = cleaned_path.split('/')
+class_name = snake_case_humanize(path_parts.pop())
+module_parts = []
+for part in path_parts:
+    humanized = snake_case_humanize(part)
+    module_parts.append(transform_namespace_exceptions(humanized))
+snip.rv = string.join(module_parts, '::')
+`
+  RSpec.describe `!p snip.rv = class_name` do
+
+  end
+end
+endsnippet
+
+snippet itdel "it is expected to delegate method"
+it { is_expected.to delegate_method(:${1:method_name}).to(:${2:target}) }
+endsnippet
+
+snippet itdelpre "it is expected to delegate method with prefix"
+it { is_expected.to delegate_method(:${1:method_name}).to(:${2:target}).with_prefix(${3:prefix}) }
+endsnippet

@@ -5,3 +5,106 @@ describe ${1:description}" do
 	${2}
 end
 endsnippet
+
+snippet "# param" "param docstring" r
+# @param ${1:param_name} [${2:type}] ${3:description}
+endsnippet
+
+snippet "# raise" "param docstring" r
+# @raise [${1:ErrorName}] if ${3:condition}
+endsnippet
+
+snippet "# ret" "ret docstring" r
+# @return [${1: type}] ${2:description}
+endsnippet
+
+snippet "# abs" "abstract doc string" r
+# @abstract subclass and override {#${1:method}} to implement a custom ${2}
+endsnippet
+
+snippet "# see" "see doc dtring" r
+# @see ${1:name} ${2:item}
+endsnippet
+
+snippet "# attr" "attribute" r
+# @!attribute [${1:r|w|rw}] ${2:name}
+#   ${3:explaination}
+endsnippet
+
+
+snippet cimir  "class method mirrors instance"
+def ${1}
+
+end
+
+def self.$1(${2})
+  new($2).$1
+end
+endsnippet
+
+snippet "def initialize\((.*)\)" "somethin" r
+# Initializer
+`!p args = match.group(1).split(', ')
+for arg in args:
+	temp = "# @param [] " + arg
+	if arg != args[-1]:
+		temp += "\n"
+	snip.rv += snip.mkline(temp)
+`
+def initialize(`!p snip.rv = match.group(1)`)
+`!p args = match.group(1).split(', ')
+for arg in args:
+	temp = "  @" + arg + " = " + arg
+	if arg != args[-1]:
+		temp += "\n"
+	snip.rv += snip.mkline(temp)
+`
+endsnippet
+
+snippet "def ([a-z_]*)\((.*)\)" "somethin" r
+`!p args = match.group(2).split(', ')
+for arg in args:
+	temp = "# @param " + arg + " [] "
+	if arg != args[-1]:
+		temp += "\n"
+	snip.rv += snip.mkline(temp)
+`
+def `!p snip.rv = match.group(1)`(`!p snip.rv = match.group(2)`)
+endsnippet
+
+global !p
+def snake_case_humanize(snake_cased):
+    result = ''
+    for part in snake_cased.split('_'):
+	   result += part.capitalize()
+
+    return result
+
+def transform_namespace_exceptions(item):
+    exceptions = {
+	  'Ncdr': 'NCDR',
+	  'CathPci': 'CathPCI'
+	}
+
+    for exception, new in exceptions.items():
+       item = string.replace(item, exception, new)
+
+    return item
+endglobal
+
+snippet libclass
+`!p result = string.replace(path, '.rb', '')
+cleaned_path = string.replace(result, 'lib/', '')
+path_parts = cleaned_path.split('/')
+class_name = snake_case_humanize(path_parts.pop())
+module_parts = []
+for part in path_parts:
+    humanized = snake_case_humanize(part)
+    module_parts.append(transform_namespace_exceptions(humanized))
+module_string = string.join(module_parts, '::')
+`module `!p snip.rv = module_string `
+  class `!p snip.rv = class_name`
+
+  end
+end
+endsnippet
