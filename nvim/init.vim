@@ -309,7 +309,7 @@ let test#ruby#rspec#executable = './bin/rspec'
 let test#strategy = "dispatch"
 nmap <silent> <leader>s :TestNearest<CR>
 nmap <silent> <leader>t :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>S :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 
 set backspace=indent,eol,start
@@ -401,6 +401,7 @@ autocmd User ProjectionistActivate call s:activate()
 nnoremap <leader>a :A<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>, <C-^>
+nnoremap <leader>r :!rubocop -a %<CR>
 
 "Set so that fugitive opens vertically on diff
 set diffopt+=vertical
