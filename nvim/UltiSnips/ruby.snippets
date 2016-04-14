@@ -46,7 +46,7 @@ snippet "def initialize\((.*)\)" "somethin" r
 # Initializer
 `!p args = match.group(1).split(', ')
 for arg in args:
-	temp = "# @param [] " + arg
+	temp = "# @param " + arg +" []"
 	if arg != args[-1]:
 		temp += "\n"
 	snip.rv += snip.mkline(temp)
@@ -83,7 +83,8 @@ def snake_case_humanize(snake_cased):
 def transform_namespace_exceptions(item):
     exceptions = {
 	  'Ncdr': 'NCDR',
-	  'CathPci': 'CathPCI'
+	  'CathPci': 'CathPCI',
+	  'Xml': 'XML'
 	}
 
     for exception, new in exceptions.items():
@@ -106,5 +107,37 @@ module_string = string.join(module_parts, '::')
   class `!p snip.rv = class_name`
 
   end
+end
+endsnippet
+
+snippet memo "memoized method"
+def ${1:method_name}
+  @$1 ||= $0
+end
+endsnippet
+
+snippet rubodisable
+# rubocop:disable ${1}
+${VISUAL}
+# rubocop:enable $1
+endsnippet
+
+snippet reg "registries namespace" i
+Registries::$0
+endsnippet
+
+snippet popch
+def child_objects
+  [
+    [:@${1}, XMLTransform::${2}],
+  ]
+end
+endsnippet
+
+snippet rescpry
+begin
+  ${VISUAL}
+rescue Exception => e
+  require 'pry'; binding.pry
 end
 endsnippet

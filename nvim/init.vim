@@ -22,10 +22,11 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'chrisbra/csv.vim'
+Plug 'junegunn/vim-easy-align'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
@@ -40,12 +41,14 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
 Plug 'mcordell/vim-dispatch'
 
+Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'exu/pgsql.vim'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
@@ -147,7 +150,7 @@ noremap <space>n :NERDTreeToggle <CR>
 noremap <space>gs :Gstatus<CR>
 noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
-noremap <space>s  :Ag<SPACE>
+noremap <space>s  :Ag --ruby<SPACE>
 noremap <space>j  :Test run unit<CR>
 
 vnoremap <C-c> "*y
@@ -405,3 +408,13 @@ nnoremap <leader>r :!rubocop -a %<CR>
 
 "Set so that fugitive opens vertically on diff
 set diffopt+=vertical
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"vf,h@zf,lwviwS'A.freeze,j0
+"veuea:v,f,wehysiw'A.freeze,
+

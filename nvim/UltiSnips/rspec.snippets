@@ -110,3 +110,29 @@ endsnippet
 snippet itdelpre "it is expected to delegate method with prefix"
 it { is_expected.to delegate_method(:${1:method_name}).to(:${2:target}).with_prefix(${3:prefix}) }
 endsnippet
+
+snippet valpres
+it { is_expected.to validate_presence_of(${1}) }
+endsnippet
+
+snippet have_db_index
+it { is_expected.to have_db_index(${1}) }
+endsnippet
+
+snippet belong_to
+it { is_expected.to belong_to(${1}) }
+endsnippet
+
+snippet shared_def "define shared examples"
+RSpec.shared_examples '${1:description}' do
+  ${2}
+end
+endsnippet
+
+snippet subin "subject instance"
+subject(:$1) { described_class.new($2) }
+endsnippet
+
+snippet letin "let instance double"
+let(:$1) { instance_double('$2') }
+endsnippet
