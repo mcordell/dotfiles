@@ -170,7 +170,7 @@ nnoremap <C-H> <C-W><C-H>
 let g:syntastic_javascript_checkers = []
 let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
 let g:syntastic_elixir_checkers = ['elixir']
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_checkers = []
 let g:syntastic_yaml_checkers = ['jsyaml']
 let g:syntastic_enable_elixir_checker  = 1
 let g:syntastic_aggregate_errors = 1
@@ -180,6 +180,8 @@ let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
 
 "Neomake syntax checking
 let g:neomake_javascript_enabled_makers = ['jshint', 'jscs']
+let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
+let g:neomake_rspec_enabled_makers = ['mri', 'rubocop']
 
 let g:syntastic_always_populate_loc_list = 1
 if !exists("g:fugitivediff")
@@ -376,6 +378,7 @@ let NERDTreeIgnore=['tmp$[[dir]]']
 
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 autocmd! BufWritePost *.js Neomake
+autocmd! BufWritePost *.rb Neomake
 
 function! s:activate() abort
   let is_ember = 0
