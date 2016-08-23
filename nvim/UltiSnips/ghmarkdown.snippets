@@ -5,3 +5,41 @@ endsnippet
 snippet ref "reference" b
 [${1:reference}]: ${2:url}
 endsnippet
+
+snippet ghref "github reference"
+`!p
+try:
+	# Python2
+	import Tkinter as tk
+except ImportError:
+	# Python3
+	import tkinter as tk
+root = tk.Tk()
+# keep the window from showing
+root.withdraw()
+
+# read the clipboard
+import re
+regex = '#L(\d*)-L(\d*)$'
+github = root.clipboard_get().replace('https://github.com/', '')
+
+match = re.search(regex, github)
+if match:
+	start = int(match.group(1)) - 1
+	end = int(match.group(2))
+	github = re.sub(regex, '', github)
+else:
+	start = ''
+	end = ''
+`
+{% github_sample_ref `!p snip.rv = github` `!p snip.rv = start`${1} `!p snip.rv = end`${2}%}
+{% highlight ruby %}
+{% github_sample `!p snip.rv = github` `!p snip.rv = start`$1 `!p snip.rv = end`$2 %}
+{% endhighlight %}
+endsnippet
+
+snippet marginnote
+{% marginnote ${1} %}
+$2
+{% endmarginnote %}
+endsnippet

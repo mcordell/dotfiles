@@ -5,21 +5,12 @@ let g:deoplete#enable_at_startup = 1
 "hide buffers with unwritten changes
 set hidden
 let mapleader=","
+let g:deoplete#enable_at_startup = 1
 
 set nohlsearch
 
 function! DoRemote(arg)
   UpdateRemotePlugins
-endfunction
-
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
 endfunction
 
 call plug#begin('~/.config/nvim/plugged')
@@ -58,11 +49,11 @@ Plug 'Raimondi/delimitMate'
 Plug 'lervag/vimtex'
 Plug 'exu/pgsql.vim'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
-Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'elixir-lang/vim-elixir', { 'for': ['elixir', 'eelixir'] }
 Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
-Plug 'mattn/emmet-vim', { 'for': ['html', 'php'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'php', 'eelixir'] }
 Plug 'tobyS/vmustache', { 'for': 'html' }
 Plug 'tobyS/pdv', { 'for': 'php' }
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby' }

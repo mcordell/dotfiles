@@ -83,6 +83,7 @@ def transform_namespace_exceptions(item):
 endglobal
 
 snippet libdesc
+# frozen_string_literal: true
 require 'support/namespace_creator'
 require '`!p result = path.replace('_spec.rb', '')
 cleaned_path = result.replace('spec/lib/', '')
@@ -92,11 +93,12 @@ module `!p path_parts = cleaned_path.split('/')
 class_name = snake_case_humanize(path_parts.pop())
 module_parts = []
 for part in path_parts:
-     humanized = snake_case_humanize(part)
-     module_parts.append(transform_namespace_exceptions(humanized))
+    humanized = snake_case_humanize(part)
+    module_parts.append(transform_namespace_exceptions(humanized))
 snip.rv = '::'.join(module_parts)
 `
   RSpec.describe `!p snip.rv = class_name` do
+
   end
 end
 endsnippet
