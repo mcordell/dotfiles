@@ -66,7 +66,7 @@ global !p
 def snake_case_humanize(snake_cased):
     result = ''
     for part in snake_cased.split('_'):
-	   result += part.capitalize()
+        result += part.capitalize()
 
     return result
 
@@ -77,28 +77,26 @@ def transform_namespace_exceptions(item):
 	}
 
     for exception, new in exceptions.items():
-       item = string.replace(item, exception, new)
+       item = item.replace(exception, new)
 
     return item
 endglobal
 
 snippet libdesc
 require 'support/namespace_creator'
-require '`!p result = string.replace(path, '_spec.rb', '')
-cleaned_path = string.replace(result, 'spec/lib/', '')
+require '`!p result = path.replace('_spec.rb', '')
+cleaned_path = result.replace('spec/lib/', '')
 snip.rv = cleaned_path
 `'
-
 module `!p path_parts = cleaned_path.split('/')
 class_name = snake_case_humanize(path_parts.pop())
 module_parts = []
 for part in path_parts:
-    humanized = snake_case_humanize(part)
-    module_parts.append(transform_namespace_exceptions(humanized))
-snip.rv = string.join(module_parts, '::')
+     humanized = snake_case_humanize(part)
+     module_parts.append(transform_namespace_exceptions(humanized))
+snip.rv = '::'.join(module_parts)
 `
   RSpec.describe `!p snip.rv = class_name` do
-
   end
 end
 endsnippet

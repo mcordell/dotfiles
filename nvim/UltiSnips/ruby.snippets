@@ -2,7 +2,7 @@
 snippet des
 describe ${1:description}" do
 "something"
-	${2}
+  ${2}
 end
 endsnippet
 
@@ -10,11 +10,11 @@ snippet "# param" "param docstring" r
 # @param ${1:param_name} [${2:type}] ${3:description}
 endsnippet
 
-snippet "# raise" "param docstring" r
+snippet "# raise" "raise docstring" r
 # @raise [${1:ErrorName}] if ${3:condition}
 endsnippet
 
-snippet "# ret" "ret docstring" r
+snippet "# ret" "return docstring" r
 # @return [${1: type}] ${2:description}
 endsnippet
 
@@ -46,28 +46,28 @@ snippet "def initialize\((.*)\)" "somethin" r
 # Initializer
 `!p args = match.group(1).split(', ')
 for arg in args:
-	temp = "# @param " + arg +" []"
-	if arg != args[-1]:
-		temp += "\n"
-	snip.rv += snip.mkline(temp)
+  temp = "# @param " + arg +" []"
+  if arg != args[-1]:
+    temp += "\n"
+  snip.rv += snip.mkline(temp)
 `
 def initialize(`!p snip.rv = match.group(1)`)
 `!p args = match.group(1).split(', ')
 for arg in args:
-	temp = "  @" + arg + " = " + arg
-	if arg != args[-1]:
-		temp += "\n"
-	snip.rv += snip.mkline(temp)
+  temp = "  @" + arg + " = " + arg
+  if arg != args[-1]:
+    temp += "\n"
+  snip.rv += snip.mkline(temp)
 `
 endsnippet
 
 snippet "def ([a-z_]*)\((.*)\)" "somethin" r
 `!p args = match.group(2).split(', ')
 for arg in args:
-	temp = "# @param " + arg + " [] "
-	if arg != args[-1]:
-		temp += "\n"
-	snip.rv += snip.mkline(temp)
+  temp = "# @param " + arg + " [] "
+  if arg != args[-1]:
+    temp += "\n"
+  snip.rv += snip.mkline(temp)
 `
 def `!p snip.rv = match.group(1)`(`!p snip.rv = match.group(2)`)
 endsnippet
@@ -76,34 +76,35 @@ global !p
 def snake_case_humanize(snake_cased):
     result = ''
     for part in snake_cased.split('_'):
-	   result += part.capitalize()
+     result += part.capitalize()
 
     return result
 
 def transform_namespace_exceptions(item):
     exceptions = {
-	  'Ncdr': 'NCDR',
-	  'CathPci': 'CathPCI',
-	  'Xml': 'XML'
-	}
+    'Ncdr': 'NCDR',
+    'CathPci': 'CathPCI',
+    'Xml': 'XML'
+  }
 
     for exception, new in exceptions.items():
-       item = string.replace(item, exception, new)
+       item = item.replace(exception, new)
 
     return item
 endglobal
 
 snippet libclass
-`!p result = string.replace(path, '.rb', '')
-cleaned_path = string.replace(result, 'lib/', '')
+`!p result = path.replace('.rb', '')
+cleaned_path = result.replace('lib/', '')
 path_parts = cleaned_path.split('/')
 class_name = snake_case_humanize(path_parts.pop())
 module_parts = []
 for part in path_parts:
     humanized = snake_case_humanize(part)
     module_parts.append(transform_namespace_exceptions(humanized))
-module_string = string.join(module_parts, '::')
-`module `!p snip.rv = module_string `
+module_string = '::'.join(module_parts)
+`# frozen_string_literal: true
+module `!p snip.rv = module_string `
   class `!p snip.rv = class_name`
 
   end
@@ -140,4 +141,19 @@ begin
 rescue Exception => e
   require 'pry'; binding.pry
 end
+endsnippet
+
+snippet newrel
+self.class.trace_execution_scoped(['Custom/${1:tag}']) do
+  ${VISUAL}
+end
+endsnippet
+
+snippet fsl "freeze string literal comment"
+# frozen_string_literal: true
+
+endsnippet
+
+snippet "# opt" "option docstring" r
+# @option ${1:option hash} [${2:type}] ${3:key name} (${4:default_value}) ${5:description}
 endsnippet
