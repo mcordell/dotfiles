@@ -1,10 +1,16 @@
 filetype off                  " required
 
+let g:deoplete#enable_at_startup = 1
+
 "hide buffers with unwritten changes
 set hidden
 let mapleader=","
 
 set nohlsearch
+
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
 
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
@@ -44,10 +50,12 @@ Plug 'mcordell/vim-dispatch'
 Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+"Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'lervag/vimtex'
 Plug 'exu/pgsql.vim'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
@@ -62,6 +70,7 @@ Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
+Plug 'jtratner/vim-flavored-markdown'
 
 Plug 'terryma/vim-multiple-cursors'
 
@@ -123,6 +132,8 @@ set shiftwidth=4
 set tabstop=4
 set pastetoggle=<F8> "Turn off auto indent for a paste
 
+autocmd BufNewFile,BufRead *.tt set ft=ruby
+
 "Langauge specific formatting
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
@@ -159,7 +170,7 @@ noremap <C-p> "*p
 "movement between buffers
 map <space>p :tabprev <CR>
 map <space>w :w<CR>
-map <space>l :Git! log<CR>gg
+map <space>l :Git! log -n 500<CR>gg
 nnoremap <C-F> yiw <ESC>:Git commit --fixup=<C-r>"<CR>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -421,3 +432,6 @@ nmap ga <Plug>(EasyAlign)
 "vf,h@zf,lwviwS'A.freeze,j0
 "veuea:v,f,wehysiw'A.freeze,
 
+set colorcolumn=80
+let g:xml_syntax_folding=1
+au FileType xml setlocal foldmethod=syntax
