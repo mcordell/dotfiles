@@ -8,6 +8,13 @@ alias berspec='nocorrect bundle exec rspec'
 alias be='bundle exec'
 alias s='subl .'
 alias v='vim'
+alias desk='cd ~/Desktop'
+alias clear_gemlock='git reset HEAD Gemfile.lock; git checkout -- Gemfile.lock; bundle'
+alias clean_orig='find . -iregex .*\.orig -exec rm -rf {} \;'
+alias gras='git rebase -i --autosquash'
+alias wip='git commit -m "wip"'
+alias icloud='cd /Users/michael/Library/Mobile\ Documents/com~apple~CloudDocs/'
+alias gap='git add -p'
 
 #glados
 alias sshGlad='ssh 192.168.1.150'
