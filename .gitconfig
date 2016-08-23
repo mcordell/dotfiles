@@ -18,6 +18,9 @@
 	g = grep --break --heading --line-number
 	uncommit = reset --soft HEAD~1
 	ctags = !.git/hooks/ctags
+	soft = reset --soft HEAD~1
+	hard = reset --hard
+	cleanup = clean -f **/*orig
 [core]
 	editor = nvim
 	excludesfile = /Users/michael/.gitignore_global
