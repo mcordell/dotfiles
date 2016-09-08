@@ -136,3 +136,10 @@ endsnippet
 snippet letin "let instance double"
 let(:$1) { instance_double('$2') }
 endsnippet
+
+snippet 'dummytest'
+it 'does something' do
+  require 'pry'; binding.pry
+  expect(1).to eq 1
+end
+endsnippet
