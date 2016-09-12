@@ -23,12 +23,15 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t)
      ;; better-defaults
+     elixir
      emacs-lisp
      git
      markdown
-     org
+     (org :variables org-enable-github-support t)
+     osx
      (ruby :variables ruby-version-manager 'chruby ruby-test-runner 'rspec)
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -108,11 +111,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolota"
-                               :size 13
+   dotspacemacs-default-font '("Consolas"
+                               :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.5)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -126,7 +129,7 @@ values."
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
-   ;; Setting it to a non-nil value, allows for separate commands under <C-i>
+   ;; Setting it to a non-nil value, allows for separate commands under <C-i>j
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
@@ -255,6 +258,8 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (global-hl-line-mode -1)
   (global-linum-mode)
+  (define-key evil-normal-state-map "h" 'evil-)
+  (spacemacs/set-leader-keys "gd" 'magit-ediff-stage) 
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -264,10 +269,19 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-capture-templates
+   (quote
+    (("r" "ruby snippet" entry
+      (file "~/org/notes.org")
+      "* Snippet: %a\n#+BEGIN_SRC ruby\n %c\n#+END_SRC")
+     ("t" "Task" entry
+      (file "~/org/todos.org")
+      "* TODO %?\n %c %i\n %a"))))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
