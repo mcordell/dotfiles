@@ -36,7 +36,7 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     spell-checking
      ;; syntax-checking
      ;; version-control
      )
@@ -258,8 +258,9 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (global-hl-line-mode -1)
   (global-linum-mode)
-  (define-key evil-normal-state-map "h" 'evil-)
-  (spacemacs/set-leader-keys "gd" 'magit-ediff-stage) 
+  (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
+  (setq org-refile-targets '((nil :maxlevel . 9)))
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
