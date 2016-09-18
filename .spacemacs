@@ -23,31 +23,37 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     (auto-completion :variables
-                      auto-completion-enable-snippets-in-popup t)
+     (auto-completion :variables auto-completion-enable-snippets-in-popup t
+                                 auto-completion-tab-key-behavior nil)
      ;; better-defaults
      elixir
      emacs-lisp
      git
+     github
+     html
+     javascript
      markdown
-     (org :variables org-enable-github-support t)
+     (org :variables
+          org-enable-github-support t)
      osx
-     (ruby :variables ruby-version-manager 'chruby ruby-test-runner 'rspec)
+     (ruby :variables ruby-version-manager 'chruby
+                      ruby-test-runner 'rspec)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      spell-checking
-     ;; syntax-checking
+     (syntax-checking :variables syntax-checking-enable-tooltips nil)
      ;; version-control
+     ruby-on-rails
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
+   ;; packages, then consider creating a layer. You can also put thke
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(ember-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
-   ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
+   dotspacemacs-excluded-packages '(magit-gh-pull)
+   ;; IF non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
    dotspacemacs-delete-orphan-packages t))
@@ -111,8 +117,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Consolas"
-                               :size 14
+   dotspacemacs-default-font '("Inconsolata for Powerline Medium"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.5)
@@ -235,7 +241,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'all
    ))
 
 (defun dotspacemacs/user-init ()
@@ -261,6 +267,19 @@ you should place your code here."
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
   (setq org-refile-targets '((nil :maxlevel . 9)))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (global-set-key (kbd "TAB") 'hippie-expand)
+  (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
+  (spacemacs/set-leader-keys "oq" (lambda () (interactive) (find-file
+                                                            "~/org/qcentrix.org")))
+  (spacemacs/set-leader-keys "oj" (lambda () (interactive) (ember-open-javascript)))
+  (spacemacs/set-leader-keys "ot" (lambda () (interactive) (ember-open-template)))
+  (auto-fill-mode t)
+  (turn-on-fci-mode)
+  (add-hook 'js-mode-hook (lambda () (ember-mode t)))
+  (add-hook 'web-mode-hook (lambda () (ember-mode t)))
+  (setq-default js2-basic-offset 2)
+  (setq-default js-indent-level 2)
+  (spacemacs|defvar-company-backends ruby-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -270,14 +289,34 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   (quote
+    ("~/org/qcentrix.org" "~/org/people.org" "~/Library/Mobile Documents/com~apple~CloudDocs/org_files/TODO.org")))
  '(org-capture-templates
    (quote
-    (("r" "ruby snippet" entry
+    (("s" "ruby snippet" entry
       (file "~/org/notes.org")
-      "* Snippet: %a\n#+BEGIN_SRC ruby\n %c\n#+END_SRC")
+      "* Snippet: %a
+#+BEGIN_SRC %^{sourcetype}
+ %c
+#+END_SRC")
      ("t" "Task" entry
       (file "~/org/todos.org")
-      "* TODO %?\n %c %i\n %a"))))
+      "* TODO %?
+ %i
+ %a")
+     ("d" "Tear downs")
+     ("dn" "nat tear down entry" item
+      (file+olp "/Users/michael/org/people.org" "Nat" "Tear downs")
+      "- %t %?
+  ")
+     ("n" "note" entry
+      (file "~/org/notes.org")
+      "* %? :NOTE:
+
+%U
+%a
+"))))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
