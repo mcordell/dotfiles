@@ -33,11 +33,9 @@ values."
      html
      javascript
      markdown
-     (org :variables
-          org-enable-github-support t)
+     (org :variables org-enable-github-support t)
      osx
-     (ruby :variables ruby-version-manager 'chruby
-                      ruby-test-runner 'rspec)
+     (ruby :variables ruby-version-manager 'chruby ruby-test-runner 'rspec)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -48,12 +46,12 @@ values."
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put thke
+   ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ember-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(magit-gh-pull)
-   ;; IF non-nil spacemacs will delete any orphan packages, i.e. packages that
+   ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
    dotspacemacs-delete-orphan-packages t))
