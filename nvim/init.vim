@@ -21,7 +21,6 @@ Plug 'kien/ctrlp.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'chrisbra/csv.vim'
 Plug 'junegunn/vim-easy-align'
-
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -312,7 +311,7 @@ autocmd CompleteDone * pclose
 
 
 "vim-test
-let test#ruby#rspec#executable = './bin/rspec'
+let test#ruby#rspec#executable = 'zeus rspec'
 let test#strategy = "dispatch"
 nmap <silent> <leader>s :TestNearest<CR>
 nmap <silent> <leader>t :TestFile<CR>
