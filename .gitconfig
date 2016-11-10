@@ -6,7 +6,9 @@
 	ir = rebase -i --autosquash @{u}
 	a = add
 	c = commit
-	s = status
+	s = status --short
+	please = push --force-with-lease
+	cam = commit --amend --no-edit
 	rh = reset HEAD
 	cob = checkout -b
 	co = checkout
