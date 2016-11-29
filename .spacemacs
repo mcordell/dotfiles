@@ -277,6 +277,7 @@ you should place your code here."
   (add-hook 'web-mode-hook (lambda () (ember-mode t)))
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
+  (setq org-tag-alist '(("in_progress" . ?i) ("easy" . ?e) ("confirm" . ?c) ("hard" . ?h)))
   (spacemacs|defvar-company-backends ruby-mode)
   )
 
