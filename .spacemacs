@@ -304,18 +304,31 @@ you should place your code here."
       "* TODO %?
  %i
  %a")
-     ("d" "Tear downs")
-     ("dn" "nat tear down entry" item
-      (file+olp "/Users/michael/org/people.org" "Nat" "Tear downs")
-      "- %t %?
-  ")
      ("n" "note" entry
       (file "~/org/notes.org")
       "* %? :NOTE:
 
 %U
 %a
-"))))
+")
+     ("r" "review" entry
+      (file+headline "~/org/qcentrix.org" "Reviews")
+      "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
+     ("m" "morning" entry
+      (file+datetree "~/org/journal.org")
+      "* Morning :MORNING:
+What do you want to learn today?
+%?
+")
+     ("e" "evening" entry
+      (file+datetree "~/org/journal.org")
+      "* Evening :EVENING:
+** What did you learn today?
+       %?"))))
+ '(org-enforce-todo-dependencies t)
+ '(package-selected-packages
+   (quote
+    (powerline rake inflections pcre2el spinner multiple-cursors skewer-mode dash-at-point ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-elixir neotree move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode ember-mode elisp-slime-nav dumb-jump company-web company-tern company-statistics company-go column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
