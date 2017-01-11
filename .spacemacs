@@ -260,6 +260,7 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (inf-ruby-switch-setup)
   (global-hl-line-mode -1)
   (global-linum-mode)
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
@@ -279,6 +280,7 @@ you should place your code here."
   (setq-default js-indent-level 2)
   (setq org-tag-alist '(("in_progress" . ?i) ("easy" . ?e) ("confirm" . ?c) ("hard" . ?h)))
   (spacemacs|defvar-company-backends ruby-mode)
+  (add-hook 'ruby-mode-hook 'yard-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
