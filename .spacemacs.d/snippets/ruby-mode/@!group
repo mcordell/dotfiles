@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!group ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!gro
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!group ${1:DESCRIPTION}
+$0

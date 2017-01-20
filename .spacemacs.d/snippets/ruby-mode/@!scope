@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!scope ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!sco
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!scope ${1:$$(yas-choose-value '("class" "instance"))}
+$0

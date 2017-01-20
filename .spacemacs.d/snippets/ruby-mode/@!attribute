@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!attribute [...] ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!att
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!attribute [${1:$$(yas-choose-value '("rw" "r" "w"))}] ${2:NAME}
+$0

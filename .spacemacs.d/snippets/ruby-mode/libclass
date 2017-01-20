@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: libclass
+# key: libclass
+# --
+# frozen_string_literal: true
+
+module `(name-space buffer-file-name)`
+  class `(class-name buffer-file-name)`
+
+  end
+end

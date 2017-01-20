@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!macro [...] ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!mac
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!macro ${1:$$(yas-choose-value '("attach" "new"))} ${2:NAME}
+$0

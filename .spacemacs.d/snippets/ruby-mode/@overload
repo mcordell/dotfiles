@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @overload ...(...)
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @ove
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@overload ${1:SIGNATURE}(${2:PARAMETERS})
+$0

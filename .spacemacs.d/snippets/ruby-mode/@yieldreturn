@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @yieldreturn [...] ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @yldret
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@yieldreturn [${1:TYPES}] ${2:DESCRIPTION}
+$0

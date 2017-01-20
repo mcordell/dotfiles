@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: each
+# key: each
+# expand-env : ((yas-indent-line 'auto) (yas-also-auto-indent-first-line t))
+# --
+each do |$1|
+  $0
+end

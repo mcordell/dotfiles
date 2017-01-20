@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @note ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @not
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@note ${1:DESCRIPTION}
+$0

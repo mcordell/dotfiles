@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!parse [...] ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!par
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!parse [${1:LANGUAGE}] ${2:CODE}
+$0

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: @!visibility ...
+# expand-env: ((yas-indent-line 'auto) (yas-also-auto-indent-first-line 't))
+# key: @!vis
+# group: YARD
+# condition: (string-match "^\s*#"  (thing-at-point 'line))
+# --
+@!visibility ${1:$$(yas-choose-value '("public" "private" "protected"))}
+$0
