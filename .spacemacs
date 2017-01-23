@@ -267,6 +267,26 @@ you should place your code here."
   (setq org-refile-targets '((nil :maxlevel . 9)))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (global-set-key (kbd "TAB") 'hippie-expand)
+
+  ;; disable lockfiles
+  ;; see http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html
+  (setq create-lockfiles nil)
+
+  ;; store all backup files in the tmp dir
+  ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Backup-Names.html
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+
+  ;; store all autosave files in the tmp dir
+  ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save-Files.html
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t)
+
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
   (spacemacs/set-leader-keys "oq" (lambda () (interactive) (find-file
                                                             "~/org/qcentrix.org")))
