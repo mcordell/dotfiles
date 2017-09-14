@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: sprint
+# key: sprint
+# --
+** Sprint ${1:number} <2017-$2-$3> - <2017-$2-$4>
+
+*** Registries
+
+**** Matt
+**** Alyssa
+**** Bijal
+
+*** Client Services
+
+**** Vince
+
+*** Integration
+
+**** Michael
+**** Justin
+**** Ian
