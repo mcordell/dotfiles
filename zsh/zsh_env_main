@@ -1,0 +1,63 @@
+export BROWSER='open'
+export PAGER='less'
+
+#
+# Language
+#
+
+if [[ -z "$LANG" ]]; then
+    export LANG='en_US.UTF-8'
+fi
+
+#
+# Paths
+#
+path=(
+    /usr/local/{bin,sbin}
+    $path
+)
+
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+#
+# Temporary Files
+#
+if [[ ! -d "$TMPDIR" ]]; then
+    export TMPDIR="/tmp/$LOGNAME"
+    mkdir -p -m 700 "$TMPDIR"
+fi
+
+TMPPREFIX="${TMPDIR%/}/zsh"
+
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby 2.4.2
+
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:/Users/michael/go/bin
+export GOPATH=$(go env GOPATH)
+
+if [ -d "$HOME/Library/Python/2.7/bin" ]; then
+    PATH="$HOME/Library/Python/2.7/bin:$PATH"
+fi
+
+# Customize to your needs...
+
+# Set the default Less options.
+# Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+# Remove -X and -F (exit if the content fits on one screen) to enable it.
+export LESS='-F -g -i -M -R -S -w -X -z-4'
+
+# Set the Less input preprocessor.
+# Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
+if (( $#commands[(i)lesspipe(|.sh)] )); then
+  export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+
+eval "$(fasd --init auto)"
+
+# Editors
+DEFAULT_USER='michael'
+export EDITOR='nvim'
+export BUNDLER_EDITOR='nvim'
+export VISUAL='nvim'
+
