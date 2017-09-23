@@ -1,0 +1,49 @@
+#
+# Defines environment variables.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+# Ensure that a non-login, non-interactive shell has a defined environment.
+
+export BROWSER='open'
+export PAGER='less'
+
+#
+# Language
+#
+
+if [[ -z "$LANG" ]]; then
+    export LANG='en_US.UTF-8'
+fi
+
+#
+# Paths
+#
+path=(
+    /usr/local/{bin,sbin}
+    $path
+)
+
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path
+#
+# Temporary Files
+#
+if [[ ! -d "$TMPDIR" ]]; then
+    export TMPDIR="/tmp/$LOGNAME"
+    mkdir -p -m 700 "$TMPDIR"
+fi
+
+TMPPREFIX="${TMPDIR%/}/zsh"
+
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby 2.4.2
+
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:/Users/michael/go/bin
+export GOPATH=$(go env GOPATH)
+
+if [ -d "$HOME/Library/Python/2.7/bin" ]; then
+    PATH="$HOME/Library/Python/2.7/bin:$PATH"
+fi
