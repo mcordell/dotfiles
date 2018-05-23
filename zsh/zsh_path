@@ -1,0 +1,25 @@
+#
+# Paths
+#
+path=(
+    /usr/local/{bin,sbin}
+    $path
+)
+
+export PATH=$PATH:/usr/local/opt/go/libexec/bin:/Users/michael/go/bin
+export GOPATH=$(go env GOPATH):/Users/michael/projects/go
+
+PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+#if [ -d "$HOME/Library/Python/2.7/bin" ]; then
+#    PATH="$HOME/Library/Python/2.7/bin:$PATH"
+#fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/michael/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/michael/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/michael/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/michael/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Ensure path arrays do not contain duplicates.
+typeset -gU cdpath fpath mailpath path

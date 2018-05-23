@@ -1,5 +1,9 @@
+export DOTFILES_DIR=$HOME/.dotfiles
+
 export BROWSER='open'
 export PAGER='less'
+
+source $DOTFILES_DIR"/zsh/zsh_path"
 
 #
 # Language
@@ -10,16 +14,6 @@ if [[ -z "$LANG" ]]; then
 fi
 
 #
-# Paths
-#
-path=(
-    /usr/local/{bin,sbin}
-    $path
-)
-
-# Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
-#
 # Temporary Files
 #
 if [[ ! -d "$TMPDIR" ]]; then
@@ -29,19 +23,22 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-chruby 2.4.2
 
-export PATH=$PATH:/usr/local/opt/go/libexec/bin:/Users/michael/go/bin
-export GOPATH=$(go env GOPATH)
+# Editors
+export DEFAULT_USER='michael'
+export EDITOR='nvim'
+export BUNDLER_EDITOR='nvim'
+export VISUAL='nvim'
 
-if [ -d "$HOME/Library/Python/2.7/bin" ]; then
-    PATH="$HOME/Library/Python/2.7/bin:$PATH"
-fi
+source $DOTFILES_DIR"/zsh/zsh_aliases"
 
-# Customize to your needs...
+# Programs
 
+# fasd
+eval "$(fasd --init auto)"
+
+# Less
+#
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
 # Remove -X and -F (exit if the content fits on one screen) to enable it.
@@ -53,11 +50,5 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-eval "$(fasd --init auto)"
-
-# Editors
-DEFAULT_USER='michael'
-export EDITOR='nvim'
-export BUNDLER_EDITOR='nvim'
-export VISUAL='nvim'
-
+# Ruby
+source $DOTFILES_DIR"/zsh/zsh_ruby"

@@ -1,3 +1,2 @@
-export $DOTFILES_DIR = $HOME/.dotfiles
 
-source $DOTFILES_DIR"/zsh_aliases"
+source $DOTFILES_DIR"/zsh/zsh_aliases"
