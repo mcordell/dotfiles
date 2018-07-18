@@ -17,6 +17,36 @@ hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", function()
   win:setFrame(f)
 end)
 
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+    local half = max.h / 2
+    f.w = max.w
+    f.h = half
+    win:setFrame(f, 0)
+
+    f.x = max.x
+    f.y = max.y
+    win:setFrame(f)
+end)
+
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "M", function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+    local half = max.h / 2
+    f.w = max.w
+    f.h = half
+    win:setFrame(f, 0)
+
+    f.x = max.x
+    f.y = max.y + half
+    win:setFrame(f)
+end)
+
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "K", function()
   hs.window.focusedWindow():maximize(0)
 end)
@@ -105,15 +135,6 @@ hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "S", function()
     moveToMainFocus(getApp("Slack"))
 end)
 
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", function()
-    local iterm = getApp("iTerm2")
-    iterm:mainWindow():focus()
-    iterm:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, 1, 1))
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "M", function()
-    moveToMainFocus(getApp("Messages"))
-end)
 
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "D", function()
     splitMainFocus(getApp("Google Chrome"), getApp("Emacs"))
