@@ -9,3 +9,5 @@ dump.rdb
 codeception.yml
 .projections.json
 .dir-locals.el
+zeus.json
+custom_plan.rb
