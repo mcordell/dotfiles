@@ -85,7 +85,10 @@ def transform_namespace_exceptions(item):
     'Ncdr': 'NCDR',
     'CathPci': 'CathPCI',
     'Xml': 'XML',
-	'Sts': 'STS'
+	'Sts': 'STS',
+	'Hud': 'HUD',
+    'Cda': 'CDA',
+    'Rtd': 'RTD',
   }
 
     for exception, new in exceptions.items():
@@ -105,6 +108,7 @@ for part in path_parts:
     module_parts.append(transform_namespace_exceptions(humanized))
 module_string = '::'.join(module_parts)
 `# frozen_string_literal: true
+
 module `!p snip.rv = module_string `
   class `!p snip.rv = class_name`
 
