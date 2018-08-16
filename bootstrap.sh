@@ -2,8 +2,10 @@
 SYSTEM=`uname`
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
+
 popd > /dev/null
 echo $SYSTEM
+
 function join { local IFS="$1"; shift; echo "$*"; }
 case $SYSTEM in
 	Darwin*)
