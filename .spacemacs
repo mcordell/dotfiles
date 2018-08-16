@@ -40,6 +40,7 @@ This function should only modify configuration layer settings."
      lua
      sql
      yaml
+     docker
      ;;(go :variables go-use-gometalinter t)
      (go :variables go-packages-function 'go-packages-go-list)
      ;; ----------------------------------------------------------------
@@ -74,7 +75,7 @@ This function should only modify configuration layer settings."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(ember-mode markdown-preview-eww org-jira yard-mode)
+   dotspacemacs-additional-packages '(markdown-preview-eww org-jira yard-mode vue-mode add-node-modules-path)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -175,7 +176,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(gruvbox
+   dotspacemacs-themes '(
+                         gruvbox
                          spacemacs-dark
                          spacemacs-light
                          solarized-light
@@ -183,7 +185,6 @@ values."
                          leuven
                          monokai
                          zenburn)
-
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
    ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
@@ -370,6 +371,14 @@ before packages are loaded. If you are unsure, you should try in setting them in
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   )
 
+(defun eslint-fix ()
+  "Invoke 'eslint' on current file"
+  (interactive)
+  (compilation-start
+   (concat "eslint --fix "
+           (buffer-file-name (current-buffer))))
+  )
+
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
@@ -377,54 +386,58 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (buffer-file-name (current-buffer))
+  (spacemacs/declare-prefix-for-mode 'js2-mode "mrf" "fix")
+  (spacemacs/set-leader-keys-for-major-mode 'js2-mode "f" 'eslint-fix)
   (inf-ruby-switch-setup)
   (global-hl-line-mode -1)
   (global-linum-mode)
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
+  ;;(set-face-background 'mmm-default-submode-face nil)
   (setq org-refile-targets '((nil :maxlevel . 9)))
   (setq jiralib-url "https://qcentrix.atlassian.net")
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (global-set-key (kbd "TAB") 'hippie-expand)
 
- (flycheck-define-checker custom-eslint
-  "A Javascript syntax and style checker using eslint.
-See URL `http://eslint.org/'."
-  :command ("eslint" "--format=checkstyle"
-            (option-list "--rulesdir" flycheck-eslint-rules-directories)
-            "--stdin" "--stdin-filename" source-original)
-  :standard-input t
-  :default-directory (lambda () (locate-dominating-file default-directory "package.json"))
-  :error-parser flycheck-parse-checkstyle
-;;  :error-filter
-;;  (lambda (errors)
-;;    (seq-do (lambda (err)
-;;              ;; Parse error ID from the error message
-;;              (setf (flycheck-error-message err)
-;;                    (replace-regexp-in-string
-;;                     (rx " ("
-;;                         (group (one-or-more (not (any ")"))))
-;;                         ")" string-end)
-;;                     (lambda (s)
-;;                       (setf (flycheck-error-id err)
-;;                             (match-string 1 s))
-;;                       "")
-;;                     (flycheck-error-message err))))
-;;            (flycheck-sanitize-errors errors))
-;;    errors)
-
-  :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode)
-  :next-checkers ((warning . javascript-jscs))
-  :verify
-  (lambda (_)
-    (let* ((default-directory
-             (locate-dominating-file default-directory "package.json"))
-           (have-config (flycheck-eslint-config-exists-p)))
-      (list
-       (flycheck-verification-result-new
-        :label "config file"
-        :message (if have-config "found" "missing or incorrect")
-        :face (if have-config 'success '(bold error)))))))
-  (add-to-list 'flycheck-checkers 'custom-eslint)
+;; (flycheck-define-checker custom-eslint
+;;  "A Javascript syntax and style checker using eslint.
+;;See URL `http://eslint.org/'."
+;;  :command ("eslint" "--format=checkstyle"
+;;            (option-list "--rulesdir" flycheck-eslint-rules-directories)
+;;            "--stdin" "--stdin-filename" source-original)
+;;  :standard-input t
+;;  :default-directory (lambda () (locate-dominating-file default-directory "package.json"))
+;;  :error-parser flycheck-parse-checkstyle
+;;;;  :error-filter
+;;;;  (lambda (errors)
+;;;;    (seq-do (lambda (err)
+;;;;              ;; Parse error ID from the error message
+;;;;              (setf (flycheck-error-message err)
+;;;;                    (replace-regexp-in-string
+;;;;                     (rx " ("
+;;;;                         (group (one-or-more (not (any ")"))))
+;;;;                         ")" string-end)
+;;;;                     (lambda (s)
+;;;;                       (setf (flycheck-error-id err)
+;;;;                             (match-string 1 s))
+;;;;                       "")
+;;;;                     (flycheck-error-message err))))
+;;;;            (flycheck-sanitize-errors errors))
+;;;;    errors)
+;;
+;;  :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode)
+;;  :next-checkers ((warning . javascript-jscs))
+;;  :verify
+;;  (lambda (_)
+;;    (let* ((default-directory
+;;             (locate-dominating-file default-directory "package.json"))
+;;           (have-config (flycheck-eslint-config-exists-p)))
+;;      (list
+;;       (flycheck-verification-result-new
+;;        :label "config file"
+;;        :message (if have-config "found" "missing or incorrect")
+;;        :face (if have-config 'success '(bold error)))))))
+;;  (add-to-list 'flycheck-checkers 'custom-eslint)
 
   ;; disable lockfiles
   ;; see http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html
@@ -452,17 +465,11 @@ See URL `http://eslint.org/'."
   (spacemacs/set-leader-keys "ot" (lambda () (interactive) (ember-open-template)))
   (auto-fill-mode t)
   (turn-on-fci-mode)
-  (add-hook 'js-mode-hook (lambda () (ember-mode t)))
-  (add-hook 'web-mode-hook (lambda () (ember-mode t)))
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
   (setq projectile-enable-caching t)
   (setq shell-file-name "/bin/sh")
-  (eval-after-load 'js-mode
-    '(add-hook 'js-mode-hook #'add-node-modules-path))
 
-  (eval-after-load 'js2-mode
-    '(add-hook 'js2-mode-hook #'add-node-modules-path))
   (setq org-tag-alist '(("in_progress" . ?i) ("easy" . ?e) ("confirm" . ?c) ("hard" . ?h)))
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
@@ -558,7 +565,7 @@ What do you want to learn today?
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "#282828" :foreground "#fdf4c1"))))
+;; '(default ((t (:background "#282828" :foreground "#fdf4c1"))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
 (defun dotspacemacs/emacs-custom-settings ()
@@ -621,7 +628,7 @@ What do you want to learn today?
  '(org-startup-truncated t)
  '(package-selected-packages
    (quote
-    (yasnippet-snippets solarized-theme ruby-hash-syntax overseer org-brain monokai-theme go-tag evil-org editorconfig counsel-projectile counsel swiper ivy browse-at-remote gitignore-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic epl org-mime org-category-capture bind-key dash-functional goto-chg undo-tree ghub let-alist gh marshal ht s toml-mode racer flycheck-rust cargo rust-mode add-node-modules-path yard-mode sql-indent markdown-preview-eww flycheck-gometalinter winum fuzzy flycheck-credo org diminish packed auto-complete avy yasnippet inf-ruby evil flyspell-correct go-mode simple-httpd async log4e f dash lua-mode csv-mode org-jira yaml-mode tern iedit smartparens highlight elixir-mode flycheck company request helm helm-core pcache markdown-mode alert projectile magit magit-popup git-commit with-editor hydra haml-mode js2-mode powerline rake inflections pcre2el spinner multiple-cursors skewer-mode dash-at-point ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-elixir neotree move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode ember-mode elisp-slime-nav dumb-jump company-web company-tern company-statistics company-go column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (autothemer yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic epl org-mime org-category-capture bind-key dash-functional goto-chg undo-tree ghub let-alist gh marshal ht s toml-mode racer flycheck-rust cargo rust-mode add-node-modules-path yard-mode sql-indent markdown-preview-eww flycheck-gometalinter winum fuzzy flycheck-credo org diminish packed auto-complete avy yasnippet inf-ruby evil flyspell-correct go-mode simple-httpd async log4e f dash lua-mode csv-mode org-jira yaml-mode tern iedit smartparens highlight elixir-mode flycheck company request helm helm-core pcache markdown-mode alert projectile magit magit-popup git-commit with-editor hydra haml-mode js2-mode powerline rake inflections pcre2el spinner multiple-cursors skewer-mode dash-at-point ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-elixir neotree move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode ember-mode elisp-slime-nav dumb-jump company-web company-tern company-statistics company-go column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
@@ -632,7 +639,6 @@ What do you want to learn today?
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "#282828" :foreground "#fdf4c1"))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
 )
