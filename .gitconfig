@@ -27,6 +27,7 @@
 [core]
 	editor = nvim
 	excludesfile = /Users/michael/.gitignore_global
+	autocrlf = input
 [push]
 	default = simple
 [github]
