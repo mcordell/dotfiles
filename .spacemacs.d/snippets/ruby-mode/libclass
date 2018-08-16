@@ -4,7 +4,7 @@
 # --
 # frozen_string_literal: true
 
-module `(name-space buffer-file-name)`
+module `(buffer-file-name)`
   class `(class-name buffer-file-name)`
 
   end

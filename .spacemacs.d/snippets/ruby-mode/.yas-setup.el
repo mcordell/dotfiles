@@ -52,6 +52,14 @@
   (car (last (all-namespace-parts filename)))
   )
 
+(defun spec-name-space (filename)
+  (string-join (cdr (butlast (all-namespace-parts filename))) "::")
+  )
+
+(defun spec-class-name (filename)
+  (replace-regexp-in-string "Spec" "" (class-name filename))
+  )
+
 (defun all-namespace-parts (filename)
   (camelize-list
    (split-string
@@ -72,5 +80,5 @@
   )
 
 (defun remove-project-directory (filepath)
-  (replace-regexp-in-string (projectile-root-top-down default-directory) "" filepath)
+  (replace-regexp-in-string "/proj/" "" filepath)
   )
