@@ -1,5 +1,11 @@
-RUBIES+=(~/.rbenv/versions/*)
-RUBIES+=(~/.rubies/*)
+if [ -d "$HOME/.rbenv/versions" ]; then
+	RUBIES+=(~/.rbenv/versions/*)
+fi
+
+if [ -d "$HOME/.rubies" ]; then
+	RUBIES+=(~/.rubies/*)
+fi
+
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby 2.4.2
+chruby 2.5.1
