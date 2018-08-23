@@ -1,6 +1,6 @@
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "W", function()
-  hs.alert.show("Hello World!")
-end)
+local highlightWindow = require('ext.drawing').highlightWindow
+local template        = require('ext.template')
+local log             = hs.logger.new('application', 'debug')
 
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", function()
   local win = hs.window.focusedWindow()
