@@ -283,7 +283,6 @@ nmap <silent> <leader>l :TestLast<CR>
 set backspace=indent,eol,start
 runtime macros/matchit.vim
 
-let g:neoterm_position = 'vertical'
 let g:neoterm_automap_keys = ',tt'
 
 " run set test lib
