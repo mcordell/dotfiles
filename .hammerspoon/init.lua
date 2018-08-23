@@ -1,91 +1,49 @@
 local highlightWindow = require('ext.drawing').highlightWindow
 local template        = require('ext.template')
 local log             = hs.logger.new('application', 'debug')
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-  local half = max.w / 2
-  f.w = half
-  f.h = max.h
-  win:setFrame(f, 0)
-
-  f.x = max.x
-  f.y = max.y
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-    local half = max.h / 2
-    f.w = max.w
-    f.h = half
-    win:setFrame(f, 0)
-
-    f.x = max.x
-    f.y = max.y
-    win:setFrame(f)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "M", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-    local half = max.h / 2
-    f.w = max.w
-    f.h = half
-    win:setFrame(f, 0)
-
-    f.x = max.x
-    f.y = max.y + half
-    win:setFrame(f)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "K", function()
-  hs.window.focusedWindow():maximize(0)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", function()
-  local win = hs.window.focusedWindow()
-  local target = win:screen():previous()
-  win:moveToScreen(target, false, false, 0)
-  win:maximize(0)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", function()
-  local win = hs.window.focusedWindow()
-  local target = win:screen():next()
-  win:moveToScreen(target, false, false, 0)
-  win:maximize(0)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "L", function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-  local half = max.w / 2
-
-  f.w = half
-  f.h = max.h
-  win:setFrame(f, 0)
-
-  f.x = max.x + half
-  f.y = max.y
-  win:setFrame(f)
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
+local windowTools     = require('ext.window')
+local reloadConfig    = function()
   hs.reload()
-end)
-hs.alert.show("Config loaded")
+end
+local appLauncher     = require('ext.appLauncher')
+local getApp          = function (appName)
+  return hs.appfinder.appFromName(appName)
+end
 
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", windowsTools.splitLeft)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", windowsTools.splitUp)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "L", windowTools.splitRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "M", windowsTools.splitDown)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "K", windowTools.maximize)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", windowTools.moveLeft)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", reloadConfig)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, ".", windowTools.moveToLowerRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "F", function()
+    windowTool.splitMainFocus(getApp("Google Chrome"), getApp("iTerm2"))
+end)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, ".", windowTools.moveToLowerRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "S", function()
+    moveToMainFocus(getApp("Slack"))
+end)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "D", function()
+    windowTools.splitMainFocus(getApp("Google Chrome"), getApp("Emacs"))
+end)
+
+hs.hotkey.bind({}, "F13", function()
+    appLauncher.smartLaunchOrFocus("Spotify")
+end
+)
+
+hs.hotkey.bind({}, "F14", function()
+    appLauncher.smartLaunchOrFocus("Google Chrome")
+end
+)
+
+hs.hotkey.bind({}, "F15", function()
+    appLauncher.smartLaunchOrFocus("Emacs")
+end
+)
 
 leftScreen = nil
 rightScreen = nil
@@ -102,10 +60,6 @@ for screen, position in pairs(hs.screen.screenPositions()) do
     rightScreen = leftScreen
     leftScreen = screen
   end
-end
-
-function getApp(appName)
-  return hs.appfinder.appFromName(appName)
 end
 
 rightBottom = hs.geometry.unitrect(0.5, 0.5, 0.5, 0.5)
@@ -131,44 +85,4 @@ hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "N", function()
   hs.layout.apply(layout1)
 end)
 
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "S", function()
-    moveToMainFocus(getApp("Slack"))
-end)
-
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "D", function()
-    splitMainFocus(getApp("Google Chrome"), getApp("Emacs"))
-end)
-
-hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "F", function()
-    splitMainFocus(getApp("Google Chrome"), getApp("iTerm2"))
-end)
-
-function moveToMainFocus(app)
-  app:mainWindow():focus()
-  app:mainWindow():moveToScreen(leftScreen, false, false, 0)
-  app:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, 1, 1))
-end
-
-function splitMainFocus(leftApp, rightApp)
-  leftApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
-  rightApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
-  leftApp:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, .5, 1))
-  rightApp:mainWindow():moveToUnit(hs.geometry.unitrect(.5, 0, .5, 1))
-  leftApp:mainWindow():focus()
-  rightApp:mainWindow():raise()
-end
-
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, ".", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.w = max.w / 2
-    f.h = max.h / 2
-    f.x = max.x + f.w
-    f.y = max.y + f.h
-
-    win:setFrame(f, 0)
-end)
+hs.alert.show("Config loaded")
