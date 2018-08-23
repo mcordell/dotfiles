@@ -25,7 +25,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
-"Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 Plug 'benekastah/neomake'
 Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
@@ -36,6 +36,7 @@ Plug 'kassio/neoterm'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-rhubarb'
 
 Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
@@ -181,8 +182,8 @@ let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
 
 "Neomake syntax checking
 let g:neomake_javascript_enabled_makers = ['jshint', 'jscs']
-"let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
-"let g:neomake_rspec_enabled_makers = ['mri', 'rubocop']
+let g:neomake_ruby_enabled_makers = ['mri', 'rubocop']
+let g:neomake_rspec_enabled_makers = ['mri', 'rubocop']
 
 let g:syntastic_always_populate_loc_list = 1
 if !exists("g:fugitivediff")
@@ -243,9 +244,9 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:snips_author = "Michael Cordell <surpher@gmail.com>"
 
-"autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-"autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-"autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 
 "Display stuff
