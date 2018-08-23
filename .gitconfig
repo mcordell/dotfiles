@@ -36,11 +36,11 @@
 	tool = fugitive
 [mergetool "fugitive"]
 	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiff\" \"$MERGED\"
-[init]
-	templatedir = ~/.git_template
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
 [rerere]
 	enabled = true
+[commit]
+	gpgsign = true
