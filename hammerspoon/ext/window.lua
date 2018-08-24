@@ -12,7 +12,7 @@ module.moveLeft = function()
   win:maximize(0)
 end
 
-module.moveLeft = function()
+module.moveRight = function()
   local win = hs.window.focusedWindow()
   local target = win:screen():next()
   win:moveToScreen(target, false, false, 0)
@@ -95,7 +95,7 @@ module.moveToLowerRight = function()
     win:setFrame(f, 0)
 end
 
-module.splitMainFocus = function splitMainFocus(leftApp, rightApp)
+module.splitMainFocus = function (leftApp, rightApp)
   leftApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
   rightApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
   leftApp:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, .5, 1))
