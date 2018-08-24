@@ -85,4 +85,6 @@ hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "N", function()
   hs.layout.apply(layout1)
 end)
 
+hs.urlevent.bind("flopmon", require('ext.flipFlopMonitors'))
+
 hs.alert.show("Config loaded")
