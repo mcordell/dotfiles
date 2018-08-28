@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ghref
+# key: ghref
+# --
+{% github_table ruby `(link-ref)` start=`(line-start)` end=`(line-end)` %}

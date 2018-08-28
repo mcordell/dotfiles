@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: t
+# key: x
+# --
+begin
+  `yasnippet/selected-text`
+rescue
+  require 'pry'; binding.pry
+end

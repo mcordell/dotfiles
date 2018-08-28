@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: sfunc
+# key: sfunc
+# --
+// $3 $4
+func (${1:struct name} *${2:struct}) ${3:name}(${4:args}) $5 {
+  $0
+}

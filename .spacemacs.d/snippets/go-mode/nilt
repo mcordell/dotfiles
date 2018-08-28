@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: nil test
+# key: nilt
+# --
+if err != nil {
+  t.Fatalf("Error $1 %s", err)
+}

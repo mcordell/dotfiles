@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: subject
+# key: subj
+# --
+subject { instance.$1 }

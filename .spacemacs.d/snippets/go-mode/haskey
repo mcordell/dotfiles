@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: haskey
+# key: haskey
+# --
+if $1, ok := $2[$3]; ok {
+    $0
+}

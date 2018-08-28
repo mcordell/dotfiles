@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: it is expected
+# key: ise
+# --
+it { is_expected.to $2 }

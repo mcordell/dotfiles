@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: oneonone
+# key: o3
+# --
+* Meeting <`(format-time-string "%Y-%m-%d %a")`>
+** Personal
+** Team Member Update
+** Manager Update
+** Future/Follow Up

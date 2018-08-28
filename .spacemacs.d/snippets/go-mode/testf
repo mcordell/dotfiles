@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name : testf
-# key : testf
-# contributor: Michael Cordell <surpher@gmail.com>
-# --
-func Test$1(t *testing.T) {
-    $2
-}
