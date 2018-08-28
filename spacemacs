@@ -36,8 +36,8 @@ This function should only modify configuration layer settings."
    '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
+     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+     ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      (auto-completion :variables auto-completion-enable-snippets-in-popup t
                                  auto-completion-tab-key-behavior nil)
@@ -56,6 +56,7 @@ This function should only modify configuration layer settings."
      javascript
      lua
      (markdown :variables markdown-live-preview-engine 'markdown-preview-eww)
+     neotree
      nginx
      (org :variables org-enable-github-support t org-want-todo-bindings t)
 	 osx
@@ -454,12 +455,11 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-pretty-docs nil))
 
 (defun dotspacemacs/user-init ()
-  "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
+  "Initialization for user code:
+This function is called immediately after `dotspacemacs/init', before layer
+configuration.
+It is mostly for variables that should be set before packages are loaded.
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
 (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   )
@@ -473,12 +473,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
   (buffer-file-name (current-buffer))
   (spacemacs/declare-prefix-for-mode 'js2-mode "mrf" "fix")
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode "f" 'eslint-fix)
