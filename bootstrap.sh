@@ -143,6 +143,18 @@ function installTldr () {
 		;;
 	esac
 }
+
+function installJq () {
+	case $SYSTEM in
+		Darwin*)
+			brew install jq
+	    ;;
+		Linux*)
+			sudo apt-get install jq
+		;;
+	esac
+}
+
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -153,6 +165,7 @@ installFzf
 installNeovim
 installRipgrep
 installTldr
+installJq
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
