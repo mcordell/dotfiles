@@ -52,6 +52,20 @@ packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 
 eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
 
+function installFancyDiff () {
+	case $SYSTEM in
+		Darwin*)
+			brew install diff-so-fancy
+	    ;;
+		Linux*)
+			echo "Trying to install fancy-diff to /usr/local/bin make sure thats in the path" >> postinstall.log
+			curl -o /usr/local/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/63568e814f7e71b01f137eeb82792efe6ea6a0b9/third_party/build_fatpack/diff-so-fancy
+			chmod +x /usr/local/bin/diff-so-fancy
+		;;
+	esac
+}
+
+installFancyDiff
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
