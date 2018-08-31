@@ -2,55 +2,72 @@
 SYSTEM=`uname`
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
-
 popd > /dev/null
-echo $SYSTEM
 
 function join { local IFS="$1"; shift; echo "$*"; }
 
-case $SYSTEM in
-	Darwin*)
-		echo 'Allo osx'
-		if [ -z `which brew | grep -v 'not found'` ]
-		then
-			echo 'getting brew'
-			ruby \
-			-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
-			</dev/null
-		else
-			echo 'weve got brew'
-		fi
+function installBrew () {
+	if [ -z `which brew | grep -v 'not found'` ]
+	then
+		echo 'getting brew'
+		ruby \
+		-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
+		</dev/null
+	else
+		echo 'We already have brew'
+	fi
+}
 
+function setupPackageManager () {
+	case $SYSTEM in
+		Darwin*)
+		echo 'Allo osx'
+		installBrew
 		PKG_MANAGER='brew'
 		brew install caskroom/cask/brew-cask
 		brew tap caskroom/versions
-		brew install neovim/neovim/neovim
 		brew update
 		brew upgrade
-		specific_packages=('python' 'ripgrep')
 		sudo easy_install pip
-		sudo pip install neovim
-		casks=('google-chrome' 'iterm2-nightly' 'alfred')
-		brew cask install `join ' ' "${casks[@]}"`
 ;;
 		Linux*)
 		echo 'Allo linux'
 		PKG_MANAGER='sudo apt-get'
-		specific_packages=()
 		sudo apt-get install -y software-properties-common
 		sudo add-apt-repository ppa:neovim-ppa/unstable
 		sudo apt-get update
-		sudo apt-get install -y neovim python-pip
-		sudo pip2 install neovim
-		echo "Cant install ripgrep easily: go here: https://github.com/BurntSushi/ripgrep#installation"
 	;;
 esac
+}
 
-general_packages=('git' 'zsh' 'tmux')
+function installEssentials () {
+	general_packages=('zsh' 'tmux' 'git')
 
-packages=( "${general_packages[@]}" "${specific_packages[@]}" )
+	case $SYSTEM in
+		Darwin*)
+			specific_packages=('python' 'reattach-to-user-namespace'
+			'coreutils' 'gnupg' 'pinentry-mac')
+			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
+			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
+	    ;;
+			Linux*)
+			specific_packages=('python-pip')
+			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
+			eval $PKG_MANAGER' install -y '`join ' ' "${packages[@]}"`
+		;;
+	esac
+}
 
-eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
+function installGUIprograms () {
+	case $SYSTEM in
+		Darwin*)
+			casks=('google-chrome' 'iterm2-nightly' 'alfred')
+			brew cask install `join ' ' "${casks[@]}"`
+	    ;;
+		Linux*)
+		;;
+	esac
+}
 
 function installBat () {
 	case $SYSTEM in
@@ -81,9 +98,25 @@ function installFzf () {
 	~/.fzf/install
 }
 
+function installNeovim () {
+	case $SYSTEM in
+		Darwin*)
+			brew install neovim/neovim/neovim
+	    ;;
+		Linux*)
+			sudo apt-get install neovim
+		;;
+	esac
+	sudo pip install neovim
+}
+
+setupPackageManager
+installEssentials
+installGUIprograms
 installBat
 installFzf
 installFancyDiff
+installNeovim
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
