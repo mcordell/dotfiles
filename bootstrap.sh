@@ -7,39 +7,42 @@ popd > /dev/null
 echo $SYSTEM
 
 function join { local IFS="$1"; shift; echo "$*"; }
+
 case $SYSTEM in
 	Darwin*)
 		echo 'Allo osx'
 		if [ -z `which brew | grep -v 'not found'` ]
 		then
-			echo 'getting bre'
+			echo 'getting brew'
 			ruby \
 			-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
 			</dev/null
 		else
-		echo 'weve got brew'
+			echo 'weve got brew'
 		fi
+
 		PKG_MANAGER='brew'
 		brew install caskroom/cask/brew-cask
 		brew tap caskroom/versions
 		brew install neovim/neovim/neovim
 		brew update
 		brew upgrade
-		specific_packages=('the_silver_searcher' 'python')
+		specific_packages=('python' 'ripgrep')
 		sudo easy_install pip
-		sudo pip2 install neovim
-		casks=('karabiner' 'seil' 'google-chrome' 'iterm2-nightly' 'alfred')
+		sudo pip install neovim
+		casks=('google-chrome' 'iterm2-nightly' 'alfred')
 		brew cask install `join ' ' "${casks[@]}"`
 ;;
 		Linux*)
 		echo 'Allo linux'
 		PKG_MANAGER='sudo apt-get'
-		specific_packages=('silversearcher-ag')
+		specific_packages=()
 		sudo apt-get install -y software-properties-common
 		sudo add-apt-repository ppa:neovim-ppa/unstable
 		sudo apt-get update
 		sudo apt-get install -y neovim python-pip
 		sudo pip2 install neovim
+		echo "Cant install ripgrep easily: go here: https://github.com/BurntSushi/ripgrep#installation"
 	;;
 esac
 

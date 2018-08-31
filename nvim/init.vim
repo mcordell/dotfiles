@@ -37,6 +37,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-rhubarb'
+Plug 'jremmen/vim-ripgrep'
 
 Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
@@ -152,7 +153,7 @@ noremap <space>n :NERDTreeToggle <CR>
 noremap <space>gs :Gstatus<CR>
 noremap <space>gc :Gcommit<CR>
 noremap <space>gd :Gdiff<CR>
-noremap <space>s  :Ag --ruby<SPACE>
+noremap <space>s  :Rg <SPACE>
 noremap <space>j  :Test run unit<CR>
 
 vnoremap <C-c> "*y
