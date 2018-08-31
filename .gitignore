@@ -4,3 +4,4 @@ nvim/plugged/
 .DS_Store
 .spacemacs.d/**/.yas-compiled-snippets.el
 .spacemacs.d/**/.yas-setup.elc
+.spacemacs.d/.spacemacs.env
