@@ -52,6 +52,17 @@ packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 
 eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
 
+function installBat () {
+	case $SYSTEM in
+		Darwin*)
+			brew install bat
+	    ;;
+		Linux*)
+			echo "Cant install bat from package manager: go here: https://github.com/sharkdp/bat#on-ubuntu" >> postinstall.log
+		;;
+	esac
+}
+
 function installFancyDiff () {
 	case $SYSTEM in
 		Darwin*)
@@ -70,6 +81,7 @@ function installFzf () {
 	~/.fzf/install
 }
 
+installBat
 installFzf
 installFancyDiff
 # Doing vim stuff

@@ -27,3 +27,7 @@ alias randpw='openssl rand -base64'
 
 #glados
 alias sshGlad='ssh 10.20.30.40'
+
+alias cat='bat'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
