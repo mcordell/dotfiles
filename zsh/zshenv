@@ -2,6 +2,7 @@ export BROWSER='open'
 export PAGER='less'
 SCRIPTPATH=$(readlink $HOME/.zshenv)
 export DOTFILES_DIR=$(dirname -- "$(dirname -- $SCRIPTPATH)")
+export ICLOUD_DIR=$(dirname -- $DOTFILES_DIR)
 
 source $DOTFILES_DIR"/zsh/zsh_path"
 
