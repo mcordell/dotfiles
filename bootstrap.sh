@@ -132,6 +132,17 @@ function installRipgrep () {
 	esac
 	sudo pip install neovim
 }
+
+function installTldr () {
+	case $SYSTEM in
+		Darwin*)
+			brew install tldr
+	    ;;
+		Linux*)
+			sudo pip install tldr
+		;;
+	esac
+}
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -141,6 +152,7 @@ installFd
 installFzf
 installNeovim
 installRipgrep
+installTldr
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
