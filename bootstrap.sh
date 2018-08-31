@@ -121,6 +121,17 @@ function installNeovim () {
 	sudo pip install neovim
 }
 
+function installRipgrep () {
+	case $SYSTEM in
+		Darwin*)
+			brew install ripgrep
+	    ;;
+		Linux*)
+			echo "Cant install ripgrep easily: go here: https://github.com/BurntSushi/ripgrep#installation" >> postinstall.log
+		;;
+	esac
+	sudo pip install neovim
+}
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -129,6 +140,7 @@ installFancyDiff
 installFd
 installFzf
 installNeovim
+installRipgrep
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
