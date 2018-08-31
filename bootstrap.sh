@@ -80,6 +80,17 @@ function installBat () {
 	esac
 }
 
+function installFd () {
+	case $SYSTEM in
+		Darwin*)
+			brew install fd
+	    ;;
+		Linux*)
+			echo "Cant install fd from package manager: go here: https://github.com/sharkdp/fd/#on-ubuntu" >> postinstall.log
+		;;
+	esac
+}
+
 function installFancyDiff () {
 	case $SYSTEM in
 		Darwin*)
@@ -114,8 +125,9 @@ setupPackageManager
 installEssentials
 installGUIprograms
 installBat
-installFzf
 installFancyDiff
+installFd
+installFzf
 installNeovim
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
