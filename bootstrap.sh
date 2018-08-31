@@ -65,6 +65,12 @@ function installFancyDiff () {
 	esac
 }
 
+function installFzf () {
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
+}
+
+installFzf
 installFancyDiff
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
