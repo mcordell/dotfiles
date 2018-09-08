@@ -62,6 +62,7 @@ Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
+Plug 'posva/vim-vue'
 Plug 'jtratner/vim-flavored-markdown'
 
 Plug 'terryma/vim-multiple-cursors'
