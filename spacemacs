@@ -500,7 +500,6 @@ before packages are loaded."
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode "f" 'eslint-fix)
   (inf-ruby-switch-setup)
   (global-hl-line-mode -1)
-  (global-linum-mode)
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
   ;;(set-face-background 'mmm-default-submode-face nil)
   (setq org-refile-targets '((nil :maxlevel . 9)))
