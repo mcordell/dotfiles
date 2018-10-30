@@ -614,9 +614,6 @@ before packages are loaded."
  '(custom-safe-themes
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
- '(org-agenda-files
-   (quote
-    ("~/org/todos.org" "~/Library/Mobile Documents/com~apple~CloudDocs/org/sugo.org" "~/org/qcentrix.org" "~/org/people.org" "~/Library/Mobile Documents/com~apple~CloudDocs/org_files/TODO.org")))
  '(org-capture-templates
    (quote
     (("s" "ruby snippet" entry
@@ -688,9 +685,11 @@ This function is called at the very end of Spacemacs initialization."
  '(custom-safe-themes
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
+ '(helm-ag-base-command "rg --no-heading")
  '(org-agenda-files
    (quote
     ("~/org/todos.org" "~/org/qcentrix.org" "~/Library/Mobile Documents/com~apple~CloudDocs/org_files/TODO.org")))
+ '(org-brain-path "/Users/michael/org")
  '(org-capture-templates
    (quote
     (("s" "ruby snippet" entry
