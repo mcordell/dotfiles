@@ -31,3 +31,7 @@ alias sshGlad='ssh 10.20.30.40'
 alias cat='bat'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
+
+if type nvim >/dev/null 2>&1;then
+	alias vim='nvim'
+fi
