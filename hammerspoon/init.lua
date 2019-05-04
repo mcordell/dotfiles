@@ -9,7 +9,25 @@ local appLauncher     = require('ext.appLauncher')
 local getApp          = function (appName)
   return hs.appfinder.appFromName(appName)
 end
-
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "pad3", windowTools.splitLowerRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "pad9", windowTools.splitUpperRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "pad7", windowTools.splitUpperLeft)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "pad1", windowTools.splitLowerLeft)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "C", function()
+    source = [[
+        tell application "Google Chrome"
+          activate
+          set theURL to URL of active tab of front window
+          set the clipboard to theURL & return
+        end tell
+      ]]
+    hs.osascript.applescript(source)
+end
+)
+hs.hotkey.bind({"cmd", "ctrl"}, "c", function()
+    appLauncher.smartLaunchOrFocus("iTerm2")
+                          end
+)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", windowTools.splitLeft)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", windowTools.splitUp)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "L", windowTools.splitRight)
@@ -20,7 +38,7 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", reloadConfig)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, ".", windowTools.moveToLowerRight)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "F", function()
-    windowTool.splitMainFocus(getApp("Google Chrome"), getApp("iTerm2"))
+    windowTools.splitMainFocus(getApp("Google Chrome"), getApp("iTerm2"))
 end)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, ".", windowTools.moveToLowerRight)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "S", function()
@@ -42,7 +60,7 @@ end
 
 hs.hotkey.bind({}, "F15", function()
     appLauncher.smartLaunchOrFocus("Emacs")
-end
+                          end
 )
 
 leftScreen = nil

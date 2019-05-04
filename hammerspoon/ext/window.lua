@@ -19,6 +19,74 @@ module.moveRight = function()
   win:maximize(0)
 end
 
+module.splitLowerLeft = function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+  local half_h = max.h / 2
+  local half_w = max.w / 2
+
+  f.w = half_w
+  f.h = half_h
+  win:setFrame(f, 0)
+
+  f.x = max.x
+  f.y = max.y + half_h
+  win:setFrame(f)
+end
+
+module.splitUpperLeft = function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+  local half_h = max.h / 2
+  local half_w = max.w / 2
+
+  f.w = half_w
+  f.h = half_h
+  win:setFrame(f, 0)
+
+  f.x = max.x
+  f.y = max.y
+  win:setFrame(f)
+end
+
+module.splitUpperRight = function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+  local half_h = max.h / 2
+  local half_w = max.w / 2
+
+  f.w = half_w
+  f.h = half_h
+  win:setFrame(f, 0)
+
+  f.x = max.x + half_w
+  f.y = max.y
+  win:setFrame(f)
+end
+
+module.splitLowerRight = function()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local screen = win:screen()
+  local max = screen:frame()
+  local half_h = max.h / 2
+  local half_w = max.w / 2
+
+  f.w = half_w
+  f.h = half_h
+  win:setFrame(f, 0)
+
+  f.x = max.x + half_w
+  f.y = max.y + half_h
+  win:setFrame(f)
+end
+
 module.splitLeft = function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
