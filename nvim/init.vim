@@ -1,11 +1,9 @@
 filetype off                  " required
 
-let g:deoplete#enable_at_startup = 1
 
 "hide buffers with unwritten changes
 set hidden
 let mapleader=","
-let g:deoplete#enable_at_startup = 1
 
 set nohlsearch
 
@@ -43,7 +41,6 @@ Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
 Plug 'mustache/vim-mustache-handlebars'
 "Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
