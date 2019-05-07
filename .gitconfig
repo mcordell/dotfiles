@@ -68,3 +68,7 @@
 	whitespace = red reverse
 [color]
 	ui = true
+[pull]
+	rebase = true
+[rebase]
+	autosquash = true
