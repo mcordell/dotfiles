@@ -61,7 +61,8 @@ function installEssentials () {
 function installGUIprograms () {
 	case $SYSTEM in
 		Darwin*)
-			casks=('google-chrome' 'iterm2-nightly' 'alfred')
+			casks=('google-chrome' 'iterm2-nightly' 'alfred' 'hammerspoon'
+			'karabiner-elements')
 			brew cask install `join ' ' "${casks[@]}"`
 	    ;;
 		Linux*)
@@ -174,14 +175,11 @@ mkdir $HOME/.config
 ln -s $SCRIPTPATH/nvim $HOME/.config/.nvim
 
 # Zsh
-#rm -rf $HOME/.zsh*
 #$SCRIPTPATH/install_zprezto.sh
-ln -s $SCRIPTPATH/.zsh_aliases $HOME/.zsh_aliases
-ln -s $SCRIPTPATH/.zsh_osx $HOME/.zsh_osx
-ln -s $SCRIPTPATH/.zsh_general $HOME/.zsh_general
-echo "source $HOME/.zsh_aliases" >> $HOME/.zshrc
-echo "source $HOME/.zsh_osx" >> $HOME/.zshrc
-echo "source $HOME/.zsh_general" >> $HOME/.zshrc
+ln -s $SCRIPTPATH/.zshrc $HOME/.zshrc
+ln -s $SCRIPTPATH/zsh/zsh_aliases $HOME/.zsh_aliases
+ln -s $SCRIPTPATH/zsh/zshenv $HOME/.zshenv
+ln -s $SCRIPTPATH/zsh/zpreztorc $HOME/.zpreztorc
 
 # Git
 rm -rf $HOME/.gitconfig
