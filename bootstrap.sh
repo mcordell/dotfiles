@@ -46,7 +46,7 @@ function installEssentials () {
 	case $SYSTEM in
 		Darwin*)
 			specific_packages=('python' 'reattach-to-user-namespace'
-			'coreutils' 'gnupg' 'pinentry-mac')
+			'coreutils' 'gnupg' 'pinentry-mac' 'wget' 'ruby-install' 'chruby')
 			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
 	    ;;
@@ -62,7 +62,7 @@ function installGUIprograms () {
 	case $SYSTEM in
 		Darwin*)
 			casks=('google-chrome' 'iterm2-nightly' 'alfred' 'hammerspoon'
-			'karabiner-elements')
+			'karabiner-elements' 'spotify' 'slack')
 			brew cask install `join ' ' "${casks[@]}"`
 	    ;;
 		Linux*)
