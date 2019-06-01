@@ -41,7 +41,7 @@ esac
 }
 
 function installEssentials () {
-	general_packages=('zsh' 'tmux' 'git')
+	general_packages=('zsh' 'tmux' 'git' 'golang' 'fasd' 'pandoc')
 
 	case $SYSTEM in
 		Darwin*)
@@ -61,8 +61,11 @@ function installEssentials () {
 function installGUIprograms () {
 	case $SYSTEM in
 		Darwin*)
+			brew cask tap d12frosted/emacs-plus
+			brew cask install emacs-plus --HEAD
 			casks=('google-chrome' 'iterm2-nightly' 'alfred' 'hammerspoon'
-			'karabiner-elements' 'spotify' 'slack')
+			'karabiner-elements' 'spotify' 'slack' 'notion' 'omnifocus'
+			'airmail' 'viscosity' '')
 			brew cask install `join ' ' "${casks[@]}"`
 	    ;;
 		Linux*)
@@ -167,6 +170,7 @@ installNeovim
 installRipgrep
 installTldr
 installJq
+
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
@@ -188,3 +192,5 @@ ln -s $SCRIPTPATH/.gitignore_global $HOME/.gitignore_global
 
 #Configure neovim
 nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
+
+cat postinstall.log
