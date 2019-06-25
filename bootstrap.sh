@@ -4,6 +4,16 @@ pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
 popd > /dev/null
 
+while true; do
+    read -p "Before continuing has iCloud downloaded all of the dotfiles dir [y/n]?" yn
+    case $yn in
+        [Yy]* ) echo "ok"; break;;
+		[Nn]* ) echo "Download it dummy;"; open "$(dirname "$SCRIPTPATH")"; exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+
 function join { local IFS="$1"; shift; echo "$*"; }
 
 function installBrew () {
