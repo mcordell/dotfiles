@@ -56,7 +56,8 @@ function installEssentials () {
 	case $SYSTEM in
 		Darwin*)
 			specific_packages=('python' 'reattach-to-user-namespace'
-			'coreutils' 'gnupg' 'pinentry-mac' 'wget' 'ruby-install' 'chruby')
+			'coreutils' 'gnupg' 'pinentry-mac' 'wget' 'ruby-install' 'chruby'
+			'fasd' 'golang')
 			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
 	    ;;
@@ -169,6 +170,40 @@ function installJq () {
 	esac
 }
 
+function vimStuff() {
+	# Doing vim stuff
+	rm -rf $HOME/.vim $HOME/.vimrc
+	ln -s "$SCRIPTPATH/.vim" $HOME/.vim
+	ln -s "$SCRIPTPATH/.vimrc" $HOME/.vimrc
+	mkdir $HOME/.config
+	ln -s "$SCRIPTPATH/nvim" $HOME/.config/.nvim
+}
+
+function setupZsh() {
+	ln -s "$SCRIPTPATH/.zshrc" $HOME
+	ln -s "$SCRIPTPATH/zsh/zsh_aliases" "$HOME/.zsh_aliases"
+	ln -s "$SCRIPTPATH/zsh/zshenv" "$HOME/.zshenv"
+	ln -s "$SCRIPTPATH/zsh/zpreztorc" "$HOME/.zpreztorc"
+	"$SCRIPTPATH/install_zprezto.sh"
+}
+
+function setupGit() {
+	rm -rf $HOME/.gitconfig
+	ln -s "$SCRIPTPATH/.gitconfig" $HOME/.gitconfig
+	ln -s "$SCRIPTPATH/.gitignore_global" $HOME/.gitignore_global
+}
+
+function installVisual()  {
+	# clone
+	git clone https://github.com/powerline/fonts.git --depth=1
+	# install
+	cd fonts
+	./install.sh
+	# clean-up a bit
+	cd ..
+	rm -rf fonts
+}
+
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -180,6 +215,8 @@ installNeovim
 installRipgrep
 installTldr
 installJq
+setupZsh
+setupGit
 
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
@@ -204,3 +241,5 @@ ln -s $SCRIPTPATH/.gitignore_global $HOME/.gitignore_global
 nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
 
 cat postinstall.log
+echo "Copy the theme from $SCRIPTPATH/iterm into iterm"
+echo "Install ruby of choice with: ruby-install ruby #.#.#"
