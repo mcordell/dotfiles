@@ -69,7 +69,9 @@ rightScreen = nil
 xMin = nil
 
 for screen, position in pairs(hs.screen.screenPositions()) do
-  if xMin == nil then
+  if screen:name() == "Color LCD" then
+    mainLaptopScreen = screen
+  elseif xMin == nil then
     xMin = position.x
     leftScreen = screen
   elseif xMin < position.x then
@@ -82,6 +84,8 @@ end
 
 rightBottom = hs.geometry.unitrect(0.5, 0.5, 0.5, 0.5)
 rightTop = hs.geometry.unitrect(0.5, 0, 0.5, 0.5)
+leftTop = hs.geometry.unitrect(0, 0, 1, 0.5)
+leftBotton = hs.geometry.unitrect(0, 0.5, 1, 0.5)
 
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "N", function()
   local emacs = getApp("Emacs")
