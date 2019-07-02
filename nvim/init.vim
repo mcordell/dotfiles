@@ -23,7 +23,6 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/syntastic'
 Plug 'benekastah/neomake'
 Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
@@ -168,16 +167,6 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 "Syntastic specific
-let g:syntastic_javascript_checkers = []
-let g:syntastic_php_checkers =  ['php', 'phpcs', 'phpmd']
-let g:syntastic_elixir_checkers = ['elixir']
-let g:syntastic_ruby_checkers = []
-let g:syntastic_yaml_checkers = ['jsyaml']
-let g:syntastic_enable_elixir_checker  = 1
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_php_phpcs_args="-s --report=csv --standard=.phpcs.xml"
-"let g:syntastic_javascript_jshint_args = '--config /Users/michael/.jshintrc'
-"let g:syntastic_javascript_jscs_args = '-c /Users/michael/.jscs.json'
 
 "Neomake syntax checking
 let g:neomake_javascript_enabled_makers = ['jshint', 'jscs']
