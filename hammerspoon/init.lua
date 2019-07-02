@@ -1,6 +1,6 @@
 local highlightWindow = require('ext.drawing').highlightWindow
 local template        = require('ext.template')
-local log             = hs.logger.new('application', 'debug')
+log             = hs.logger.new('application', 'debug')
 local windowTools     = require('ext.window')
 local reloadConfig    = function()
   hs.reload()
