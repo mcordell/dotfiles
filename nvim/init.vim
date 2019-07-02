@@ -16,6 +16,7 @@ call plug#begin('~/.config/nvim/plugged')
 "Plugin essentials
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'pbogut/fzf-mru.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'chrisbra/csv.vim'
 Plug 'junegunn/vim-easy-align'
@@ -329,6 +330,7 @@ let NERDTreeIgnore=['tmp$[[dir]]']
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 autocmd! BufWritePost *.js Neomake
 autocmd! BufWritePost *.rb Neomake
+nnoremap <space>b :FZFMru<CR>
 
 function! s:activate() abort
   let is_ember = 0
