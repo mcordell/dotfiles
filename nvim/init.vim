@@ -328,6 +328,10 @@ endfunction
 let NERDTreeIgnore=['tmp$[[dir]]']
 
 let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
+
+"disable in line messaging from neomake
+let g:neomake_virtualtext_current_error = 0
+
 autocmd! BufWritePost *.js Neomake
 autocmd! BufWritePost *.rb Neomake
 nnoremap <space>b :FZFMru<CR>
