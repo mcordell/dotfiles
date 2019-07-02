@@ -65,6 +65,7 @@ hs.hotkey.bind({}, "F15", function()
 
 leftScreen = nil
 rightScreen = nil
+mainLaptopScreen = nil
 
 xMin = nil
 
@@ -89,21 +90,25 @@ leftBotton = hs.geometry.unitrect(0, 0.5, 1, 0.5)
 
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "N", function()
   local emacs = getApp("Emacs")
-  local chrome = getApp("Google Chrome")
-  local emacs = getApp("Emacs")
   local slack = getApp("Slack")
-  local iterm = getApp("iTerm2")
-  local messages = getApp("Messages")
+  local fantastical = getApp("Fantastical")
+  local omnifocus = getApp("OmniFocus")
+  local spotify = getApp("Spotify")
   layout1 = {
-    {emacs, nil, leftScreen, hs.layout.maximized, nil, nil},
-    {chrome, nil, rightScreen, hs.layout.left50, nil, nil},
-    {slack, nil, rightScreen, rightBottom, nil, nil},
-    {iterm, nil, rightScreen, rightTop, nil, nil},
+    {emacs, nil, rightScreen, hs.layout.maximized, nil, nil},
+    {fantastical, nil, leftScreen, leftTop, nil, nil},
+    {omnifocus, nil, leftScreen, leftBotton, nil, nil},
+    {spotify, nil, mainLaptopScreen, hs.layout.maximized, nil, nil},
+    {slack, nil, mainLaptopScreen, hs.layout.maximized, nil, nil},
   }
+  fantastical:mainWindow():raise()
+  fantastical:mainWindow():focus()
+  hs.eventtap.keyStroke({"cmd"}, "1")
+  hs.eventtap.keyStroke({"cmd"}, "t")
+  spotify:mainWindow():raise()
   slack:mainWindow():raise()
-  chrome:mainWindow():raise()
-  iterm:mainWindow():raise()
   emacs:mainWindow():focus()
+  omnifocus:mainWindow():raise()
   hs.layout.apply(layout1)
 end)
 
