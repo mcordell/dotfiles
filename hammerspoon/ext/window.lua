@@ -20,12 +20,8 @@ module.moveRight = function()
 end
 
 module.splitLowerLeft = function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-  local half_h = max.h / 2
-  local half_w = max.w / 2
+  local win, f, max = module.windowInfo()
+  local half_h, half_w = max.h / 2, max.w / 2
 
   f.w = half_w
   f.h = half_h
@@ -36,11 +32,15 @@ module.splitLowerLeft = function()
   win:setFrame(f)
 end
 
-module.splitUpperLeft = function()
+module.windowInfo = function()
   local win = hs.window.focusedWindow()
   local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
+  local max = win:screen():frame()
+  return win, f, max
+end
+
+module.splitUpperLeft = function()
+  local win, f, max = module.windowInfo()
   local half_h = max.h / 2
   local half_w = max.w / 2
 
@@ -54,10 +54,7 @@ module.splitUpperLeft = function()
 end
 
 module.splitUpperRight = function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
+  local win, f, max = module.windowInfo()
   local half_h = max.h / 2
   local half_w = max.w / 2
 
@@ -71,10 +68,7 @@ module.splitUpperRight = function()
 end
 
 module.splitLowerRight = function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
+  local win, f, max = module.windowInfo()
   local half_h = max.h / 2
   local half_w = max.w / 2
 
@@ -88,13 +82,16 @@ module.splitLowerRight = function()
 end
 
 module.splitLeft = function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-  local half = max.w / 2
+  local win, f, max = module.windowInfo()
+  local newWidth;
 
-  f.w = half
+  if max.w > 2000 then
+	newWidth = max.w / 3
+  else
+	newWidth = max.w / 2
+  end
+
+  f.w = newWidth
   f.h = max.h
   win:setFrame(f, 0)
 
@@ -104,11 +101,9 @@ module.splitLeft = function()
 end
 
 module.splitUp = function()
-	local win = hs.window.focusedWindow()
-	local f = win:frame()
-	local screen = win:screen()
-	local max = screen:frame()
+    local win, f, max = module.windowInfo()
 	local half = max.h / 2
+
 	f.w = max.w
 	f.h = half
 	win:setFrame(f, 0)
@@ -119,10 +114,7 @@ module.splitUp = function()
 end
 
 module.splitDown = function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+    local win, f, max = module.windowInfo()
     local half = max.h / 2
     f.w = max.w
     f.h = half
@@ -134,26 +126,41 @@ module.splitDown = function()
 end
 
 module.splitRight = function()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local screen = win:screen()
-  local max = screen:frame()
-  local half = max.w / 2
+  local win, f, max = module.windowInfo()
+  local newWidth, adder;
 
-  f.w = half
+  if max.w > 2000 then
+	newWidth = max.w / 3
+	adder = 2 * newWidth
+  else
+	newWidth = max.w / 2
+	adder = newWidth
+  end
+
+  f.w = newWidth
   f.h = max.h
   win:setFrame(f, 0)
 
-  f.x = max.x + half
+  f.x = max.x + adder
+  f.y = max.y
+  win:setFrame(f)
+end
+
+module.splitMiddle = function()
+  local win, f, max = module.windowInfo()
+  local third = max.w / 3
+
+  f.w = third
+  f.h = max.h
+  win:setFrame(f, 0)
+
+  f.x = max.x + third
   f.y = max.y
   win:setFrame(f)
 end
 
 module.moveToLowerRight = function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+	local win, f, max = module.windowInfo()
 
     f.w = max.w / 2
     f.h = max.h / 2
