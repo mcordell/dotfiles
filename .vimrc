@@ -122,6 +122,7 @@ autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype gitcommit setlocal spell textwidth=72
+autocmd Filetype markdown setlocal spell textwidth=0
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
@@ -314,5 +315,7 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
 set backspace=indent,eol,start
+
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips']
 
 runtime macros/matchit.vim
