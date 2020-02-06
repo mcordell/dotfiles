@@ -34,8 +34,7 @@ function setupPackageManager () {
 		echo 'Allo osx'
 		installBrew
 		PKG_MANAGER='brew'
-		brew install caskroom/cask/brew-cask
-		brew tap caskroom/versions
+		brew tap homebrew/cask-versions
 		brew update
 		brew upgrade
 		sudo easy_install pip
@@ -73,10 +72,10 @@ function installGUIprograms () {
 	case $SYSTEM in
 		Darwin*)
 			brew cask tap d12frosted/emacs-plus
-			brew cask install emacs-plus --HEAD
+			brew install emacs-plus
 			casks=('google-chrome' 'iterm2-nightly' 'alfred' 'hammerspoon'
 			'karabiner-elements' 'spotify' 'slack' 'notion' 'omnifocus'
-			'airmail' 'viscosity' '')
+			'viscosity')
 			brew cask install `join ' ' "${casks[@]}"`
 	    ;;
 		Linux*)
@@ -215,6 +214,7 @@ installNeovim
 installRipgrep
 installTldr
 installJq
+installVisual
 setupZsh
 setupGit
 
@@ -223,23 +223,15 @@ rm -rf $HOME/.vim $HOME/.vimrc
 ln -s $SCRIPTPATH/.vim $HOME/.vim
 ln -s $SCRIPTPATH/.vimrc $HOME/.vimrc
 mkdir $HOME/.config
-ln -s $SCRIPTPATH/nvim $HOME/.config/.nvim
-
-# Zsh
-#$SCRIPTPATH/install_zprezto.sh
-ln -s $SCRIPTPATH/.zshrc $HOME/.zshrc
-ln -s $SCRIPTPATH/zsh/zsh_aliases $HOME/.zsh_aliases
-ln -s $SCRIPTPATH/zsh/zshenv $HOME/.zshenv
-ln -s $SCRIPTPATH/zsh/zpreztorc $HOME/.zpreztorc
-
-# Git
-rm -rf $HOME/.gitconfig
-ln -s $SCRIPTPATH/.gitconfig $HOME/.gitconfig
-ln -s $SCRIPTPATH/.gitignore_global $HOME/.gitignore_global
+ln -s $SCRIPTPATH/nvim $HOME/.config/nvim
 
 #Configure neovim
 nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
 
 cat postinstall.log
-echo "Copy the theme from $SCRIPTPATH/iterm into iterm"
-echo "Install ruby of choice with: ruby-install ruby #.#.#"
+echo " - Copy the theme from $SCRIPTPATH/iterm into iterm"
+echo " - Install ruby of choice with: ruby-install ruby #.#.#"
+echo " - Install 1Password: https://1password.com/downloads/mac/"
+echo " - Sign in to chrome"
+echo " - Setup GPG at ~/.gnupg"
+echo " - Setup git at ~/.computer_gitconfig"
