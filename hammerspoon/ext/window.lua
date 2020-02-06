@@ -85,7 +85,7 @@ module.splitLeft = function()
   local win, f, max = module.windowInfo()
   local newWidth;
 
-  if max.w > 2000 then
+  if max.w > 3000 then
 	newWidth = max.w / 3
   else
 	newWidth = max.w / 2
@@ -129,7 +129,7 @@ module.splitRight = function()
   local win, f, max = module.windowInfo()
   local newWidth, adder;
 
-  if max.w > 2000 then
+  if max.w > 3000 then
 	newWidth = max.w / 3
 	adder = 2 * newWidth
   else
