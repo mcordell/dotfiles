@@ -182,6 +182,7 @@ function setupZsh() {
 	ln -s "$SCRIPTPATH/.zshrc" $HOME
 	ln -s "$SCRIPTPATH/zsh/zsh_aliases" "$HOME/.zsh_aliases"
 	ln -s "$SCRIPTPATH/zsh/zshenv" "$HOME/.zshenv"
+	ln -s "$SCRIPTPATH/zsh/zprofile" "$HOME/.zprofile"
 	ln -s "$SCRIPTPATH/zsh/zpreztorc" "$HOME/.zpreztorc"
 	"$SCRIPTPATH/install_zprezto.sh"
 	if [[ $SYSTEM == "Darwin" ]]; then
