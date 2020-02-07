@@ -184,6 +184,10 @@ function setupZsh() {
 	ln -s "$SCRIPTPATH/zsh/zshenv" "$HOME/.zshenv"
 	ln -s "$SCRIPTPATH/zsh/zpreztorc" "$HOME/.zpreztorc"
 	"$SCRIPTPATH/install_zprezto.sh"
+	if [[ $SYSTEM == "Darwin" ]]; then
+		echo "Moving system /etc/zprofile to /etc/zshenv"
+		sudo mv /etc/zprofile /etc/zshenv
+	fi
 }
 
 function setupGit() {
