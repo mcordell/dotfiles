@@ -3,22 +3,18 @@
 #
 path=(
     /usr/local/{bin,sbin}
+	/usr/local/opt/python/libexec/bin
+	/usr/local/opt/go/libexec/bin
+	/Users/michael/go/bin
     $path
 )
 
-
-if [ -d "$HOME/Library/Python/3.7/bin" ]; then
-    PATH="$HOME/Library/Python/3.7/bin:$PATH"
-fi
 
 if [ -d "/usr/local/opt/postgresql@9.6/bin" ]; then
 	PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 fi
 
-export PATH=$PATH:/usr/local/opt/go/libexec/bin:/Users/michael/go/bin
 export GOPATH=$(go env GOPATH):/Users/michael/projects/go
-
-PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 #if [ -d "$HOME/Library/Python/2.7/bin" ]; then
 #    PATH="$HOME/Library/Python/2.7/bin:$PATH"
@@ -32,5 +28,3 @@ if [ -f '/Users/michael/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then s
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
-
-export GOPATH=$(go env GOPATH)
