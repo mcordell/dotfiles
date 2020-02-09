@@ -68,6 +68,15 @@ function installEssentials () {
 	esac
 }
 
+function installSpacemacs() {
+	ln -s $SCRIPTPATH/spacemacs $HOME/.spacemacs
+	ln -s $SCRIPTPATH/.spacemacs.d $HOME/.spacemacs.d
+	git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+	cd ~/.emacs.d
+	git checkout develop
+	git pull
+}
+
 function installGUIprograms () {
 	case $SYSTEM in
 		Darwin*)
@@ -80,6 +89,7 @@ function installGUIprograms () {
 			do
 				brew cask install $cask
 			done
+			installSpacemacs
 	    ;;
 		Linux*)
 		;;
