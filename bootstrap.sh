@@ -221,6 +221,11 @@ function installVisual()  {
 	rm -rf fonts
 }
 
+function setupTmux() {
+	ln -s "$SCRIPTPATH/.tmux.conf" $HOME/.tmux.conf
+	pip3 install powerline-status
+}
+
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -235,6 +240,7 @@ installJq
 installVisual
 setupZsh
 setupGit
+setupTmux
 
 # Doing vim stuff
 rm -rf $HOME/.vim $HOME/.vimrc
