@@ -32,6 +32,10 @@ export VISUAL='nvim'
 
 source $DOTFILES_DIR"/zsh/zsh_aliases"
 
+
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
 # Programs
 
 # fasd
