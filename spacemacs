@@ -49,12 +49,13 @@ This function should only modify configuration layer settings."
      emoji
      git
      github
-     (go :variables go-packages-function 'go-packages-go-list go-use-gometalinter t)
+     (go :variables godoc-at-point-function 'godoc-gogetdoc go-use-golangci-lint t)
      graphviz
      helm
      html
      javascript
      lua
+     lsp
      (markdown :variables markdown-live-preview-engine 'markdown-preview-eww)
      neotree
      nginx
