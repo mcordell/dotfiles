@@ -251,8 +251,8 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 "Color scheme
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
-nmap <space>hs <Plug>GitGutterStageHunk
-nmap <space>hr <Plug>GitGutterRevertHunk
+nmap <space>hs <Plug>(GitGutterStageHunk)
+nmap <space>hr <Plug>(GitGutterRevertHunk)
 
 vmap <space>y "+y
 nmap <space>p "+p
@@ -262,7 +262,7 @@ autocmd CompleteDone * pclose
 
 
 "vim-test
-let test#ruby#rspec#executable = 'zeus rspec'
+let test#ruby#rspec#executable = 'bundle exec rspec'
 let test#strategy = "dispatch"
 nmap <silent> <leader>s :TestNearest<CR>
 nmap <silent> <leader>t :TestFile<CR>
