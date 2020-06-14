@@ -86,7 +86,6 @@ endglobal
 
 snippet libdesc
 # frozen_string_literal: true
-require 'support/namespace_creator'
 require '`!p result = path.replace('_spec.rb', '')
 cleaned_path = result.replace('spec/lib/', '')
 snip.rv = cleaned_path
@@ -100,6 +99,7 @@ for part in path_parts:
 snip.rv = '::'.join(module_parts)
 `
   RSpec.describe `!p snip.rv = class_name` do
+    subject(:instace) { described_class.new }
 
   end
 end
