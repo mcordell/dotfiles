@@ -28,6 +28,8 @@ hs.hotkey.bind({"cmd", "ctrl"}, "c", function()
     appLauncher.smartLaunchOrFocus("iTerm2")
                           end
 )
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, ";", windowTools.splitTwoThirdsRight)
+hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "B", windowTools.splitTwoThirdsLeft)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "H", windowTools.splitLeft)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "I", windowTools.splitUp)
 hs.hotkey.bind({"cmd", "alt", "ctrl", "shift"}, "L", windowTools.splitRight)

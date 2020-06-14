@@ -100,6 +100,35 @@ module.splitLeft = function()
   win:setFrame(f)
 end
 
+module.splitTwoThirdsLeft = function()
+  local win, f, max = module.windowInfo()
+  local newWidth;
+
+  newWidth = (max.w / 3) * 2
+  f.w = newWidth
+  f.h = max.h
+  win:setFrame(f, 0)
+
+  f.x = max.x
+  f.y = max.y
+  win:setFrame(f)
+end
+
+module.splitTwoThirdsRight = function()
+  local win, f, max = module.windowInfo()
+  local newWidth;
+  local third = max.w / 3
+
+  newWidth = third * 2
+  f.w = newWidth
+  f.h = max.h
+  win:setFrame(f, 0)
+
+  f.x = max.x + third
+  f.y = max.y
+  win:setFrame(f)
+end
+
 module.splitUp = function()
     local win, f, max = module.windowInfo()
 	local half = max.h / 2
