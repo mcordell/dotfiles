@@ -50,7 +50,7 @@ esac
 }
 
 function installEssentials () {
-	general_packages=('zsh' 'tmux' 'git' 'golang' 'fasd' 'pandoc')
+	general_packages=('zsh' 'tmux' 'git' 'golang' 'fasd' 'pandoc' 'ispell')
 
 	case $SYSTEM in
 		Darwin*)
@@ -145,7 +145,7 @@ function installNeovim () {
 			sudo apt-get install neovim
 		;;
 	esac
-	sudo pip install neovim
+	sudo pip3 install neovim
 }
 
 function installRipgrep () {
