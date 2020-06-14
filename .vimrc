@@ -4,6 +4,10 @@ filetype off                  " required
 "hide buffers with unwritten changes
 set hidden
 
+let g:pymode_virtualenv = 0
+let g:pymode_virtualenv = 0
+let g:UltiSnipsUsePythonVersion = 2
+
 call plug#begin('~/.nvim/plugged')
 
 "Plugin essentials
@@ -62,6 +66,7 @@ Plug 'burke/matcher'
 Plug 'gabesoft/vim-ags'
 
 Plug 'bling/vim-airline'
+
 
 
 " All of your Plugs must be added before the following line
