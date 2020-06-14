@@ -37,7 +37,7 @@
 [merge]
 	tool = fugitive
 [mergetool "fugitive"]
-	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiff\" \"$MERGED\"
+	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
@@ -72,3 +72,5 @@
 	rebase = true
 [rebase]
 	autosquash = true
+[hub]
+	protocol = ssh
