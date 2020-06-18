@@ -1,0 +1,93 @@
+wtf:
+  colors:
+    background: "Dark Slate Gray"
+    border:
+      focusable: darkslateblue
+      focused: orange
+      normal: gray
+    checked: yellow
+    highlight:
+      fore: black
+      back: gray
+    rows:
+      even: green
+      odd: white
+  grid:
+    # How _wide_ the columns are, in terminal characters. In this case we have
+    # four columns, each of which are 35 characters wide.
+    columns: [35, 35, 35, 35, 35, 35]
+    # How _high_ the rows are, in terminal lines. In this case we have four rows
+    # that support ten line of text and one of four.
+    rows: [23, 13, 13]
+  refreshInterval: 1
+  openFileUtil: "open"
+  mods:
+    ip:
+      type: ipinfo
+      title: "My IP"
+      colors:
+        name: "lightblue"
+        value: "white"
+      enabled: true
+      position:
+        top: 2
+        left: 0
+        height: 1
+        width: 2
+      refreshInterval: 300
+    news:
+      type: hackernews
+      title: "HackerNews"
+      enabled: true
+      numberOfStories: 10
+      position:
+        top: 0
+        left: 1
+        height: 1
+        width: 5
+      storyType: top
+      refreshInterval: 900
+    repocheck:
+      title: "Repo check"
+      type: cmdrunner
+      args: [""]
+      cmd: "/Users/michael/Code/shell/repo-check"
+      enabled: true
+      position:
+        top: 1
+        left: 0
+        height: 1
+        width: 2
+      refreshInterval: 30
+    resources:
+      type: resourceusage
+      enabled: true
+      position:
+        top: 1
+        left: 2
+        height: 2
+        width: 1
+      refreshInterval: 1
+    digitalclock:
+      color: orange
+      enabled: true
+      font: bigfont
+      hourFormat: 12
+      position:
+        top: 0
+        left: 0
+        height: 1
+        width: 1
+      refreshInterval: 1
+      title: "big clock"
+      type: "digitalclock"
+    docker:
+      type: docker
+      enabled: true
+      labelColor: lightblue
+      position:
+        top: 1
+        left: 3
+        height: 2
+        width: 2
+      refreshInterval: 1
