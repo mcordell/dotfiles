@@ -91,7 +91,6 @@ module.smartLaunchOrFocus = function(launchApps)
 
     win:moveToScreen(target, false, false, 0)
     win:raise():focus()
-    highlightWindow()
   end
 end
 

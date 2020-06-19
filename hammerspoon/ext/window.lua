@@ -206,6 +206,12 @@ module.splitMiddle = function()
   win:setFrame(f)
 end
 
+module.splitTriple = function (leftApp, midApp, rightApp)
+  leftApp:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, .333, 1))
+  midApp:mainWindow():moveToUnit(hs.geometry.unitrect(.333, 0, .333, 1))
+  rightApp:mainWindow():moveToUnit(hs.geometry.unitrect(.666, 0, .333, 1))
+end
+
 module.splitMainFocus = function (leftApp, rightApp)
   leftApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
   rightApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
