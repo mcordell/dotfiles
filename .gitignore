@@ -1,5 +1,6 @@
 .netrwhist
 .vim/bundle/
+.vim/plugged/
 nvim/plugged/
 .DS_Store
 .spacemacs.d/**/.yas-compiled-snippets.el
