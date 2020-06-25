@@ -133,6 +133,7 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd Filetype json setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype vue setlocal ts=2 sts=2 sw=2 expandtab
 
 "Html
 autocmd FileType html,htmldjango,jinjahtml,mako let b:closetag_html_style=1
