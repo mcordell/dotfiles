@@ -3,7 +3,7 @@ source "${DOTFILES_DIR}/zsh/zprezto_init"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
 
-export GPG_TTY=`tty`
+source "${DOTFILES_DIR}/zsh/gnupg.zsh"
 chruby 2.7.1
 
 if [ "$TERM" != "dumb" ]; then
