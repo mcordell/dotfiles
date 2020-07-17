@@ -127,6 +127,7 @@ autocmd BufNewFile,BufRead *.tt set ft=ruby
 "Langauge specific formatting
 autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab | set smarttab | set softtabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype scss setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype jade setlocal ts=2 sts=2 sw=2 expandtab
 autocmd Filetype php setlocal ts=4 sts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2 expandtab
