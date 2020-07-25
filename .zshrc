@@ -4,7 +4,6 @@ source "${DOTFILES_DIR}/zsh/zprezto_init"
 [ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
 
 source "${DOTFILES_DIR}/zsh/gnupg.zsh"
-chruby 2.7.1
 
 if [ "$TERM" != "dumb" ]; then
 	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
