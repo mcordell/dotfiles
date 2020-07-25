@@ -13,3 +13,4 @@ codeception.yml
 .licenses/
 zeus.json
 custom_plan.rb
+.gemrelease
