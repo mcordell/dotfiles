@@ -197,7 +197,7 @@ endfunction
 let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
 let NERDTreeShowBookmarks=1
 
-nnoremap <space>d :Dispatch -newbuf ./bin/rspec --format d %<CR>
+nnoremap <space>d :Dispatch -newbuf rspec --format d %<CR>
 
 "Tagbar
 "
