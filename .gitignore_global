@@ -14,3 +14,4 @@ codeception.yml
 zeus.json
 custom_plan.rb
 .gemrelease
+.rubocop-*
