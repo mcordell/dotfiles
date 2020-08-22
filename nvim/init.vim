@@ -365,7 +365,7 @@ autocmd User ProjectionistActivate call s:activate()
 nnoremap <leader>a :A<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>, <C-^>
-nnoremap <leader>r :!rubocop -a %<CR>
+nnoremap <leader>r :!rubocop -A %<CR>
 
 "Set so that fugitive opens vertically on diff
 set diffopt+=vertical
