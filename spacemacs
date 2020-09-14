@@ -60,6 +60,7 @@ This function should only modify configuration layer settings."
      neotree
      nginx
      (org :variables org-enable-github-support t org-want-todo-bindings t)
+;;     org-roam
      osx
      (python :variables python-backend 'lsp python-lsp-server 'pyls)
      (ruby :variables ruby-version-manager 'chruby ruby-test-runner 'rspec)
@@ -94,6 +95,7 @@ This function should only modify configuration layer settings."
      yard-mode
      ox-jira
      ox-confluence
+ ;;    sqlite3
    )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
