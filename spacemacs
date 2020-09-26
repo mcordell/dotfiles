@@ -631,7 +631,6 @@ before packages are loaded."
   (spacemacs/set-leader-keys "oj" (lambda () (interactive) (ember-open-javascript)))
   (spacemacs/set-leader-keys "ot" (lambda () (interactive) (ember-open-template)))
   (auto-fill-mode t)
-  (turn-on-fci-mode)
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
   (setq projectile-enable-caching t)
