@@ -5,6 +5,7 @@ gpgconf --launch gpg-agent
 secret () {
         output=~/"${1}".$(date +%s).enc
         gpg --encrypt --armor --output ${output} -r $MY_KEY_ID "${1}" && echo "${1} -> ${output}"
+		echo "\"${output}\"" | pbcopy
 }
 
 reveal () {
