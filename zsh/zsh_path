@@ -10,6 +10,8 @@ path=(
     $path
 )
 
+if [ -f "$HOME/.cargo/env" ]; then source $HOME/.cargo/env; fi
+
 
 if [ -d "/usr/local/opt/postgresql@9.6/bin" ]; then
 	PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
