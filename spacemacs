@@ -562,7 +562,7 @@ before packages are loaded."
   (buffer-file-name (current-buffer))
   (spacemacs/declare-prefix-for-mode 'js2-mode "mrf" "fix")
   (spacemacs/set-leader-keys-for-major-mode 'js2-mode "f" 'eslint-fix)
-  (inf-ruby-switch-setup)
+  (add-hook 'after-init-hook 'inf-ruby-switch-setup)
   (global-hl-line-mode -1)
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
   ;;(set-face-background 'mmm-default-submode-face nil)
