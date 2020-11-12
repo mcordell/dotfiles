@@ -544,6 +544,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setenv "SHELL" "/usr/local/bin/zsh")
   (getenv "PATH")
   (setenv "PATH"
           (concat
@@ -643,7 +644,6 @@ before packages are loaded."
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
   (setq projectile-enable-caching t)
-  (setq shell-file-name "/bin/sh")
 
   (setq org-tag-alist '(("in_progress" . ?i) ("easy" . ?e) ("confirm" . ?c) ("hard" . ?h)))
   (add-hook 'ruby-mode-hook 'yard-mode)
