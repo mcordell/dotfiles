@@ -549,6 +549,10 @@ before packages are loaded."
           (concat
            "/Library/TeX/texbin" ":"
            (getenv "PATH")))
+  (setenv "PATH"
+          (concat
+           "/Users/michael/.cargo/bin" ":"
+           (getenv "PATH")))
    (setq visual-fill-column-width 100 )
    (setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
    (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
