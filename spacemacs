@@ -85,6 +85,7 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
+                                      adaptive-wrap
                                       nord-theme
      add-node-modules-path
      ember-mode
@@ -548,6 +549,10 @@ before packages are loaded."
           (concat
            "/Library/TeX/texbin" ":"
            (getenv "PATH")))
+   (setq visual-fill-column-width 100 )
+   (setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+   (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+   (add-hook 'org-mode-hook #'visual-line-mode)
 
   (buffer-file-name (current-buffer))
   (spacemacs/declare-prefix-for-mode 'js2-mode "mrf" "fix")
