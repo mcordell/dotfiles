@@ -12,6 +12,7 @@ local getApp          = function (appName)
 end
 local chrome = "Google Chrome"
 local superKey = {"cmd", "alt", "ctrl", "shift"}
+local mehKey = {"alt", "ctrl", "shift"}
 
 local setFantasticalToToday = function(fantastical)
   fantastical:mainWindow():raise()
@@ -93,6 +94,11 @@ end)
 
 hs.hotkey.bind({}, "F13", function()
     appLauncher.smartLaunchOrFocus("Spotify")
+end
+)
+
+hs.hotkey.bind({"shift"}, "F13", function()
+    appLauncher.smartLaunchOrFocus("Slack")
 end
 )
 
