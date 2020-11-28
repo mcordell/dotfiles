@@ -2,6 +2,8 @@
 # Paths
 #
 path=(
+    /opt/homebrew/bin
+    /opt/homebrew/sbin
     /usr/local/{bin,sbin}
 	/usr/local/opt/python/libexec/bin
 	/usr/local/opt/go/libexec/bin
