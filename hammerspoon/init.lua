@@ -154,4 +154,22 @@ rightThird = hs.geometry.unitrect(.666, 0, .333, 1)
 hs.hotkey.bind(superKey, "S", planning)
 hs.hotkey.bind(superKey, "N", notion)
 hs.urlevent.bind("flopmon", require('ext.flipFlopMonitors'))
+
+local setAudioOutput = function (name)
+	local device = hs.audiodevice.findDeviceByName(name)
+	if device ~= nil then
+		device:setDefaultOutputDevice()
+	end
+end
+
+hs.hotkey.bind(mehKey, "a", function()
+	local current = hs.audiodevice.defaultOutputDevice():name()
+	if current == 'Audioengine HD3' then
+		setAudioOutput('USB Audio DAC   ')
+	elseif current == 'USB Audio DAC   ' then
+		setAudioOutput('Audioengine HD3')
+	end
+end
+)
+
 hs.alert.show("Config loaded")
