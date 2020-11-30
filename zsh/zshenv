@@ -6,6 +6,13 @@ export ICLOUD_DIR=$(dirname -- $DOTFILES_DIR)
 
 source $DOTFILES_DIR"/zsh/zsh_path"
 
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH=$(brew --prefix)/share/zsh/functions:$FPATH
+  autoload -Uz compinit
+  compinit
+fi
+
 #
 # Language
 #
