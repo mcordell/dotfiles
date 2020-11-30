@@ -1,0 +1,9 @@
+#! /usr/bin/env zsh
+pushd `dirname $0` > /dev/null
+SCRIPTPATH=`pwd -P`
+popd > /dev/null
+
+fpath=( /Users/michael/Library/Mobile\ Documents/com~apple~CloudDocs/dotfiles/zsh/boot_strap_functions "${fpath[@]}" )
+autoload setup_git
+
+setup_git $SCRIPTPATH

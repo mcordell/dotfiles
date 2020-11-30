@@ -13,7 +13,6 @@ while true; do
     esac
 done
 
-
 function join { local IFS="$1"; shift; echo "$*"; }
 
 function installBrew () {
@@ -208,11 +207,6 @@ function setupZsh() {
 	fi
 }
 
-function setupGit() {
-	rm -rf $HOME/.gitconfig
-	ln -s "$SCRIPTPATH/.gitconfig" $HOME/.gitconfig
-	ln -s "$SCRIPTPATH/.gitignore_global" $HOME/.gitignore_global
-}
 
 function installVisual()  {
 	# clone
@@ -230,6 +224,9 @@ function setupTmux() {
 	pip3 install powerline-status
 }
 
+z_exec=`which zsh`
+$z_exec ./install_with_zsh
+
 setupPackageManager
 installEssentials
 installGUIprograms
@@ -243,7 +240,6 @@ installTldr
 installJq
 installVisual
 setupZsh
-setupGit
 setupTmux
 setupConfig
 vimStuff
