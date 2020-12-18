@@ -72,7 +72,6 @@ This function should only modify configuration layer settings."
      spell-checking
      sql
      (syntax-checking :variables syntax-checking-enable-tooltips nil)
-     treemacs
      vimscript
      yaml
      )
@@ -554,9 +553,10 @@ before packages are loaded."
           (concat
            "/Users/michael/.cargo/bin" ":"
            (getenv "PATH")))
-   (setq visual-fill-column-width 100 )
-   (setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
-   (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+
+   ;;(setq visual-fill-column-width 100 )
+   ;;(setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+   ;;(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
    (add-hook 'org-mode-hook #'visual-line-mode)
 
   (buffer-file-name (current-buffer))
@@ -574,6 +574,7 @@ before packages are loaded."
    '(helm-ag-base-command "rg --no-heading"))
   (when (version<= "9.2" (org-version))
     (require 'org-tempo))
+  (setq neo-theme 'icons)
   (add-hook 'org-mode-hook '(lambda ()
                             (defun org-mac-message-open (message-id _)
                               "Visit the message with MESSAGE-ID. This will use the command `open' with the message URL."
