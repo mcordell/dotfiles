@@ -172,4 +172,18 @@ hs.hotkey.bind(mehKey, "a", function()
 end
 )
 
+hs.hotkey.bind(mehKey, "n", function()
+	hs.eventtap.keyStroke({"cmd", "shift"}, "k")
+	hs.timer.doAfter(1, function()
+		hs.eventtap.keyStroke({}, "return")
+		hs.timer.doAfter(1, function()
+			hs.eventtap.keyStroke({"cmd"}, "w")
+        hs.timer.doAfter(.3, function()
+          hs.eventtap.keyStroke({}, "escape")
+        end)
+  end)
+	end)
+end
+)
+
 hs.alert.show("Config loaded")
