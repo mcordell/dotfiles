@@ -187,3 +187,15 @@ end
 )
 
 hs.alert.show("Config loaded")
+require('ext.zoom')
+
+-- Bind Eject press to ToggleMute
+hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
+    event = event:systemKey()
+    local next = next
+    if next(event) then
+        if event.key == 'EJECT' and event.down then
+			toggleZoomMute()
+        end
+    end
+end):start()
