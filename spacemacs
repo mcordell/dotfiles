@@ -521,6 +521,7 @@ See the header of this file for more information."
   (setq confluence-url "https://qcentrix.atlassian.net/confluence/rpc/xmlrpc")
   (setq nord-comment-brightness 15)
   (setq org-preview-latex-default-process 'dvisvgm)
+  (setq insert-directory-program '/opt/homebrew/Cellar/coreutils/8.32/bin/gls)
   )
 
 (defun dotspacemacs/user-init ()
