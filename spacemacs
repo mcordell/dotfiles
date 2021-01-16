@@ -95,6 +95,7 @@ This function should only modify configuration layer settings."
      yard-mode
      ox-jira
      ox-confluence
+     all-the-icons
  ;;    sqlite3
    )
    ;; A list of packages that cannot be updated.
