@@ -74,6 +74,8 @@ function installSpacemacs() {
 	cd ~/.emacs.d
 	git checkout develop
 	git pull
+	rm -rf ~/.emacs.d/private
+	ln -s $SCRIPTPATH/emacs.d/private ~/.emacs.d/private
 }
 
 function installGUIprograms () {
