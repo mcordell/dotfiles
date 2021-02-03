@@ -57,7 +57,6 @@
 
 ;; Org
 
-(setq-default org-download-image-dir "~/org/img")
 (setq org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")
       org-enforce-todo-dependencies t)
@@ -101,9 +100,10 @@ Participants: %^{Participants}
                                                    "* %? %t
 "))))
 
+(setq org-roam-db-location "~/org/org-roam.db")
 (use-package! org-roam
-  :custom org-roam-directory
-  "~/org/roam" org-roam-db-location "~/org/org-roam.db")
+  :custom org-roam-directory "~/org/roam" )
+
 (setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
                                     :file-name "%<%Y%m%d%H%M%S>-${slug}"
                                     :head "#+title: ${title}\n#+roam_tags: ${tags}"
@@ -163,32 +163,54 @@ Participants: %^{Participants}
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 
+(use-package! org-download
+  :config
+  (setq org-download-method 'directory)
+  (setq org-download-image-dir "~/org/img")
+  (setq-default org-download-heading-lvl "")
+)
+
+(after! org-mac-link
+        (defun as-get-selected-finder-items ()
+        (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
+                                " set links to {}\n" " repeat with theItem in theSelection\n"
+                                " set theLink to \"file+sys://\" & (POSIX path of (theItem as string)) & \"::split::\" & (get the name of theItem) & \"\n\"\n"
+                                " copy theLink to the end of links\n" " end repeat\n"
+                                " return links as string\n" "end tell\n")))
+  )
+
+
+
+
 ;; Keymaps
-(map! :leader "TAB TAB" #'evil-switch-to-windows-last-buffer)
-(map! :leader (:prefix "a"
-               (:prefix "o"
-                "f"
-                #'org-roam-find-file
-                "/"
-                #'helm-org-rifle)))
+
+(map! :leader
+      (:prefix "TAB"
+               "TAB" #'evil-switch-to-windows-last-buffer)
+      (:prefix ("a" . "application")
+               (:prefix ("o" . "org")
+                        "f" #'org-roam-find-file
+                        "/" #'helm-org-rifle))
+      (:prefix "f"
+       ("t"  #'treemacs))
+      (:prefix "s"
+       ("c"  #'evil-ex-nohighlight)))
+
 (map! :prefix ","
       (:map emacs-lisp-mode-map
        :nv "f"
        #'elisp-format-buffer)
       (:map org-mode-map
-       :nv "f"
-       #'org-mac-finder-item-get-selected
-       :nv "r"
-       #'helm-org-rifle)
-      (:nv ","
-       #'evil-switch-to-windows-last-buffer)
+       :nv "b" #'helm-bibtex
+       :nv "f" #'org-mac-finder-item-get-selected
+       :nv "r" #'helm-org-rifle)
+      (:nv "," #'evil-switch-to-windows-last-buffer)
       (:prefix "d"
        (:map org-mode-map
-        :nv "t"
-        #'org-time-stamp))
-      (:prefix "s"
+        :nv "t" #'org-time-stamp))
+      (:prefix ("s" . "subtree")
        (:map org-mode-map
-        :nv "r"
-        #'org-refile
-        :nv "a"
-        #'org-archive-subtree)))
+        :nv "h" #'org-promote-subtree
+        :nv "l" #'org-demote-subtree
+        :nv "r" #'org-refile
+        :nv "a" #'org-archive-subtree)))
