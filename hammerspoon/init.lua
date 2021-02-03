@@ -13,6 +13,7 @@ end
 local chrome = "Google Chrome"
 local superKey = {"cmd", "alt", "ctrl", "shift"}
 local mehKey = {"alt", "ctrl", "shift"}
+hs.loadSpoon("GlobalMute")
 
 local setFantasticalToToday = function(fantastical)
   fantastical:mainWindow():raise()
@@ -188,14 +189,14 @@ end
 
 hs.alert.show("Config loaded")
 require('ext.zoom')
-
--- Bind Eject press to ToggleMute
-hs.eventtap.new({ hs.eventtap.event.types.NSSystemDefined }, function(event)
-    event = event:systemKey()
-    local next = next
-    if next(event) then
-        if event.key == 'EJECT' and event.down then
-			toggleZoomMute()
-        end
-    end
-end):start()
+spoon.GlobalMute:bindHotkeys({
+  toggle = {{}, "F19"}
+})
+spoon.GlobalMute:configure({
+  enforce_desired_state = true,
+  stop_sococo_for_zoom  = true,
+  unmute_title = "<---- THEY CAN HEAR YOU -----",
+  mute_title = "<-- MUTE",
+  -- change_screens = "SCREENNAME1, SCREENNAME2"  -- This will only change the background of the specific screens.  string.find()
+})
+spoon.GlobalMute._logger.level = 3
