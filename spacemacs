@@ -59,8 +59,8 @@ This function should only modify configuration layer settings."
      (markdown :variables markdown-live-preview-engine 'markdown-preview-eww)
      neotree
      nginx
-     (org :variables org-enable-github-support t org-want-todo-bindings t)
-;;     org-roam
+     (org :variables org-enable-github-support t org-want-todo-bindings t org-enable-roam-support t org-download-image-dir "~/org/img" org-roam-directory "~/org/roam" org-roam-db-location "~/org/org-roam.db")
+     org-roam
      osx
      (python :variables python-backend 'lsp python-lsp-server 'pyls)
      (ruby :variables ruby-version-manager 'chruby ruby-test-runner 'rspec)
@@ -545,6 +545,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
   (setenv "SHELL" "/usr/local/bin/zsh")
   (getenv "PATH")
   (setenv "PATH"
@@ -568,7 +569,20 @@ before packages are loaded."
   (global-hl-line-mode -1)
   (spacemacs/set-leader-keys "gd" 'magit-ediff-stage)
   ;;(set-face-background 'mmm-default-submode-face nil)
-  (setq org-refile-targets '((nil :maxlevel . 9)))
+  (defun +org/opened-buffer-files ()
+    "Return the list of files currently opened in emacs"
+    (delq nil
+          (mapcar (lambda (x)
+                    (if (and (buffer-file-name x)
+                             (string-match "\\.org$"
+                                           (buffer-file-name x)))
+                        (buffer-file-name x)))
+                  (buffer-list))))
+
+  (setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
   (setq jiralib-url "https://qcentrix.atlassian.net")
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (global-set-key (kbd "TAB") 'hippie-expand)
@@ -686,6 +700,19 @@ before packages are loaded."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+;; (defun make-orgcapture-frame ()
+;;   "Create a new frame and run org-capture."
+;;   (interactive)
+;;   (make-frame '((name . "remember") (width . 80) (height . 16)
+;;                 (top . 400) (left . 300)
+;;                 (font . "-apple-Monaco-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+;;                 ))
+;;   (select-frame-by-name "remember")
+;;   (org-capture))
+
+ '(org-roam-capture-templates
+   '(("d" "default" plain #'org-roam--capture-get-point "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+title: ${title}
+#+roam_tags: ${tags}" :unnarrowed t)))
  '(ansi-color-names-vector
    ["#3c3836" "#fb4934" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
  '(custom-safe-themes
@@ -694,44 +721,6 @@ before packages are loaded."
  '(org-agenda-files
    (quote
     ("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")))
- '(org-capture-templates
-   (quote
-    (("s" "ruby snippet" entry
-      (file "~/org/notes.org")
-      "* Snippet: %a
-#+BEGIN_SRC %^{sourcetype}
- %c
-#+END_SRC")
-     ("t" "Task" entry
-      (file "~/org/todos.org")
-      "* TODO %?
- %i
- %a")
-     ("n" "note" entry
-      (file "~/org/notes.org")
-      "* %? :NOTE:
-
-%U
-%a
-")
-     ("r" "review" entry
-      (file+headline "~/org/qcentrix.org" "Reviews")
-      "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
-     ("m" "morning" entry
-      (file+datetree "~/org/journal.org")
-      "* Morning :MORNING:
-What do you want to learn today?
-%?
-")
-     ("e" "evening" entry
-      (file+datetree "~/org/journal.org")
-      "* Evening :EVENING:
-** What did you learn today?
-       %?")
-     ("q" "trip" entry
-      (file "~/org/qcentrix.org")
-      "* Trip
-"))))
  '(org-enforce-todo-dependencies t)
  '(org-startup-truncated t)
  '(package-selected-packages
@@ -787,27 +776,35 @@ This function is called at the very end of Spacemacs initialization."
      ("r" "review" entry
       (file+headline "~/org/qcentrix.org" "Reviews")
       "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
-     ("m" "morning" entry
-      (file+datetree "~/org/journal.org")
-      "* Morning :MORNING:
-What do you want to learn today?
+     ("o" "one-on-one" entry
+      (file "~/org/qcentrix.org")
+      "* 1-1 %^{Bijal|Sujay|Brad|Brian|Do|Matt|Teo|Grace|Eric} %t
+%?
+")
+     ("m" "Meeting" entry
+      (file "~/org/qcentrix.org")
+      "* %^{Subject} <%<%Y-%m-%d %H:00>>
+Participants: %^{Participants}
 %?
 ")
      ("e" "evening" entry
-      (file+datetree "~/org/journal.org")
+      (file+olp+datetree "~/org/journal.org")
       "* Evening :EVENING:
 ** What did you learn today?
        %?")
-     ("q" "trip" entry
+     ("q" "Q-Centrix Note" entry
       (file "~/org/qcentrix.org")
-      "* Trip
+      "* %? %t
 ")))
  '(org-enforce-todo-dependencies t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe ol-rmail ol-w3m org-annotate-file ol-git-link org-mac-link org-registry))
+ '(org-roam-capture-templates
+   '(("d" "default" plain #'org-roam--capture-get-point "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+title: ${title}
+#+roam_tags: ${tags}" :unnarrowed t)))
  '(org-startup-truncated t)
  '(package-selected-packages
-   '(vue-mode edit-indirect ssass-mode vue-html-mode vimrc-mode ox-jira gntp nginx-mode lv parent-mode graphviz-dot-mode graphql-mode gitignore-mode logito pos-tip flx transient anzu emoji-cheat-sheet-plus dockerfile-mode docker tablist docker-tramp json-snatcher json-reformat dactyl-mode web-completion-data company-emoji bind-map pkg-info popup yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic epl org-mime org-category-capture bind-key dash-functional goto-chg undo-tree ghub let-alist gh marshal ht s toml-mode racer flycheck-rust cargo rust-mode add-node-modules-path yard-mode sql-indent markdown-preview-eww flycheck-gometalinter winum fuzzy flycheck-credo org diminish packed auto-complete avy yasnippet inf-ruby evil flyspell-correct go-mode simple-httpd async log4e f dash lua-mode csv-mode org-jira yaml-mode tern iedit smartparens highlight elixir-mode flycheck company request helm helm-core pcache markdown-mode alert projectile magit magit-popup git-commit with-editor hydra haml-mode js2-mode powerline rake inflections pcre2el spinner multiple-cursors skewer-mode dash-at-point ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-elixir neotree move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode ember-mode elisp-slime-nav dumb-jump company-web company-tern company-statistics company-go column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))
+   '(org-roam-bibtex org-ref pdf-tools key-chord ivy helm-bibtex bibtex-completion biblio parsebib biblio-core vue-mode edit-indirect ssass-mode vue-html-mode vimrc-mode ox-jira gntp nginx-mode lv parent-mode graphviz-dot-mode graphql-mode gitignore-mode logito pos-tip flx transient anzu emoji-cheat-sheet-plus dockerfile-mode docker tablist docker-tramp json-snatcher json-reformat dactyl-mode web-completion-data company-emoji bind-map pkg-info popup yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic epl org-mime org-category-capture bind-key dash-functional goto-chg undo-tree ghub let-alist gh marshal ht s toml-mode racer flycheck-rust cargo rust-mode add-node-modules-path yard-mode sql-indent markdown-preview-eww flycheck-gometalinter winum fuzzy flycheck-credo org diminish packed auto-complete avy yasnippet inf-ruby evil flyspell-correct go-mode simple-httpd async log4e f dash lua-mode csv-mode org-jira yaml-mode tern iedit smartparens highlight elixir-mode flycheck company request helm helm-core pcache markdown-mode alert projectile magit magit-popup git-commit with-editor hydra haml-mode js2-mode powerline rake inflections pcre2el spinner multiple-cursors skewer-mode dash-at-point ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline smeargle slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv rainbow-delimiters quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file ob-elixir neotree move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gist gh-md flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode ember-mode elisp-slime-nav dumb-jump company-web company-tern company-statistics company-go column-enforce-mode coffee-mode clean-aindent-mode chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))
  '(paradox-github-token t)
  '(safe-local-variable-values
    '((elixir-enable-compilation-checking . t)
