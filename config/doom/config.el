@@ -77,15 +77,15 @@
 %a
 ")
                                                   ("r" "review" entry (file+headline
-                                                                       "~/org/qcentrix.org"
+                                                                       "~/org/qcentrix/qcentrix.org"
                                                                        "Reviews")
                                                    "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
                                                   ("o" "one-on-one" entry (file
-                                                                           "~/org/qcentrix.org")
+                                                                           "~/org/qcentrix/qcentrix.org")
                                                    "* 1-1 %^{Bijal|Sujay|Brad|Brian|Do|Matt|Teo|Grace|Eric} %t
 %?
 ")
-                                                  ("m" "Meeting" entry (file "~/org/qcentrix.org")
+                                                  ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
                                                    "* %^{Subject} <%<%Y-%m-%d %H:00>>
 Participants: %^{Participants}
 %?
@@ -96,9 +96,10 @@ Participants: %^{Participants}
 ** What did you learn today?
        %?")
                                                   ("q" "Q-Centrix Note" entry (file
-                                                                               "~/org/qcentrix.org")
+                                                                               "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
 "))))
+
 
 (setq org-roam-db-location "~/org/org-roam.db")
 (use-package! org-roam
@@ -109,7 +110,6 @@ Participants: %^{Participants}
                                     :head "#+title: ${title}\n#+roam_tags: ${tags}"
                                     :unnarrowed t)))
 (use-package! org-roam-server
-  :ensure t
   :config (setq org-roam-server-host "127.0.0.1" org-roam-server-port 8080
                 org-roam-server-authenticate nil org-roam-server-export-inline-images t
                 org-roam-server-serve-files nil org-roam-server-served-file-extensions '("pdf" "mp4"
@@ -158,18 +158,27 @@ Participants: %^{Participants}
                                (string-match "\\.org$" (buffer-file-name x)))
                           (buffer-file-name x)))
                     (buffer-list))))
+
 (setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 
 (use-package! org-download
+  :after org
   :config
   (setq org-download-method 'directory)
   (setq org-download-image-dir "~/org/img")
   (setq-default org-download-heading-lvl "")
-)
+  )
 
+(use-package! ox-hugo
+  :after org)
+
+(use-package! citeproc-org
+  :after org
+  :config
+  (citeproc-org-setup))
 (after! org-mac-link
         (defun as-get-selected-finder-items ()
         (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
