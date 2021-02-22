@@ -318,7 +318,12 @@ obj.mb = nil
 
 local screens = hs.screen.allScreens()
 for _, newScreen in ipairs(screens) do
+  if obj.change_screens == nil then
+    obj.change_screens = ""
+  end
+  if (newScreen:name() ~= nil) then
     obj.change_screens = obj.change_screens ..",".. newScreen:name()
+  end
 end
 
 obj.icon_muted = hs.image.imageFromASCII(table.concat({
