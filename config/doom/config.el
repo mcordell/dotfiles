@@ -105,6 +105,15 @@ Participants: %^{Participants}
 (use-package! org-roam
   :custom org-roam-directory "~/org/roam" )
 
+(setq org-roam-dailies-directory "daily/")
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         #'org-roam-capture--get-point
+         "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n\n")))
+
 (setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
                                     :file-name "%<%Y%m%d%H%M%S>-${slug}"
                                     :head "#+title: ${title}\n#+roam_tags: ${tags}"
@@ -179,6 +188,7 @@ Participants: %^{Participants}
   :after org
   :config
   (citeproc-org-setup))
+
 (after! org-mac-link
         (defun as-get-selected-finder-items ()
         (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
