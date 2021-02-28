@@ -16,8 +16,6 @@
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
 (package! org-roam-server)
-(package! ox-hugo
-  :recipe (:host github :repo "jethrokuan/ox-hugo"))
 (package! citeproc-org)
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

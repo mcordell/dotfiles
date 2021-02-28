@@ -98,27 +98,34 @@ Participants: %^{Participants}
                                                   ("q" "Q-Centrix Note" entry (file
                                                                                "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
-"))))
+")))
+
+  (set-company-backend! 'org-mode '(company-capf))
+  )
 
 
 (setq org-roam-db-location "~/org/org-roam.db")
 (use-package! org-roam
-  :custom org-roam-directory "~/org/roam" )
+  :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
+  :config
+  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
+                                    :file-name "%<%Y%m%d%H%M%S>-${slug}"
+                                    :head "#+title: ${title}\n#+roam_tags: ${tags}"
+                                    :unnarrowed t)))
 
-(setq org-roam-dailies-directory "daily/")
-
-(setq org-roam-dailies-capture-templates
+  (setq org-roam-dailies-capture-templates
       '(("d" "default" entry
          #'org-roam-capture--get-point
          "* %?"
          :file-name "daily/%<%Y-%m-%d>"
          :head "#+title: %<%Y-%m-%d>\n\n")))
+)
 
-(setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
-                                    :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                                    :head "#+title: ${title}\n#+roam_tags: ${tags}"
-                                    :unnarrowed t)))
+
+
 (use-package! org-roam-server
+  :after org-roam
   :config (setq org-roam-server-host "127.0.0.1" org-roam-server-port 8080
                 org-roam-server-authenticate nil org-roam-server-export-inline-images t
                 org-roam-server-serve-files nil org-roam-server-served-file-extensions '("pdf" "mp4"
@@ -127,6 +134,7 @@ Participants: %^{Participants}
                 org-roam-server-network-label-truncate t
                 org-roam-server-network-label-truncate-length 60
                 org-roam-server-network-label-wrap-length 20))
+
 (use-package! org-ref
   :config (setq org-ref-completion-library 'org-ref-ivy-cite org-ref-get-pdf-filename-function
                 'org-ref-get-pdf-filename-helm-bibtex org-ref-default-bibliography (list zot_bib)
@@ -134,6 +142,7 @@ Participants: %^{Participants}
                 org-ref-note-title-format
                 "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
                 org-ref-notes-directory org_notes org-ref-notes-function 'orb-edit-notes))
+
 (setq bibtex-completion-notes-path org_notes bibtex-completion-bibliography zot_bib
       bibtex-completion-pdf-field "file" bibtex-completion-notes-template-multiple-files (concat
                                                                                           "#+TITLE: ${title}\n"
@@ -157,7 +166,7 @@ Participants: %^{Participants}
   (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point) ""
                          :file-name "${slug}"
                          :head
-                         "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}\n- tags ::\n- keywords :: ${keywords}\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
+                         "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS ${tags}\n- \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
                          :unnarrowed t))))
 
 (defun +org/opened-buffer-files ()
@@ -185,7 +194,7 @@ Participants: %^{Participants}
   :after org)
 
 (use-package! citeproc-org
-  :after org
+  :after ox-hugo
   :config
   (citeproc-org-setup))
 
