@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: defmount
+# key: defmount
+# uuid: defmount-elixir-20210308
+# --
+def mount(_params, _session, socket) do
+  socket = assign(socket, ${1: params})
+  {:ok, socket}
+end

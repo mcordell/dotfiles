@@ -306,4 +306,8 @@ Participants: %^{Participants}
         :nv "h" #'org-promote-subtree
         :nv "l" #'org-demote-subtree
         :nv "r" #'org-refile
-        :nv "a" #'org-archive-subtree)))
+        :nv "a" #'org-archive-subtree))
+      (:prefix ("m" . "mix")
+       (:map elixir-mode-map
+        :nv "m" #'alchemist-mix
+        )))
