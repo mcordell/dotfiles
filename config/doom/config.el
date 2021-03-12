@@ -108,6 +108,13 @@ Participants: %^{Participants}
 (use-package! org-roam
   :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
   :config
+  (add-hook
+     'org-roam-capture-after-find-file-hook
+     (lambda ()
+       (org-id-get-create)
+       (save-buffer)
+       (org-roam-db-update)))
+  (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
   (setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
                                     :file-name "%<%Y%m%d%H%M%S>-${slug}"
