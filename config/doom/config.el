@@ -294,6 +294,7 @@ Participants: %^{Participants}
        :nv "f"
        #'elisp-format-buffer)
       (:map org-mode-map
+       :nv "o" #'org-open-at-point
        :nv "b" #'helm-bibtex
        :nv "f" #'org-mac-finder-item-get-selected
        :nv "r" #'helm-org-rifle)
