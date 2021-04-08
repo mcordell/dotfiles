@@ -203,11 +203,11 @@ Participants: %^{Participants}
             '("^data:" . org-download-dnd-base64))
   (advice-add #'org-download-enable :override #'ignore)
 
-  (after! org
-    ;; A shorter link to attachments
-    (+org-define-basic-link "download" (lambda () (or org-download-image-dir org-attach-id-dir "."))
-      :image-data-fun #'+org-image-file-data-fn
-      :requires 'org-download))
+ ;; (after! org
+ ;;   ;; A shorter link to attachments
+ ;;   (+org-define-basic-link "download" (lambda () (or org-download-image-dir org-attach-id-dir "."))
+ ;;     :image-data-fun #'+org-image-file-data-fn
+ ;;     :requires 'org-download))
   :config
  (setq-default org-download-image-dir "~/org/img")
   (unless org-download-image-dir
@@ -264,16 +264,29 @@ Participants: %^{Participants}
   :config
   (citeproc-org-setup))
 
-(after! org-mac-link
+(use-package! org-mac-link
+        :after org
+        :init
         (defun as-get-selected-finder-items ()
         (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
                                 " set links to {}\n" " repeat with theItem in theSelection\n"
                                 " set theLink to \"file+sys://\" & (POSIX path of (theItem as string)) & \"::split::\" & (get the name of theItem) & \"\n\"\n"
                                 " copy theLink to the end of links\n" " end repeat\n"
                                 " return links as string\n" "end tell\n")))
-  )
 
+        (defun as-get-selected-mailmate-message ()
+        (do-applescript (concat "tell application \"MailMate\"\n" " set allMessages to messages\n"
+                                " set theMessage to item 1 of allMessages\n"
+                                " return (message url of theMessage) & \"::split::Email\"\n"
+                                " end tell\n")))
+        (defun org-mac-mailmate-item-get-selected ()
+        (interactive)
+        (message "Applescript: Getting mailmate message...")
+        (org-mac-paste-applescript-links (as-get-selected-mailmate-message)))
 
+        (defun org-mac-mailmate-insert-selected ()
+        (interactive)
+        (insert (org-mac-mailmate-item-get-selected))))
 
 ;; Keymaps
 
@@ -296,6 +309,7 @@ Participants: %^{Participants}
       (:map org-mode-map
        :nv "o" #'org-open-at-point
        :nv "b" #'helm-bibtex
+       :nv "e" #'org-mac-mailmate-insert-selected
        :nv "f" #'org-mac-finder-item-get-selected
        :nv "r" #'helm-org-rifle)
       (:nv "," #'evil-switch-to-windows-last-buffer)
