@@ -14,6 +14,9 @@ path=(
 
 if [ -f "$HOME/.cargo/env" ]; then source $HOME/.cargo/env; fi
 
+if [ -d "$HOME/.emacs.d/bin" ]; then
+	PATH="$HOME/.emacs.d/bin:$PATH"
+fi
 
 if [ -d "/usr/local/opt/postgresql@9.6/bin" ]; then
 	PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
