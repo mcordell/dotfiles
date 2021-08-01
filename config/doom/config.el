@@ -352,3 +352,6 @@ Participants: %^{Participants}
 
 (use-package! org-roam-ui
     :after org-roam)
+
+(after! :projectile
+  (setq projectile-enable-caching f))
