@@ -154,12 +154,10 @@ Participants: %^{Participants}
                                     :head "#+title: ${title}\n#+roam_tags: ${tags}"
                                     :unnarrowed t)))
 
-  (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         #'org-roam-capture--get-point
-         "* %?"
-         :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n\n")))
+(setq org-roam-dailies-capture-templates
+'(("d" "default" entry "* %?" :if-new
+        (file+head "%<%Y-%m-%d>.org"
+                "#+title: %<%Y-%m-%d>"))))
 )
 
 
