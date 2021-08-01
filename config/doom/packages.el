@@ -18,6 +18,9 @@
 (unpin! org-roam company-org-roam)
 (package! ox-hugo
   :recipe (:host github :repo "jethrokuan/ox-hugo"))
+(package! websocket)
+(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format

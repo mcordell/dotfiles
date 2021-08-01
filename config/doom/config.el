@@ -346,3 +346,9 @@ Participants: %^{Participants}
        (:map elixir-mode-map
         :nv "m" #'alchemist-mix
         )))
+
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam)
