@@ -16,7 +16,6 @@
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
-(package! org-roam-server)
 (package! ox-hugo
   :recipe (:host github :repo "jethrokuan/ox-hugo"))
 ;; To install a package directly from a remote git repo, you must specify a
