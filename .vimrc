@@ -24,6 +24,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 "Plug 'docunext/closetag.vim'
 
+Plug 'junegunn/vim-easy-align'
 "Styling
 Plug 'morhetz/gruvbox'
 
@@ -129,3 +130,8 @@ set guifont=InconsolataForPowerline:h14
 autocmd CompleteDone * pclose
 
 set backspace=indent,eol,start
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
