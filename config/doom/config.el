@@ -149,10 +149,6 @@ Participants: %^{Participants}
        (org-roam-db-update)))
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
-  (setq org-roam-capture-templates '(("d" "default" plain #'org-roam--capture-get-point "%?"
-                                    :file-name "%<%Y%m%d%H%M%S>-${slug}"
-                                    :head "#+title: ${title}\n#+roam_tags: ${tags}"
-                                    :unnarrowed t)))
 
 (setq org-roam-dailies-capture-templates
 '(("d" "default" entry "* %?" :if-new
