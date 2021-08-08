@@ -355,3 +355,4 @@ Participants: %^{Participants}
 
 (after! :projectile
   (setq projectile-enable-caching f))
+(load-file (expand-file-name "ox-hugo-override.el" doom-private-dir))
