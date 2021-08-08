@@ -355,4 +355,10 @@ Participants: %^{Participants}
 
 (after! :projectile
   (setq projectile-enable-caching f))
+
+(defun mcordell/org-id-update-org-roam-files ()
+  "Update Org-ID locations for all Org-roam files."
+  (interactive)
+  (org-id-update-id-locations (org-roam--list-all-files)))
+
 (load-file (expand-file-name "ox-hugo-override.el" doom-private-dir))
