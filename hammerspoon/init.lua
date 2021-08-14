@@ -1,3 +1,6 @@
+--- Allow controlling hammerspoon from CLI
+require("hs.ipc")
+
 local highlightWindow = require('ext.drawing').highlightWindow
 local template        = require('ext.template')
 log             = hs.logger.new('init', 'debug')
