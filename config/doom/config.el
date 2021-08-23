@@ -358,3 +358,6 @@ Participants: %^{Participants}
   (org-id-update-id-locations (org-roam--list-all-files)))
 
 (load-file (expand-file-name "ox-hugo-override.el" doom-private-dir))
+(setq global-auto-revert-mode t)
+
+(add-to-list 'exec-path "/Users/michael/Code/elixir/elixir-ls/release")
