@@ -361,3 +361,4 @@ Participants: %^{Participants}
 (setq global-auto-revert-mode t)
 
 (add-to-list 'exec-path "/Users/michael/Code/elixir/elixir-ls/release")
+(setq citeproc-org-default-style-file "~/Downloads/nature.csl")
