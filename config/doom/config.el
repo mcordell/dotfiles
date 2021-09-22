@@ -141,6 +141,17 @@ Participants: %^{Participants}
 (use-package! org-roam
   :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
   :config
+    (setq org-roam-dailies-capture-templates
+          (let ((head
+                 (concat "#+title: %<%Y-%m-%d (%A)>\n* Morning Questions\n"
+                         "** What Am I Grateful for?\n\n** What Would Make Today Great?\n** What am I worried about?\n"
+                         "* Evening Questions\n"
+                         "** How am I feeling?\n** What's Something Good That Happened Today?\n** What Did I Do Well?\n** What Could I Have Done Better?")))
+            `(("m" "journal" plain
+               "%?" :if-new
+               (file+head+olp "%<%Y-%m-%d>.org" ,head ("Morning Questions"))
+                :unnarrowed t
+               ))))
   (add-hook
      'org-roam-capture-after-find-file-hook
      (lambda ()
@@ -149,11 +160,6 @@ Participants: %^{Participants}
        (org-roam-db-update)))
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
-
-(setq org-roam-dailies-capture-templates
-'(("d" "default" entry "* %?" :if-new
-        (file+head "%<%Y-%m-%d>.org"
-                "#+title: %<%Y-%m-%d>"))))
 )
 
 
