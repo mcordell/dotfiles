@@ -25,6 +25,10 @@
 	hard = reset --hard
 	cleanup = clean -f **/*orig
 	branchr = branch --sort=committerdate
+	basebranch = !gh pr view --json baseRefName -q .baseRefName
+	files = !git diff --name-only $(git merge-base HEAD \"$MERGE_BASE\")
+	stat = !git diff --stat $(git merge-base HEAD \"$MERGE_BASE\")
+	review = !nvim -p $(git files) +\"tabdo Gdiff $MERGE_BASE\" +\"let g:gitgutter_diff_base = '$MERGE_BASE'\"
 [core]
 	editor = nvim
 	excludesfile = /Users/michael/.gitignore_global
