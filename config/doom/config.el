@@ -361,7 +361,7 @@ Participants: %^{Participants}
 (defun mcordell/org-id-update-org-roam-files ()
   "Update Org-ID locations for all Org-roam files."
   (interactive)
-  (org-id-update-id-locations (org-roam--list-all-files)))
+  (org-id-update-id-locations (org-roam-list-files)))
 
 (load-file (expand-file-name "ox-hugo-override.el" doom-private-dir))
 (setq global-auto-revert-mode t)

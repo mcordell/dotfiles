@@ -46,7 +46,7 @@ INFO is a plist used as a communication channel."
          (draft (org-hugo--parse-draft-state info))
          (headless (when (org-hugo--plist-get-true-p info :hugo-headless)
                      (org-hugo--front-matter-value-booleanize (org-hugo--plist-get-true-p info :hugo-headless))))
-         (all-t-and-c-str (org-roam--file-keyword-get "FILETAGS"))
+         (all-t-and-c-str (org-roam-get-keyword "FILETAGS"))
          (all-t-and-c (when (stringp all-t-and-c-str)
                         (org-split-string all-t-and-c-str ":")))
          (tags (or
