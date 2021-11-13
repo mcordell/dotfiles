@@ -7,7 +7,6 @@
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-(package! citeproc-org)
 (package! dash-at-point)
 (package! elisp-format)
 (package! helm-org-rifle)

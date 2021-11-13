@@ -163,15 +163,6 @@ Participants: %^{Participants}
 )
 
 
-
-(use-package! org-ref
-  :config (setq org-ref-completion-library 'org-ref-ivy-cite org-ref-get-pdf-filename-function
-                'org-ref-get-pdf-filename-helm-bibtex org-ref-default-bibliography (list zot_bib)
-                org-ref-bibliography-notes (concat org_notes "/bibnotes.org")
-                org-ref-note-title-format
-                "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
-                org-ref-notes-directory org_notes org-ref-notes-function 'orb-edit-notes))
-
 (setq bibtex-completion-notes-path org_notes bibtex-completion-bibliography zot_bib
       bibtex-completion-pdf-field "file" bibtex-completion-notes-template-multiple-files (concat
                                                                                           "#+TITLE: ${title}\n"
@@ -281,10 +272,34 @@ Participants: %^{Participants}
 (use-package! ox-hugo
   :after org)
 
-(use-package! citeproc-org
-  :after ox-hugo
-  :config
-  (citeproc-org-setup))
+(after! oc-csl
+  (setq org-cite-csl-styles-dir "~/.local/share/csl/styles")
+  (setq org-cite-csl-locales-dir "~/.local/share/csl/locales")
+  )
+
+(after! citar
+  (setq citar-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (setq citar-open-note-function 'orb-citar-edit-note)
+  (setq citar-file-note-org-include '(org-id org-roam-ref))
+  (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+
+  (setq citar-at-point-function 'embark-act)
+   (setq citar-symbols
+   `((file . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
+           ,(all-the-icons-icon-for-file "foo.pdf" :face 'citar-icon-dim)))
+   (note . (,(all-the-icons-icon-for-file "foo.txt") .
+           ,(all-the-icons-icon-for-file "foo.txt" :face 'citar-icon-dim)))
+   (link .
+           (,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
+           ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'citar-icon-dim)))))
+   ;; Here we define a face to dim non 'active' icons, but preserve alignment
+   (defface citar-icon-dim
+   '((((background dark)) :foreground "#282c34")
+   (((background light)) :foreground "#fafafa"))
+   "Face for obscuring/dimming icons"
+   :group 'all-the-icons-faces)
+)
 
 (use-package! org-mac-link
         :after org
@@ -367,4 +382,3 @@ Participants: %^{Participants}
 (setq global-auto-revert-mode t)
 
 (add-to-list 'exec-path "/Users/michael/Code/elixir/elixir-ls/release")
-(setq citeproc-org-default-style-file "~/Downloads/nature.csl")
