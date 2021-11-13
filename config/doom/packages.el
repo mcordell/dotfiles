@@ -13,6 +13,7 @@
 (package! helm-org-rifle)
 (package! org-ref)
 (package! org-download)
+(package! org-mac-link)
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
