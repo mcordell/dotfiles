@@ -35,6 +35,7 @@ zstyle ':prezto:load' pmodule \
   'git' \
   'homebrew' \
   'history-substring-search' \
+  'autosuggestions' \
   'osx' \
   'rails' \
   'rsync' \
@@ -45,7 +46,8 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the query found color.
-zstyle ':prezto:module:autosuggestions:color' found ''
+zstyle ':prezto:module:autosuggestions' color 'yes'
+zstyle ':prezto:module:autosuggestions:color' found 'fg=10'
 
 #
 # Completions
