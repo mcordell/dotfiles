@@ -330,14 +330,13 @@ Participants: %^{Participants}
 (map! :leader
       (:prefix "TAB"
                "TAB" #'evil-switch-to-windows-last-buffer)
-      (:prefix ("a" . "application")
-               (:prefix ("o" . "org")
-                        "f" #'org-roam-find-file
-                        "/" #'helm-org-rifle))
       (:prefix "f"
        ("t"  #'treemacs))
       (:prefix "s"
-       ("c"  #'evil-ex-nohighlight)))
+       ("c"  #'evil-ex-nohighlight))
+      (:prefix "o"
+       ("/" #'org-roam-node-find))
+	  )
 
 (map! :prefix ","
       (:map emacs-lisp-mode-map
