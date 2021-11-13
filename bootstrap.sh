@@ -207,6 +207,7 @@ function setupZsh() {
 		echo "Moving system /etc/zprofile to /etc/zshenv"
 		sudo mv /etc/zprofile /etc/zshenv
 	fi
+	installzsh-histdb
 }
 
 
@@ -224,6 +225,11 @@ function installVisual()  {
 function setupTmux() {
 	ln -s "$SCRIPTPATH/.tmux.conf" $HOME/.tmux.conf
 	pip3 install powerline-status
+}
+
+function installzsh-histdb() {
+	mkdir ~/.zprezto/contrib
+	git clone https://github.com/larkery/zsh-histdb ~/.zprezto/contrib/zsh-histdb
 }
 
 z_exec=`which zsh`
