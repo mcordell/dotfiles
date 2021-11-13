@@ -97,3 +97,6 @@
 [submodule ".vim/bundle/vim-emblem"]
 	path = .vim/bundle/vim-emblem
 	url = https://github.com/heartsentwined/vim-emblem.git
+[submodule "zsh/plugins/forgit"]
+	path = zsh/plugins/forgit
+	url = https://github.com/wfxr/forgit.git
