@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/delmitmate"]
 	path = .vim/bundle/delmitmate
 	url = https://github.com/Raimondi/delimitMate.git
-[submodule ".vim/bundle/pyflakes-vim"]
-	path = .vim/bundle/pyflakes
-	url = https://github.com/kevinw/pyflakes-vim.git
 [submodule ".vim/bundle/snipmate"]
 	path = .vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim.git
