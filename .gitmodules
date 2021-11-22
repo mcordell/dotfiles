@@ -29,71 +29,67 @@
 	url = https://github.com/tpope/vim-rails.git
 [submodule ".vim/bundle/vim-signature"]
 	path = .vim/bundle/vim-signature
-	url = https://github.com:kshenoy/vim-signature.git
+	url = https://github.com/kshenoy/vim-signature.git
 	ignore = dirty
 [submodule ".vim/bundle/vim-ruby"]
 	path = .vim/bundle/vim-ruby
-	url = https://github.com:vim-ruby/vim-ruby.git
+	url = https://github.com/vim-ruby/vim-ruby.git
 [submodule ".vim/bundle/vim-ruby-refactoring"]
 	path = .vim/bundle/vim-ruby-refactoring
-	url = https://github.com:ecomba/vim-ruby-refactoring.git
+	url = https://github.com/ecomba/vim-ruby-refactoring.git
 [submodule ".vim/bundle/vim-colors-solarized"]
 	path = .vim/bundle/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
-[submodule ".vim/bundle/better-snipmate-snippets"]
-	path = .vim/bundle/better-snipmate-snippets
-	url = https://github.com/mcordell/better-snipmate-snippets.git
-	ignore = dirty
 [submodule "vim-fugitive"]
 	path = .vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
-	url = https://github.com:scrooloose/nerdtree.git
+	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
-	url = https://github.com:scrooloose/syntastic.git
+	url = https://github.com/scrooloose/syntastic.git
 [submodule ".vim/bundle/pdv"]
 	path = .vim/bundle/pdv
-	url = https://github.com:tobyS/pdv.git
+	url = https://github.com/tobyS/pdv.git
 [submodule ".vim/bundle/vmustache"]
 	path = .vim/bundle/vmustache
-	url = https://github.com:tobyS/vmustache.git
+	url = https://github.com/tobyS/vmustache.git
 [submodule ".vim/bundle/ctrp"]
 	path = .vim/bundle/ctrp
-	url = https://github.com:kien/ctrlp.vim.git
+	url = https://github.com/kien/ctrlp.vim.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 [submodule ".vim/bundle/vim-multiple-cursors"]
 	path = .vim/bundle/vim-multiple-cursors
-	url = https://github.com:terryma/vim-multiple-cursors.git
+	url = https://github.com/terryma/vim-multiple-cursors.git
 	ignore = dirty
 [submodule ".vim/bundle/vim-spec-finder"]
 	path = .vim/bundle/vim-spec-finder
-	url = https://github.com:skwp/vim-spec-finder.git
+	url = https://github.com/skwp/vim-spec-finder.git
 	ignore = dirty
 [submodule ".vim/bundle/supertab"]
 	path = .vim/bundle/supertab
-	url = https://github.com:ervandew/supertab.git
+	url = https://github.com/ervandew/supertab.git
 [submodule ".vim/bundle/vim-coffee-script"]
 	path = .vim/bundle/vim-coffee-script
-	url = https://github.com:kchmck/vim-coffee-script.git
+	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule ".vim/bundle/emmet-vim"]
 	path = .vim/bundle/emmet-vim
-	url = https://github.com:mattn/emmet-vim.git
+	url = https://github.com/mattn/emmet-vim.git
 [submodule ".vim/bundle/tern_for_vim"]
 	path = .vim/bundle/tern_for_vim
-	url = https://github.com:marijnh/tern_for_vim.git
+	url = https://github.com/marijnh/tern_for_vim.git
 [submodule ".vim/bundle/vim-project"]
 	path = .vim/bundle/vim-project
-	url = https://github.com:amiorin/vim-project.git
+	url = https://github.com/amiorin/vim-project.git
 [submodule ".vim/bundle/vim-surround"]
 	path = .vim/bundle/vim-surround
-	url = https://github.com:tpope/vim-surround.git
+	url = https://github.com/tpope/vim-surround.git
 [submodule ".vim/bundle/projections"]
 	path = .vim/bundle/projections
-	url = https://github.com:malkomalko/projections.vim.git
+	url = https://github.com/malkomalko/projections.vim.git
 [submodule ".vim/bundle/vim-emblem"]
 	path = .vim/bundle/vim-emblem
 	url = https://github.com/heartsentwined/vim-emblem.git
