@@ -1,7 +1,11 @@
 #!/bin/dash
 SYSTEM=`uname`
 SCRIPTPATH=`pwd -P`
-
+DOT_REPO="https://github.com/mcordell/dotfiles"
+# DOT_PUSH allows a different push url, in this case we want push to the same
+# location but use ssh to avoid https authing
+DOT_PUSH="git@github.com:mcordell/dotfiles.git"
+DOT_PATH="$HOME/.dotfiles"
 
 while true; do
     read -p "Before continuing has iCloud downloaded all of the dotfiles dir [y/n]?" yn
@@ -76,6 +80,14 @@ setupZsh() {
 	echo "Restart terminal and run install-with-zsh"
 }
 
+setupDotfiles() {
+	git clone --recursive $DOT_REPO $DOT_PATH && cd $DOT_PATH
+	git remote set-url --push origin $DOT_PUSH
+	ln -s $DOT_PATH/zsh ~/.zsh
+	$DOT_PATH/zsh/dot/dot.sh set
+}
+
 setupPackageManager
 installEssentials
 setupZsh
+setupDotfiles
