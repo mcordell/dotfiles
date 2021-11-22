@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bibhead
+# key: bibhead
+# --
+#+bibliography: ../mylibrary/mylibrary.bib
+#+cite_export: csl nature.csl
