@@ -100,3 +100,6 @@
 [submodule "zsh/plugins/forgit"]
 	path = zsh/plugins/forgit
 	url = https://github.com/wfxr/forgit.git
+[submodule "zsh/dot"]
+	path = zsh/dot
+	url = https://github.com/ssh0/dot
