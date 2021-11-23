@@ -16,7 +16,8 @@ install_bat () {
 		  ;;
 			Linux*)
 			  _installer_log "Installing linux bat" "green"
-			  sudo apt install bat
+			  sudo apt install -y bat
+			  sudo ln -s $(which batcat) /usr/local/bin/bat
 		  ;;
 	  esac
   else
