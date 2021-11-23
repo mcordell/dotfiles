@@ -44,8 +44,11 @@ source zsh/dot/dot.sh
 dot_main set
 INDENT=""
 
-_installer_log "Installing Command Line improvements" "green"
+_installer_log "Command Line" "green"
 INDENT="  "
+install_cli_essentials $SYSTEM
+_installer_log "Installing Command Line improvements"
+INDENT="    "
 install_bat $SYSTEM
 INDENT=""
-install_gui_programs
+install_gui_programs $SYSTEM

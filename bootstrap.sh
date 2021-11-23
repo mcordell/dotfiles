@@ -4,57 +4,13 @@ pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
 popd > /dev/null
 
-while true; do
-    read -p "Before continuing has iCloud downloaded all of the dotfiles dir [y/n]?" yn
-    case $yn in
-        [Yy]* ) echo "ok"; break;;
-		[Nn]* ) echo "Download it dummy;"; open "$(dirname "$SCRIPTPATH")"; exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
-function join { local IFS="$1"; shift; echo "$*"; }
-
-function installBrew () {
-	if [ -z `which brew | grep -v 'not found'` ]
-	then
-		echo 'getting brew'
-		ruby \
-		-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
-		</dev/null
-	else
-		echo 'We already have brew'
-	fi
-}
-
-function setupPackageManager () {
-	case $SYSTEM in
-		Darwin*)
-		echo 'Allo osx'
-		installBrew
-		PKG_MANAGER='brew'
-		brew tap homebrew/cask-versions
-		brew update
-		brew upgrade
-		sudo easy_install pip
-;;
-		Linux*)
-		echo 'Allo linux'
-		PKG_MANAGER='sudo apt-get'
-		sudo apt-get install -y software-properties-common
-		sudo add-apt-repository ppa:neovim-ppa/unstable
-		sudo apt-get update
-	;;
-esac
-}
-
 function installEssentials () {
-	general_packages=('zsh' 'tmux' 'git' 'golang' 'fasd' 'pandoc' 'ispell')
+	general_packages=('golang' 'fasd')
 
 	case $SYSTEM in
 		Darwin*)
-			specific_packages=('python' 'reattach-to-user-namespace'
-			'coreutils' 'gnupg' 'pinentry-mac' 'wget' 'ruby-install' 'chruby'
+			specific_packages=(
+			'ruby-install' 'chruby'
 			'fasd' 'golang')
 			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`

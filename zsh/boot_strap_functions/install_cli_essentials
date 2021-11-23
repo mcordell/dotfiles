@@ -1,0 +1,59 @@
+# vim: set ft=zsh:
+
+_install_macos_essential_cli () {
+	mac_specific=(
+		'coreutils'
+		'pinentry-mac'
+		'gnupg'
+	)
+	wanted=($universal $mac_specific)
+	have=(${=$(brew list --formula)})
+	need=${wanted:|have}
+
+	if [ ${#need[@]} -eq 0 ]; then
+	    _installer_log "All essential CLI already installed" "$reset_color"
+	else
+		brew install $need
+	fi
+}
+
+_install_linux_essential_cli () {
+	mac_specific=(
+		'coreutils'
+		'pinentry-mac'
+		'gpg'
+	)
+	local wanted=($universal $linux_specific)
+	local have=(${=$(apt list --installed | cut -f 1 -d "/")})
+	local need=${wanted:|have}
+
+	if [ ${#need[@]} -eq 0 ]; then
+	    _installer_log "All essential CLI already installed" "$reset_color"
+	else
+		sudo apt install -y $need
+	fi
+}
+
+install_cli_essentials () {
+  if [[ -z $1 ]]; then
+	local SYSTEM=$(_get_system)
+  else
+	local SYSTEM=$1
+  fi
+
+	universal=(
+		'tmux'
+		'pandoc'
+		'ispell'
+		'wget'
+	)
+
+  case $SYSTEM in
+		Darwin*)
+	      _installer_log "Installing Command Line essentials"
+		  _install_macos_essential_cli
+	  ;;
+		Linux*)
+	  ;;
+  esac
+}
