@@ -1,7 +1,7 @@
 .netrwhist
 .vim/bundle/
 .vim/plugged/
-nvim/plugged/
+config/nvim/plugged/
 .DS_Store
 .spacemacs.d/**/.yas-compiled-snippets.el
 .spacemacs.d/**/.yas-setup.elc

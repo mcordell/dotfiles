@@ -4,7 +4,7 @@ SCRIPTPATH=$(readlink $HOME/.zshenv)
 export DOTFILES_DIR=$(dirname -- "$(dirname -- $SCRIPTPATH)")
 export ICLOUD_DIR=$(dirname -- $DOTFILES_DIR)
 
-source $DOTFILES_DIR"/zsh/zsh_path"
+source ~/.zsh/zsh_path
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -37,15 +37,14 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-source $DOTFILES_DIR"/zsh/zsh_ruby"
+source ~/.zsh/zsh_ruby
 # Editors
 export DEFAULT_USER='michael'
 export EDITOR='nvim'
 export BUNDLER_EDITOR='nvim'
 export VISUAL='nvim'
 
-source $DOTFILES_DIR"/zsh/zsh_aliases"
-
+source ~/.zsh/zsh_aliases
 
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent

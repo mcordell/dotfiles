@@ -1,16 +1,16 @@
-source "${DOTFILES_DIR}/zsh/zprezto_init"
+source ~/.zsh/zprezto_init
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
 
-source "${DOTFILES_DIR}/zsh/gnupg.zsh"
+source ~/.zsh/gnupg.zsh
 
 if [ "$TERM" != "dumb" ]; then
 	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-source "$DOTFILES_DIR/zsh/plugins/forgit/forgit.plugin.zsh"
+source ~/.zsh/plugins/forgit/forgit.plugin.zsh
 
 # Add my custom functions
-fpath=( "$DOTFILES_DIR/zsh/functions" "${fpath[@]}" )
+fpath=( "$HOME/.zsh/functions" "${fpath[@]}" )
 autoload -U $fpath[1]/*(.:t)

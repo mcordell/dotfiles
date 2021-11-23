@@ -30,4 +30,23 @@
 # arguments and confirm whether or not to execute that command.
 #
 #------------------------------------------------------------------------------
+# zsh
 zsh, ~/.zsh
+.zshrc, .zshrc
+.zshenv, .zshenv
+.zpreztorc, .zpreztorc
+.zprofile, .zprofile
+
+# (neo)Vim
+.vimrc,.vimrc
+config/nvim, ~/.config/nvim
+
+# emacs
+config/doom, ~/.config/doom
+
+# git
+.gitignore_global, .gitignore_global
+.gitconfig, .gitconfig
+
+# tmux
+.tmux.conf, .tmux.conf
