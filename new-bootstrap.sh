@@ -7,21 +7,13 @@ DOT_REPO="https://github.com/mcordell/dotfiles"
 DOT_PUSH="git@github.com:mcordell/dotfiles.git"
 DOT_PATH="$HOME/.dotfiles"
 
-while true; do
-    read -p "Before continuing has iCloud downloaded all of the dotfiles dir [y/n]?" yn
-    case $yn in
-        [Yy]* ) break;;
-		[Nn]* ) echo "Download it dummy;"; open "$(dirname "$SCRIPTPATH")"; exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
 setupPackageManager() {
 	case $SYSTEM in
 		Darwin*)
 		echo "Allo osx"
 		setupCommandLineTools
 		installBrew
+		ensureBrew
 		brew tap homebrew/cask-versions
 		brew update
 ;;
@@ -31,6 +23,14 @@ setupPackageManager() {
 		sudo apt-get update
 	;;
 	esac;
+}
+
+ensureBrew() {
+	if [ -z `which brew | grep -v 'not found'` ]
+	then
+		echo "Brew not present, aborting."
+		exit
+	fi;
 }
 
 setupCommandLineTools() {
@@ -67,27 +67,43 @@ installEssentials() {
 }
 
 setupZsh() {
-	echo "Changing shell to zsh"
 	case $SYSTEM in
 		Darwin*)
-			zsh_path=$(brew --prefix)/bin/zsh
-			sudo dscl . -create /Users/$USER UserShell "$zsh_path"
+			ZSH_EXEC=$(brew --prefix)/bin/zsh
+			CURR_SHELL=$(dscl . -read /Users/$USER UserShell | cut -f 2 -d " ")
+			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
+			then
+				echo "Shell already set to $ZSH_EXEC for $USER"
+			else
+				echo "Setting shell to zsh"
+				sudo dscl . -create /Users/$USER UserShell "$ZSH_EXEC"
+				echo "Restart terminal and run install-with-zsh"
+			fi
 	    ;;
 			Linux*)
-			sudo chsh -s "$(which zsh)"
+			ZSH_EXEC=$(brew --prefix)/bin/zsh
+			CURR_SHELL=awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd
+			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
+			then
+				echo "Shell already set to $ZSH_EXEC for $USER"
+			else
+				echo "Setting shell to zsh"
+				chsh -s "$(which zsh)"
+				echo "Restart terminal and run install-with-zsh"
+			fi
 		;;
 	esac;
-	echo "Restart terminal and run install-with-zsh"
 }
 
 setupDotfiles() {
 	git clone --recursive $DOT_REPO $DOT_PATH && cd $DOT_PATH
 	git remote set-url --push origin $DOT_PUSH
-	ln -s $DOT_PATH/zsh ~/.zsh
-	$DOT_PATH/zsh/dot/dot.sh set
+	export DOT_REPO
+	export DOT_PATH
+	zsh -c "source $DOT_PATH/zsh/dot/dot.sh; dot_main set"
 }
 
 setupPackageManager
 installEssentials
-setupZsh
 setupDotfiles
+setupZsh
