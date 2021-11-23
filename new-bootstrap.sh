@@ -81,8 +81,8 @@ setupZsh() {
 			fi
 	    ;;
 			Linux*)
-			ZSH_EXEC=$(brew --prefix)/bin/zsh
-			CURR_SHELL=awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd
+			ZSH_EXEC=$(which zsh)
+			CURR_SHELL=$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd)
 			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
 			then
 				echo "Shell already set to $ZSH_EXEC for $USER"
