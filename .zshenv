@@ -1,8 +1,10 @@
 export BROWSER='open'
 export PAGER='less'
 SCRIPTPATH=$(readlink $HOME/.zshenv)
-export DOTFILES_DIR=$(dirname -- "$(dirname -- $SCRIPTPATH)")
-export ICLOUD_DIR=$(dirname -- $DOTFILES_DIR)
+export DOT_REPO="https://github.com/mcordell/dotfiles"
+export DOT_PATH="$HOME/.dotfiles"
+export DOTFILES_DIR=$DOT_PATH
+export ICLOUD_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 
 source ~/.zsh/zsh_path
 
