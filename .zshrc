@@ -11,8 +11,8 @@ fi
 
 source ~/.zsh/plugins/forgit/forgit.plugin.zsh
 
-fpath=($DOTFILES_DIR/zsh/dot $fpath)  # <- for completion
-source $HOME/zsh/dot/dot.sh
+fpath=($HOME/.zsh/dot $fpath)  # <- for completion
+source $HOME/.zsh/dot/dot.sh
 
 # Add my custom functions
 fpath=( "$HOME/.zsh/functions" "${fpath[@]}" )
