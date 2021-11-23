@@ -54,7 +54,9 @@ gpgconf --launch gpg-agent
 # Programs
 
 # fasd
-eval "$(fasd --init auto)"
+if which "fasd" &> /dev/null; then
+	eval "$(fasd --init auto)"
+fi
 
 # Less
 #
