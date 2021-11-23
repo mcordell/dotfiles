@@ -97,17 +97,6 @@ function installGUIprograms () {
 	esac
 }
 
-function installBat () {
-	case $SYSTEM in
-		Darwin*)
-			brew install bat
-	    ;;
-		Linux*)
-			echo "Cant install bat from package manager: go here: https://github.com/sharkdp/bat#on-ubuntu" >> postinstall.log
-		;;
-	esac
-}
-
 function installFd () {
 	case $SYSTEM in
 		Darwin*)

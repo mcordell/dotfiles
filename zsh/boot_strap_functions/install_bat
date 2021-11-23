@@ -1,0 +1,25 @@
+# vim: set ft=zsh:
+
+install_bat () {
+  if [ -z `which brew | grep -v 'not found'` ]
+  then
+	  if [[ -z $1 ]]; then
+		local SYSTEM=$(_get_system)
+	  else
+		local SYSTEM=$1
+	  fi
+
+	  case $SYSTEM in
+			Darwin*)
+			  _installer_log "Installing mac bat" "green"
+			  brew install bat
+		  ;;
+			Linux*)
+			  _installer_log "Installing linux bat" "green"
+			  sudo apt install bat
+		  ;;
+	  esac
+  else
+	  _installer_log "bat already installed"
+  fi
+}
