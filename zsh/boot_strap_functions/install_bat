@@ -20,6 +20,6 @@ install_bat () {
 		  ;;
 	  esac
   else
-	  _installer_log "bat already installed"
+	  _installer_log "bat already installed" "$reset_color"
   fi
 }

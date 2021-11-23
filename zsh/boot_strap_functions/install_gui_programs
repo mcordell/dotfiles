@@ -1,0 +1,48 @@
+# vim: set ft=zsh:
+
+_install_macos_gui_programs () {
+	wanted_casks=(
+	'alfred'
+	'basictex'
+	'dash'
+	'fantastical'
+	'firefox'
+	'hammerspoon'
+	'iterm2-nightly'
+	'karabiner-elements'
+	'mailmate'
+	'notion'
+	'omnifocus'
+	'slack'
+	'spotify'
+	'viscosity'
+	'vlc'
+	'xld'
+	'zotero'
+	)
+	have=(${=$(brew list --cask)})
+	need=${wanted_casks:|have}
+	if [ ${#need[@]} -eq 0 ]; then
+	    _installer_log "All casks already installed" "$reset_color"
+	else
+		brew install $need
+	fi
+}
+
+install_gui_programs () {
+  if [[ -z $1 ]]; then
+	local SYSTEM=$(_get_system)
+  else
+	local SYSTEM=$1
+  fi
+
+  case $SYSTEM in
+		Darwin*)
+		  _installer_log "Installing Mac GUI programs" "green"
+		  _install_macos_gui_programs
+	  ;;
+		Linux*)
+		  _installer_log "No linux GUI programs to install" "yellow"
+	  ;;
+  esac
+}

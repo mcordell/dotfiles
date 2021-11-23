@@ -78,25 +78,6 @@ function installSpacemacs() {
 	ln -s $SCRIPTPATH/emacs.d/private ~/.emacs.d/private
 }
 
-function installGUIprograms () {
-	case $SYSTEM in
-		Darwin*)
-			brew tap d12frosted/emacs-plus
-			brew install emacs-plus
-			casks=('google-chrome' 'iterm2-nightly' 'alfred' 'hammerspoon'
-			'karabiner-elements' 'spotify' 'slack' 'notion' 'omnifocus'
-			'viscosity' 'fantastical' 'mailmate')
-			for cask in "${casks[@]}"
-			do
-				brew cask install $cask
-			done
-			installSpacemacs
-	    ;;
-		Linux*)
-		;;
-	esac
-}
-
 function installFd () {
 	case $SYSTEM in
 		Darwin*)

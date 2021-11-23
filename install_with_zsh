@@ -34,14 +34,18 @@ _installer_log () {
 
 SYSTEM=$(_get_system)
 
-source zsh/boot_strap_functions/*
+for file in ./zsh/boot_strap_functions/*; do
+    source "$file"
+done
 
 _installer_log "Ensuring dot files are setup" "green"
 INDENT="  "
 source zsh/dot/dot.sh
 dot_main set
 INDENT=""
+
 _installer_log "Installing Command Line improvements" "green"
 INDENT="  "
 install_bat $SYSTEM
 INDENT=""
+install_gui_programs
