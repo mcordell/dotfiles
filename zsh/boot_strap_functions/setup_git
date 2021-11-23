@@ -1,4 +1,0 @@
-DOTFILES_DIR_PATH=$1
-rm -rf $HOME/.gitconfig
-ln -s "$DOTFILES_DIR_PATH/.gitconfig" $HOME/.gitconfig
-ln -s "$DOTFILES_DIR_PATH/.gitignore_global" $HOME/.gitignore_global
