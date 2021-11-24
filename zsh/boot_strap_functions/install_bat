@@ -1,7 +1,7 @@
 # vim: set ft=zsh:
 
 install_bat () {
-  if [ -z `which brew | grep -v 'not found'` ]
+  if [ which bat &> /dev/null ]
   then
 	  if [[ -z $1 ]]; then
 		local SYSTEM=$(_get_system)
