@@ -21,7 +21,7 @@ _install_macos_gui_programs () {
 	'zotero'
 	)
 	have=(${=$(brew list --cask)})
-	need=${wanted_casks:|have}
+	need=(${wanted_casks:|have})
 	if [ ${#need[@]} -eq 0 ]; then
 	    _installer_log "All casks already installed" "$reset_color"
 	else

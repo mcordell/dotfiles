@@ -8,7 +8,7 @@ _install_macos_essential_cli () {
 	)
 	wanted=($universal $mac_specific)
 	have=(${=$(brew list --formula)})
-	need=${wanted:|have}
+	need=(${wanted:|have})
 
 	if [ ${#need[@]} -eq 0 ]; then
 	    _installer_log "All essential CLI already installed" "$reset_color"
@@ -25,7 +25,7 @@ _install_linux_essential_cli () {
 	)
 	local wanted=($universal $linux_specific)
 	local have=(${=$(apt list --installed | cut -f 1 -d "/")})
-	local need=${wanted:|have}
+	local need=(${wanted:|have})
 
 	if [ ${#need[@]} -eq 0 ]; then
 	    _installer_log "All essential CLI already installed" "$reset_color"
