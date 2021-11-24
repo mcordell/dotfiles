@@ -1,20 +1,19 @@
 # vim: set ft=zsh:
 
+_install_bat () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac bat" "green"
+		  brew install bat
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux bat" "green"
+		  sudo apt-get install -y bat
+		  sudo ln -s $(which batcat) /usr/local/bin/bat
+	  ;;
+	esac
+}
+
 install_bat () {
-  if [ which bat &> /dev/null ]
-  then
-	  case $(_system) in
-			Darwin*)
-			  _installer_log "Installing mac bat" "green"
-			  brew install bat
-		  ;;
-			Linux*)
-			  _installer_log "Installing linux bat" "green"
-			  sudo apt-get install -y bat
-			  sudo ln -s $(which batcat) /usr/local/bin/bat
-		  ;;
-	  esac
-  else
-	  _installer_log "bat already installed" "$reset_color"
-  fi
+  _which_check "bat" "_install_bat"
 }
