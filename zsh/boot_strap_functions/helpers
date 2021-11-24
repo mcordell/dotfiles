@@ -34,3 +34,24 @@ _installer_log () {
     echo $fg[$color] "$INDENT$msg" $reset_color
   fi
 }
+
+_brew_check_install () {
+  local package=$1
+  if [ -z `brew list | grep "$package"` ]
+  then
+	  brew install $package
+  else
+	  _installer_log "zoxide already installed" "$reset_color"
+  fi
+}
+
+_apt_check_install () {
+  local package=$1
+  if [ -z `apt-get list --installed | cut -f 1 -d "/" | grep "$package"` ]
+  then
+	  _installer_log "Installing $package" "green"
+	  sudo apt-get install "$package"
+  else
+	  _installer_log "$package already installed" "$reset_color"
+  fi
+}
