@@ -1,57 +1,32 @@
 #! /usr/bin/env zsh
 
-BOLD="bold"
-autoload colors is-at-least
-colors
-
-INDENT=""
-
-_get_system () {
-	uname
-}
-
-_installer_log () {
-  local msg=$1
-
-  if [[ -z $2 ]]; then
-	local color="blue"
-  else
-	local color=$2
-  fi
-
-  if [[ -z $3 ]]; then
-	local font="NONE"
-  else
-	local font="bold"
-  fi
-
-  if [[ $font = $BOLD ]]; then
-    echo $fg_bold[$color] "$INDENT$msg" $reset_color
-  else
-    echo $fg[$color] "$INDENT$msg" $reset_color
-  fi
-}
-
-SYSTEM=$(_get_system)
-
 for file in ./zsh/boot_strap_functions/*; do
     source "$file"
 done
 
-_installer_log "Ensuring dot files are setup" "green"
+SYSTEM=$(_get_system)
+
+_installer_log "Ensuring dot files are setup" "green" "bold"
 INDENT="  "
 source zsh/dot/dot.sh
 dot_main set
 INDENT=""
 
 # zsh
-setup_zsh
+setup_zsh $SYSTEM
 
-_installer_log "Command Line" "green"
+# coomand line
+_installer_log "Command Line" "green" "bold"
+INDENT="  "
+_installer_log "Visual"
+INDENT="    "
+install_powerline
 INDENT="  "
 install_cli_essentials $SYSTEM
 _installer_log "Installing Command Line improvements"
 INDENT="    "
 install_bat $SYSTEM
+
+# GUI
 INDENT=""
 install_gui_programs $SYSTEM

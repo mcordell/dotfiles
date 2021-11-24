@@ -1,0 +1,32 @@
+# vim: set ft=zsh:
+
+BOLD="bold"
+autoload colors is-at-least
+colors
+INDENT=""
+
+_get_system () {
+	uname
+}
+
+_installer_log () {
+  local msg=$1
+
+  if [[ -z $2 ]]; then
+	local color="blue"
+  else
+	local color=$2
+  fi
+
+  if [[ -z $3 ]]; then
+	local font="NONE"
+  else
+	local font="bold"
+  fi
+
+  if [[ $font = $BOLD ]]; then
+    echo $fg_bold[$color] "$INDENT$msg" $reset_color
+  else
+    echo $fg[$color] "$INDENT$msg" $reset_color
+  fi
+}
