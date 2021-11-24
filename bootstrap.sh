@@ -75,18 +75,6 @@ function installNeovim () {
 	sudo pip3 install neovim
 }
 
-function installRipgrep () {
-	case $SYSTEM in
-		Darwin*)
-			brew install ripgrep
-	    ;;
-		Linux*)
-			echo "Cant install ripgrep easily: go here: https://github.com/BurntSushi/ripgrep#installation" >> postinstall.log
-		;;
-	esac
-	sudo pip install neovim
-}
-
 function installTldr () {
 	case $SYSTEM in
 		Darwin*)

@@ -1,0 +1,18 @@
+# vim: set ft=zsh:
+
+_install_ripgrep () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac ripgrep" "green"
+		  brew install ripgrep
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux ripgrep" "green"
+		  sudo apt-get install -y ripgrep
+	  ;;
+	esac
+}
+
+install_ripgrep () {
+  _which_check "rg" "_install_ripgrep"
+}
