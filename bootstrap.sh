@@ -122,17 +122,6 @@ function setupConfig() {
 	ln -s "$SCRIPTPATH/config/wtf" $HOME/.config/wtf
 }
 
-function installVisual()  {
-	# clone
-	git clone https://github.com/powerline/fonts.git --depth=1
-	# install
-	cd fonts
-	./install.sh
-	# clean-up a bit
-	cd ..
-	rm -rf fonts
-}
-
 function setupTmux() {
 	ln -s "$SCRIPTPATH/.tmux.conf" $HOME/.tmux.conf
 	pip3 install powerline-status
