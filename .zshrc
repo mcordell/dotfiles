@@ -17,3 +17,9 @@ source $HOME/.zsh/dot/dot.sh
 # Add my custom functions
 fpath=( "$HOME/.zsh/functions" "${fpath[@]}" )
 autoload -U $fpath[1]/*(.:t)
+
+# direnv
+if which "direnv" &> /dev/null; then
+	export DIRENV_LOG_FORMAT=""
+	eval "$(direnv hook zsh)"
+fi
