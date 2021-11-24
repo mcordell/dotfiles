@@ -1,0 +1,22 @@
+install_direnv () {
+  if which direnv &> /dev/null; then
+	  _installer_log "direnv already installed" "$reset_color"
+  else
+	  if [[ -z $1 ]]; then
+		local SYSTEM=$(_get_system)
+	  else
+		local SYSTEM=$1
+	  fi
+
+	  case $SYSTEM in
+			Darwin*)
+			  _installer_log "Installing mac direnv" "green"
+			  brew install direnv
+		  ;;
+			Linux*)
+			  _installer_log "Installing linux bat" "green"
+			  sudo apt-get install -y direnv
+		  ;;
+	  esac
+  fi
+}

@@ -28,6 +28,10 @@ INDENT="  "
 _installer_log "🏃 Installing Command Line improvements"
 INDENT="      "
 install_bat $SYSTEM
+INDENT="  "
+_installer_log "💪 Installing Command Line enhancers"
+INDENT="      "
+install_direnv $SYSTEM
 
 # GUI
 INDENT=""
