@@ -7,7 +7,7 @@ done
 SYSTEM=$(_get_system)
 
 _installer_log "Ensuring dot files are setup" "green" "bold"
-INDENT="  "
+INDENT="    "
 source zsh/dot/dot.sh
 dot_main set
 INDENT=""
@@ -16,15 +16,17 @@ INDENT=""
 setup_zsh $SYSTEM
 
 # coomand line
-_installer_log "Command Line" "green" "bold"
+INDENT=""
+_installer_log "👾 Command Line" "green" "bold"
 INDENT="  "
-_installer_log "Visual"
-INDENT="    "
+_installer_log "🎨 Visual"
+INDENT="      "
 install_powerline
 INDENT="  "
 install_cli_essentials $SYSTEM
-_installer_log "Installing Command Line improvements"
-INDENT="    "
+INDENT="  "
+_installer_log "🏃 Installing Command Line improvements"
+INDENT="      "
 install_bat $SYSTEM
 
 # GUI

@@ -31,7 +31,8 @@ _setup_zsh_hist_db () {
 
 setup_zsh () {
 	ZPREZTODIR="${ZDOTDIR:-$HOME}/.zprezto"
-	_installer_log "Setting up zsh" "green"
+	_installer_log "⚡ ️Setting up zsh" "green"
+    INDENT="    "
 	_setup_prezto
 	_setup_zsh_hist_db
 

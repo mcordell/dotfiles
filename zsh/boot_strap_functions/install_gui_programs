@@ -38,7 +38,8 @@ install_gui_programs () {
 
   case $SYSTEM in
 		Darwin*)
-		  _installer_log "Installing Mac GUI programs" "green"
+		  _installer_log "🖥  Installing Mac GUI programs" "green" "bold"
+		  INDENT="  "
 		  _install_macos_gui_programs
 	  ;;
 		Linux*)

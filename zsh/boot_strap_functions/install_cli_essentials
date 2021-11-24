@@ -50,7 +50,8 @@ install_cli_essentials () {
 
   case $SYSTEM in
 		Darwin*)
-	      _installer_log "Installing Command Line essentials"
+	      _installer_log "🪨  Installing Command Line essentials" "blue"
+		  INDENT=$INDENT"    "
 		  _install_macos_essential_cli
 	  ;;
 		Linux*)
