@@ -35,12 +35,6 @@ _install_linux_essential_cli () {
 }
 
 install_cli_essentials () {
-  if [[ -z $1 ]]; then
-	local SYSTEM=$(_get_system)
-  else
-	local SYSTEM=$1
-  fi
-
 	universal=(
 		'tmux'
 		'pandoc'
@@ -48,7 +42,7 @@ install_cli_essentials () {
 		'wget'
 	)
 
-  case $SYSTEM in
+    case $(_system) in
 		Darwin*)
 	      _installer_log "🪨  Installing Command Line essentials" "blue"
 		  INDENT=$INDENT"    "

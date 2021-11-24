@@ -4,8 +4,6 @@ for file in ./zsh/boot_strap_functions/*; do
     source "$file"
 done
 
-SYSTEM=$(_get_system)
-
 _installer_log "Ensuring dot files are setup" "green" "bold"
 INDENT="    "
 source zsh/dot/dot.sh

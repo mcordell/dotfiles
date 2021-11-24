@@ -36,13 +36,7 @@ setup_zsh () {
 	_setup_prezto
 	_setup_zsh_hist_db
 
-	if [[ -z $1 ]]; then
-		local SYSTEM=$(_get_system)
-	else
-		local SYSTEM=$1
-	fi
-
-	case $SYSTEM in
+	case $(_system) in
 		Darwin*)
 			_setup_zprofile_on_macos
 		;;

@@ -22,13 +22,7 @@ _install_powerline_linux () {
 
 
 install_powerline () {
-  if [[ -z $1 ]]; then
-	local SYSTEM=$(_get_system)
-  else
-	local SYSTEM=$1
-  fi
-
-  case $SYSTEM in
+  case $(_system) in
 		Darwin*)
 			_install_powerline_mac
 	  ;;

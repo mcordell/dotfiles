@@ -3,13 +3,7 @@
 install_bat () {
   if [ which bat &> /dev/null ]
   then
-	  if [[ -z $1 ]]; then
-		local SYSTEM=$(_get_system)
-	  else
-		local SYSTEM=$1
-	  fi
-
-	  case $SYSTEM in
+	  case $(_system) in
 			Darwin*)
 			  _installer_log "Installing mac bat" "green"
 			  brew install bat

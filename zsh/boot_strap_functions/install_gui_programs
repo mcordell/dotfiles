@@ -30,13 +30,7 @@ _install_macos_gui_programs () {
 }
 
 install_gui_programs () {
-  if [[ -z $1 ]]; then
-	local SYSTEM=$(_get_system)
-  else
-	local SYSTEM=$1
-  fi
-
-  case $SYSTEM in
+   case $(_system) in
 		Darwin*)
 		  _installer_log "🖥  Installing Mac GUI programs" "green" "bold"
 		  INDENT="  "

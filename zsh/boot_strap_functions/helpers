@@ -5,8 +5,12 @@ autoload colors is-at-least
 colors
 INDENT=""
 
-_get_system () {
-	uname
+_system () {
+  if [[ -z $SYSTEM ]]; then
+	SYSTEM=$(uname)
+  fi
+
+  echo $SYSTEM
 }
 
 _installer_log () {
