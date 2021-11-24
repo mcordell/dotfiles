@@ -24,13 +24,13 @@ _install_linux_essential_cli () {
 		'gpg'
 	)
 	local wanted=($universal $linux_specific)
-	local have=(${=$(apt list --installed | cut -f 1 -d "/")})
+	local have=(${=$(apt-get list --installed | cut -f 1 -d "/")})
 	local need=(${wanted:|have})
 
 	if [ ${#need[@]} -eq 0 ]; then
 	    _installer_log "All essential CLI already installed" "$reset_color"
 	else
-		sudo apt install -y $need
+		sudo apt-get install -y $need
 	fi
 }
 

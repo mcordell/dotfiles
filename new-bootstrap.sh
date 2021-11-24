@@ -19,8 +19,8 @@ setupPackageManager() {
 ;;
 		Linux*)
 		echo "Allo linux"
-		sudo apt install -y software-properties-common
-		sudo apt update
+		sudo apt-get install -y software-properties-common
+		sudo apt-get update
 	;;
 	esac;
 }
@@ -61,7 +61,7 @@ installEssentials() {
 			brew install zsh git
 	    ;;
 			Linux*)
-			sudo apt install -y zsh git
+			sudo apt-get install -y zsh git
 		;;
 	esac;
 }

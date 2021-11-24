@@ -11,10 +11,10 @@ _install_powerline_mac () {
 }
 
 _install_powerline_linux () {
-  if [ -z `apt list --installed | cut -f 1 -d "/" | grep "fonts-powerline"` ]
+  if [ -z `apt-get list --installed | cut -f 1 -d "/" | grep "fonts-powerline"` ]
   then
 	  _installer_log "Installing powerline fonts" "green"
-	  sudo apt install "fonts-powerline"
+	  sudo apt-get install "fonts-powerline"
   else
 	  _installer_log "powerline fonts already installed" "$reset_color"
   fi
