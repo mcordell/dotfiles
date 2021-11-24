@@ -53,11 +53,6 @@ gpgconf --launch gpg-agent
 
 # Programs
 
-# fasd
-if which "fasd" &> /dev/null; then
-	eval "$(fasd --init auto)"
-fi
-
 # Less
 #
 # Set the default Less options.

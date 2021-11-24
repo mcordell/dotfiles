@@ -23,3 +23,9 @@ if which "direnv" &> /dev/null; then
 	export DIRENV_LOG_FORMAT=""
 	eval "$(direnv hook zsh)"
 fi
+
+#zoxide (jump tool)
+if which "zoxide" &> /dev/null; then
+	eval "$(zoxide init zsh)"
+fi
+
