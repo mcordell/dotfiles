@@ -5,13 +5,13 @@ SCRIPTPATH=`pwd -P`
 popd > /dev/null
 
 function installEssentials () {
-	general_packages=('golang' 'fasd')
+	general_packages=('golang')
 
 	case $SYSTEM in
 		Darwin*)
 			specific_packages=(
 			'ruby-install' 'chruby'
-			'fasd' 'golang')
+			'golang')
 			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
 			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
 	    ;;

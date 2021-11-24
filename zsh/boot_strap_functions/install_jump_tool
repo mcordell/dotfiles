@@ -1,0 +1,18 @@
+# vim: set ft=zsh:
+#
+_install_zoxide () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac zoxide" "green"
+		  brew install zoxide
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux zoxide" "green"
+		  sudo apt-get install -y zoxide
+	  ;;
+	esac
+}
+
+install_jump_tool () {
+  _which_check "zoxide" "_install_zoxide"
+}

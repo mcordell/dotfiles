@@ -21,15 +21,16 @@ _installer_log "🎨 Visual"
 INDENT="      "
 install_powerline
 INDENT="  "
-install_cli_essentials $SYSTEM
+install_cli_essentials
 INDENT="  "
 _installer_log "🏃 Installing Command Line improvements"
 INDENT="      "
-install_bat $SYSTEM
+install_bat
 INDENT="  "
 _installer_log "💪 Installing Command Line enhancers"
 INDENT="      "
-install_direnv $SYSTEM
+install_direnv
+install_jump_tool
 
 # GUI
 INDENT=""
