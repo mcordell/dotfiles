@@ -109,14 +109,6 @@ function installJq () {
 	esac
 }
 
-function vimStuff() {
-	# Doing vim stuff
-	rm -rf $HOME/.vim $HOME/.vimrc
-	ln -s "$SCRIPTPATH/.vim" $HOME/.vim
-	ln -s "$SCRIPTPATH/.vimrc" $HOME/.vimrc
-	ln -s "$SCRIPTPATH/nvim" $HOME/.config/nvim
-}
-
 function setupConfig() {
 	mkdir $HOME/.config
 	ln -s "$SCRIPTPATH/config/wtf" $HOME/.config/wtf
