@@ -122,21 +122,6 @@ function setupConfig() {
 	ln -s "$SCRIPTPATH/config/wtf" $HOME/.config/wtf
 }
 
-function setupZsh() {
-	ln -s "$SCRIPTPATH/.zshrc" $HOME
-	ln -s "$SCRIPTPATH/zsh/zsh_aliases" "$HOME/.zsh_aliases"
-	ln -s "$SCRIPTPATH/zsh/zshenv" "$HOME/.zshenv"
-	ln -s "$SCRIPTPATH/zsh/zprofile" "$HOME/.zprofile"
-	ln -s "$SCRIPTPATH/zsh/zpreztorc" "$HOME/.zpreztorc"
-	"$SCRIPTPATH/install_zprezto.sh"
-	if [[ $SYSTEM == "Darwin" ]]; then
-		echo "Moving system /etc/zprofile to /etc/zshenv"
-		sudo mv /etc/zprofile /etc/zshenv
-	fi
-	installzsh-histdb
-}
-
-
 function installVisual()  {
 	# clone
 	git clone https://github.com/powerline/fonts.git --depth=1
@@ -152,14 +137,6 @@ function setupTmux() {
 	ln -s "$SCRIPTPATH/.tmux.conf" $HOME/.tmux.conf
 	pip3 install powerline-status
 }
-
-function installzsh-histdb() {
-	mkdir ~/.zprezto/contrib
-	git clone https://github.com/larkery/zsh-histdb ~/.zprezto/contrib/zsh-histdb
-}
-
-z_exec=`which zsh`
-$z_exec ./install_with_zsh
 
 setupPackageManager
 installEssentials

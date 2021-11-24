@@ -1,0 +1,51 @@
+# vim: set ft=zsh:
+
+_setup_zprofile_on_macos () {
+	if [[ -f /etc/zprofile ]]; then
+		_installer_log "Moving system /etc/zprofile to /etc/zshenv" "yellow"
+		sudo mv /etc/zprofile /etc/zshenv
+	fi
+}
+
+_setup_prezto () {
+	if [[ ! -d "$ZPREZTODIR" ]]; then
+		_installer_log "Installing prezto" "green"
+		git clone --recursive https://github.com/sorin-ionescu/prezto.git "$ZPREZTODIR"
+		ln -s "$ZPREZTODIR"/runcoms/zlogin  "${ZDOTDIR:-$HOME}"/.zlogin
+		ln -s "$ZPREZTODIR"/runcoms/zlogout "${ZDOTDIR:-$HOME}"/.zlogout
+		mkdir $ZPREZTODIR/contrib
+	else
+		_installer_log "prezto directory exists, not installing prezto" "$reset_color"
+	fi
+}
+
+_setup_zsh_hist_db () {
+	hist_dir=$ZPREZTODIR/contrib/zsh-histdb
+	if [[ ! -d "$hist_dir" ]]; then
+		_installer_log "Installing zsh-histdb" "green"
+		git clone https://github.com/larkery/zsh-histdb $hist_dir
+	else
+		_installer_log "zsh-histdb already exists" "$reset_color"
+	fi
+}
+
+setup_zsh () {
+	ZPREZTODIR="${ZDOTDIR:-$HOME}/.zprezto"
+	_installer_log "Setting up zsh" "green"
+	_setup_prezto
+	_setup_zsh_hist_db
+
+	if [[ -z $1 ]]; then
+		local SYSTEM=$(_get_system)
+	else
+		local SYSTEM=$1
+	fi
+
+	case $SYSTEM in
+		Darwin*)
+			_setup_zprofile_on_macos
+		;;
+		Linux*)
+		;;
+	esac
+}
