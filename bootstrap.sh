@@ -63,18 +63,6 @@ function installFzf () {
 	~/.fzf/install
 }
 
-function installNeovim () {
-	case $SYSTEM in
-		Darwin*)
-			brew install neovim/neovim/neovim
-	    ;;
-		Linux*)
-			sudo apt-get install neovim
-		;;
-	esac
-	sudo pip3 install neovim
-}
-
 function installTldr () {
 	case $SYSTEM in
 		Darwin*)
@@ -114,7 +102,6 @@ installBat
 installFancyDiff
 installFd
 installFzf
-installNeovim
 installRipgrep
 installTldr
 installJq
@@ -123,9 +110,6 @@ setupZsh
 setupTmux
 setupConfig
 vimStuff
-
-#Configure neovim
-nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
 
 cat postinstall.log
 echo " - Copy the theme from $SCRIPTPATH/iterm into iterm"

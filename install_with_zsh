@@ -18,6 +18,13 @@ INDENT=""
 _installer_log "🗣 Installing languages" "green" "bold"
 INDENT="    "
 setup_python
+
+# Editors
+INDENT=""
+_installer_log "✍️ Editor" "green" "bold"
+INDENT="    "
+install_neovim
+
 # coomand line
 INDENT=""
 _installer_log "👾 Command Line" "green" "bold"
@@ -41,3 +48,5 @@ install_ripgrep
 # GUI
 INDENT=""
 install_gui_programs $SYSTEM
+
+[ -f post_install.zsh ] && _installer_log "Close terminal / log off. cd back to this directory and source the post_install.zsh file" "yellow"

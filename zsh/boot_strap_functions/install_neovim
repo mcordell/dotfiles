@@ -1,0 +1,37 @@
+# vim: set ft=zsh:
+
+_install_neovim_plugins () {
+	nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
+}
+
+_install_neovim () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac neovim" "green"
+          brew install neovim
+	  ;;
+		Linux*)
+		  _installer_log "Installing neovim" "green"
+		  sudo apt-get install -y neovim python3-neovim
+	  ;;
+	esac
+
+	_install_neovim_plugins
+
+	tee -a post_install.zsh << EOF > /dev/null
+if [[ -z \$PYTHON_VERSION ]]; then
+echo "PYTHON_VERSION not set, set and re-run script"
+exit;
+fi
+
+pyenv virtualenv 3.10.0 py3nvim
+pyenv activate py3nvim
+python3 -m pip install pynvim
+neovim_python=\$(pyenv which python)
+echo "Set neovim python to: \$neovim_python"
+EOF
+}
+
+install_neovim () {
+  _which_check "nvim" "_install_neovim"
+}
