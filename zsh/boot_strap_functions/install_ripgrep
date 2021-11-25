@@ -8,7 +8,7 @@ _install_ripgrep () {
 	  ;;
 		Linux*)
 		  _installer_log "Installing linux ripgrep" "green"
-		  sudo apt-get install -y ripgrep
+		  sudo apt install -o Dpkg::Options::="--force-overwrite" -y ripgrep
 	  ;;
 	esac
 }
