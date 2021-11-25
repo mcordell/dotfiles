@@ -7,6 +7,7 @@ _install_latest_python () {
 	fi
 	latest=$($PYENV_COMMAND install --list | grep --extended-regexp "^\s*[0-9][0-9.]*[0-9]\s*$" | tail -1 | xargs)
 	if $PYENV_COMMAND install $latest; then
+	   echo "PYTHON_VERSION=$latest" >> post_install.zsh
 	   echo "pyenv global $latest" >> ~/.zsh/pyenv_zshrc
    fi
 }
@@ -35,7 +36,7 @@ _setup_pyenv () {
 		Darwin*)
 			_installer_log "Installing pyenv for mac" "green"
 			brew install openssl readline sqlite3 xz zlib
-			brew install pyenv pyenv-virtualenvwrapper
+			brew install pyenv pyenv-virtualenvwrapper pyenv-virtualenv
 			echo 'eval "$(pyenv init --path)"' >> ~/.zsh/pyenv_profile
 			echo 'eval "$(pyenv init -)"' >> ~/.zsh/pyenv_zshrc
 			_install_latest_python
@@ -47,6 +48,8 @@ _setup_pyenv () {
 			cd ~/.pyenv && src/configure && make -C src
 			_setup_pyenv_on_linux
 			PYENV_COMMAND=~/.pyenv/bin/pyenv
+			git clone https://github.com/pyenv/pyenv-virtualenv.git $($PYENV_COMMAND root)/plugins/pyenv-virtualenv
+
 			_install_latest_python
 		;;
 	esac
