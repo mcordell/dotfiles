@@ -28,7 +28,8 @@ pyenv virtualenv 3.10.0 py3nvim
 pyenv activate py3nvim
 python3 -m pip install pynvim
 neovim_python=\$(pyenv which python)
-echo "Set neovim python to: \$neovim_python"
+echo "Setting neovim python to: \$neovim_python"
+echo 'let g:python3_host_prog = "\$neovim_python"' >> config/nvim/init.vim
 EOF
 }
 
