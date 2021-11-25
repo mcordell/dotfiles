@@ -2,6 +2,7 @@ source ~/.zsh/zprezto_init
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
+[ -f ~/.zsh/pyenv_zshrc ] && source ~/.zsh/pyenv_zshrc
 
 source ~/.zsh/gnupg.zsh
 

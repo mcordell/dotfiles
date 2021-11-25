@@ -6,3 +6,5 @@ config/nvim/plugged/
 .spacemacs.d/**/.yas-compiled-snippets.el
 .spacemacs.d/**/.yas-setup.elc
 .spacemacs.d/.spacemacs.env
+zsh/pyenv_profile
+zsh/pyenv_zshrc

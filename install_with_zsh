@@ -13,6 +13,11 @@ INDENT=""
 # zsh
 setup_zsh $SYSTEM
 
+# Programming languages
+INDENT=""
+_installer_log "🗣 Installing languages" "green" "bold"
+INDENT="    "
+setup_python
 # coomand line
 INDENT=""
 _installer_log "👾 Command Line" "green" "bold"

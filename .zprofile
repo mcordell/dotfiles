@@ -14,3 +14,5 @@ fi
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
+
+[ -f ~/.zsh/pyenv_profile ] && source ~/.zsh/pyenv_profile
