@@ -49,4 +49,4 @@ install_ripgrep
 INDENT=""
 install_gui_programs $SYSTEM
 
-[ -f post_install.zsh ] && _installer_log "Close terminal / log off. cd back to this directory and source the post_install.zsh file" "yellow"
+[ -f ~/.dotfiles/post_install.zsh ] && _installer_log "Close terminal / log off. cd back to this directory and source the post_install.zsh file" "yellow"

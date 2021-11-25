@@ -18,7 +18,7 @@ _install_neovim () {
 
 	_install_neovim_plugins
 
-	tee -a post_install.zsh << EOF > /dev/null
+	tee -a ~/.dotfiles/post_install.zsh << EOF > /dev/null
 if [[ -z \$PYTHON_VERSION ]]; then
 echo "PYTHON_VERSION not set, set and re-run script"
 exit;
