@@ -24,7 +24,7 @@ _install_linux_essential_cli () {
 		'gpg'
 	)
 	local wanted=($universal $linux_specific)
-	local have=(${=$(apt-get list --installed | cut -f 1 -d "/")})
+	local have=(${=$(apt list --installed | cut -f 1 -d "/")})
 	local need=(${wanted:|have})
 
 	if [ ${#need[@]} -eq 0 ]; then
@@ -50,6 +50,7 @@ install_cli_essentials () {
 		  _install_macos_essential_cli
 	  ;;
 		Linux*)
+		  _install_linux_essential_cli
 	  ;;
   esac
 }
