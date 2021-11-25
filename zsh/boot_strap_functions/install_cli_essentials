@@ -36,6 +36,7 @@ _install_linux_essential_cli () {
 
 install_cli_essentials () {
 	universal=(
+		'sqlite3'
 		'tmux'
 		'pandoc'
 		'ispell'
