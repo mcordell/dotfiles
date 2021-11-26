@@ -13,6 +13,17 @@ _system () {
   echo $SYSTEM
 }
 
+_post_install_log () {
+  local msg=$1
+  if [[ -z $2 ]]; then
+	local color="blue"
+  else
+	local color=$2
+  fi
+
+  echo $fg[$color] "$msg" $reset_color >> "post_install.log"
+}
+
 _installer_log () {
   local msg=$1
 

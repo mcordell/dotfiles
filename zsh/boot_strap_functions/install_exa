@@ -9,6 +9,9 @@ _install_exa () {
 		Linux*)
 		  _installer_log "Installing linux exa" "green"
 		  sudo apt-get install -y exa
+		  if [[ ! $? ]]; then
+			 _post_install_log "exa not installed properly" "red"
+		  fi
 	  ;;
 	esac
 }
