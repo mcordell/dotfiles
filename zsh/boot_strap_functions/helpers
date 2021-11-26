@@ -25,6 +25,7 @@ _post_install_log () {
 }
 
 _last_command_log () {
+  result=$?
   if [[ -z $2 ]]; then
 	local color="blue"
 	local success="Installed $1 successfully"
@@ -34,7 +35,7 @@ _last_command_log () {
 	local failure=$2
   fi
 
-  if [[ $? == 0 ]]; then
+  if [[ $result == 0 ]]; then
 	_installer_log $success "green"
   else
 	_installer_log $failure "red"
