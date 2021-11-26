@@ -22,7 +22,7 @@ _install_doom () {
 		_installer_log "Doom already installed" "$reset_color"
 	else
 		git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-		~/.emacs.d/bin/doom/install
+		~/.emacs.d/bin/doom install
 	fi
 }
 
