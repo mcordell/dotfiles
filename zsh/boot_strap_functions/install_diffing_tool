@@ -6,6 +6,7 @@ _install_delta () {
 		  brew install git-delta less
 	  ;;
 		Linux*)
+		  _installer_log "Can't install delta" "$reset_color"
 		  _installer_log "Install linux delta: https://github.com/dandavison/delta#installation" "yellow"
 	  ;;
 	esac

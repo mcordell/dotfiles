@@ -51,6 +51,7 @@ _setup_pyenv () {
 			git clone https://github.com/pyenv/pyenv.git ~/.pyenv >> raw_install.log 2>&1
 			_last_command_log "pyenv"
 			cd ~/.pyenv && src/configure >> raw_install.log 2>&1 && make -C src >> raw_install.log 2>@1
+			sudo -v
 			_setup_pyenv_on_linux
 			PYENV_COMMAND=~/.pyenv/bin/pyenv
 			git clone https://github.com/pyenv/pyenv-virtualenv.git $($PYENV_COMMAND root)/plugins/pyenv-virtualenv >> raw_install.log 2>&1

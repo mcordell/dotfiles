@@ -22,8 +22,11 @@ _install_doom () {
 	if [[ -f ~/.emacs.d/bin/doom ]]; then
 		_installer_log "Doom already installed" "$reset_color"
 	else
-		git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+		git clone https://github.com/hlissner/doom-emacs ~/.emacs.d >> raw_install.log 2>&1
+		_last_command_log "doom emacs"
+		_installer_log "Running doom install, this is gonna take awhile..."
 		~/.emacs.d/bin/doom install >> raw_install.log 2>&1
+		_last_command_log "doom install"
 	fi
 }
 
