@@ -11,7 +11,7 @@ _install_powerline_mac () {
 }
 
 _install_powerline_linux () {
-  if [ -z `apt-get list --installed | cut -f 1 -d "/" | grep "fonts-powerline"` ]
+  if dpkg -l powerline-fonts >> raw_install.log 2>&1;
   then
 	  _installer_log "Installing powerline fonts" "green"
 	  sudo apt-get install "fonts-powerline" >> raw_install.log 2>&1;
