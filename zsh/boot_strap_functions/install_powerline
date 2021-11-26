@@ -14,7 +14,8 @@ _install_powerline_linux () {
   if [ -z `apt-get list --installed | cut -f 1 -d "/" | grep "fonts-powerline"` ]
   then
 	  _installer_log "Installing powerline fonts" "green"
-	  sudo apt-get install "fonts-powerline"
+	  sudo apt-get install "fonts-powerline" >> raw_install.log 2>&1;
+	  _last_command_log "powerline fonts"
   else
 	  _installer_log "powerline fonts already installed" "$reset_color"
   fi
