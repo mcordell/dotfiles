@@ -1,0 +1,18 @@
+# vim: set ft=zsh:
+
+_install_jq () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac jq" "green"
+		  brew install jq
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux jq" "green"
+		  sudo apt-get install -y jq
+	  ;;
+	esac
+}
+
+install_jq () {
+  _which_check "jq" "_install_jq"
+}

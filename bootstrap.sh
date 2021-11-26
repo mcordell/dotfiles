@@ -34,17 +34,6 @@ function installSpacemacs() {
 	ln -s $SCRIPTPATH/emacs.d/private ~/.emacs.d/private
 }
 
-function installFd () {
-	case $SYSTEM in
-		Darwin*)
-			brew install fd
-	    ;;
-		Linux*)
-			echo "Cant install fd from package manager: go here: https://github.com/sharkdp/fd/#on-ubuntu" >> postinstall.log
-		;;
-	esac
-}
-
 function installFancyDiff () {
 	case $SYSTEM in
 		Darwin*)
@@ -54,33 +43,6 @@ function installFancyDiff () {
 			echo "Trying to install fancy-diff to /usr/local/bin make sure thats in the path" >> postinstall.log
 			curl -o /usr/local/bin/diff-so-fancy https://raw.githubusercontent.com/so-fancy/diff-so-fancy/63568e814f7e71b01f137eeb82792efe6ea6a0b9/third_party/build_fatpack/diff-so-fancy
 			chmod +x /usr/local/bin/diff-so-fancy
-		;;
-	esac
-}
-
-function installFzf () {
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
-}
-
-function installTldr () {
-	case $SYSTEM in
-		Darwin*)
-			brew install tldr
-	    ;;
-		Linux*)
-			sudo pip install tldr
-		;;
-	esac
-}
-
-function installJq () {
-	case $SYSTEM in
-		Darwin*)
-			brew install jq
-	    ;;
-		Linux*)
-			sudo apt-get install jq
 		;;
 	esac
 }
@@ -98,13 +60,7 @@ function setupTmux() {
 setupPackageManager
 installEssentials
 installGUIprograms
-installBat
 installFancyDiff
-installFd
-installFzf
-installRipgrep
-installTldr
-installJq
 installVisual
 setupZsh
 setupTmux

@@ -1,0 +1,22 @@
+# vim: set ft=zsh:
+
+_install_fd () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac fd" "green"
+		  brew install fd
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux fd" "green"
+		  sudo apt-get install -y fd-find
+		  sudo ln -s $(which fdfind) /usr/local/bin/fd
+	  ;;
+	esac
+}
+
+install_fd () {
+  _which_check "fd" "_install_fd"
+}
+
+
+

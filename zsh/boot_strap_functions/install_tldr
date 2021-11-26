@@ -1,0 +1,19 @@
+# vim: set ft=zsh:
+
+_install_tldr () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac tealdeer" "green"
+		  brew install tealdeer
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux tldr" "green"
+		  sudo apt-get install -y tldr
+	  ;;
+	esac
+	tldr --update
+}
+
+install_tldr () {
+  _which_check "tldr" "_install_tldr"
+}

@@ -1,0 +1,17 @@
+# vim: set ft=zsh:
+_install_fzf () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac fzf" "green"
+		  brew install fzf
+	  ;;
+		Linux*)
+		  _installer_log "Installing linux fzf" "green"
+		  sudo apt-get install -y fzf
+	  ;;
+	esac
+}
+
+install_fzf () {
+  _which_check "fzf" "_install_fzf"
+}

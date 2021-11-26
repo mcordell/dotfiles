@@ -1,0 +1,16 @@
+# vim: set ft=zsh:
+_install_delta () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac delta" "green"
+		  brew install git-delta less
+	  ;;
+		Linux*)
+		  _installer_log "Install linux delta: https://github.com/dandavison/delta#installation" "yellow"
+	  ;;
+	esac
+}
+
+install_diffing_tool () {
+  _which_check "delta" "_install_delta"
+}

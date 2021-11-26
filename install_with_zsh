@@ -38,12 +38,19 @@ INDENT="  "
 _installer_log "🏃 Installing Command Line improvements"
 INDENT="      "
 install_bat
+install_exa
+install_fd
+install_diffing_tool
+
 INDENT="  "
 _installer_log "💪 Installing Command Line enhancers"
 INDENT="      "
 install_direnv
 install_jump_tool
 install_ripgrep
+install_fzf
+install_jq
+install_tldr
 
 # GUI
 INDENT=""
