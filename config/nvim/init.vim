@@ -27,7 +27,6 @@ Plug 'tpope/vim-surround'
 Plug 'benekastah/neomake'
 Plug 'docunext/closetag.vim'
 Plug 'tpope/vim-repeat'
-Plug 'joonty/vim-phpunitqf', { 'for': 'php' }
 Plug 'morhetz/gruvbox'
 Plug 'janko-m/vim-test'
 Plug 'kassio/neoterm'
