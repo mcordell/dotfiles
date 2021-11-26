@@ -1,0 +1,32 @@
+# vim: set ft=zsh:
+
+_install_emacs () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac emacs" "green"
+		  brew tap d12frosted/emacs-plus
+		  brew install emacs-plus
+		  ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+	  ;;
+		Linux*)
+		  _installer_log "Installing emacs" "green"
+		  sudo add-apt-repository ppa:kelleyk/emacs
+		  sudo apt-get update
+		  sudo apt-get install emacs27
+	  ;;
+	esac
+}
+
+_install_doom () {
+	if [[ -f ~/.emacs.d/bin/doom ]]; then
+		_installer_log "Doom already installed" "$reset_color"
+	else
+		git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+		~/.emacs.d/bin/doom/install
+	fi
+}
+
+setup_emacs () {
+  _which_check "emacs" "_install_emacs"
+  _install_doom
+}

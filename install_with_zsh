@@ -19,12 +19,6 @@ _installer_log "🗣 Installing languages" "green" "bold"
 INDENT="    "
 setup_python
 
-# Editors
-INDENT=""
-_installer_log "✍️ Editor" "green" "bold"
-INDENT="    "
-install_neovim
-
 # coomand line
 INDENT=""
 _installer_log "👾 Command Line" "green" "bold"
@@ -51,6 +45,13 @@ install_ripgrep
 install_fzf
 install_jq
 install_tldr
+
+# Editors
+INDENT=""
+_installer_log "✍️ Editor" "green" "bold"
+INDENT="    "
+install_neovim
+setup_emacs
 
 # GUI
 INDENT=""
