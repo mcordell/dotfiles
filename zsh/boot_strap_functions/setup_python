@@ -6,16 +6,21 @@ _install_latest_python () {
 	  PYENV_COMMAND=pyenv
 	fi
 	latest=$($PYENV_COMMAND install --list | grep --extended-regexp "^\s*[0-9][0-9.]*[0-9]\s*$" | tail -1 | xargs)
+	_installer_log "Installing latest python: $latest"
 	if $PYENV_COMMAND install $latest; then
 	   echo "PYTHON_VERSION=$latest" >> ~/.dotfiles/post_install.zsh
 	   echo "pyenv global $latest" >> ~/.zsh/pyenv_zshrc
+   else
+	   echo "Latest python install failed"
    fi
 }
 
 _install_pyenv_deps_linux () {
+	_installer_log "Installing python dependencies"
 	sudo apt-get -y install make build-essential libssl-dev zlib1g-dev \
 	libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-	libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+	libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev >> raw_install.log 2>&1
+	_last_command_log "pyton deps"
 }
 
 _setup_pyenv_on_linux () {
