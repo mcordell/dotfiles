@@ -9,10 +9,11 @@ _install_emacs () {
 		  ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
 	  ;;
 		Linux*)
-		  _installer_log "Installing emacs" "green"
-		  sudo add-apt-repository ppa:kelleyk/emacs
-		  sudo apt-get update
-		  sudo apt-get install emacs27
+		  _installer_log "Installing emacs" "$reset_color"
+		  sudo add-apt-repository -y ppa:kelleyk/emacs >> raw_install.log 2>&1
+		  sudo apt-get update >> raw_install.log 2>&1
+		  sudo apt-get install -y emacs27 >> raw_install.log 2>&1
+		  _last_command_log "emacs"
 	  ;;
 	esac
 }
@@ -22,7 +23,7 @@ _install_doom () {
 		_installer_log "Doom already installed" "$reset_color"
 	else
 		git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-		~/.emacs.d/bin/doom install
+		~/.emacs.d/bin/doom install >> raw_install.log 2>&1
 	fi
 }
 

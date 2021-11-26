@@ -24,6 +24,14 @@ _post_install_log () {
   echo $fg[$color] "$msg" $reset_color >> "post_install.log"
 }
 
+_last_command_log () {
+  if [[ $? ]]; then
+	_installer_log "Installed $1 successfully" "green"
+  else
+	_installer_log "$1 install failed, check the raw_install.log" "red"
+  fi
+}
+
 _installer_log () {
   local msg=$1
 
