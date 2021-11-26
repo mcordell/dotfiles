@@ -7,8 +7,9 @@ _install_ripgrep () {
 		  brew install ripgrep
 	  ;;
 		Linux*)
-		  _installer_log "Installing linux ripgrep" "green"
-		  sudo apt install -o Dpkg::Options::="--force-overwrite" -y ripgrep
+		  _installer_log "Installing linux ripgrep" "$reset_color"
+		  sudo apt install -o Dpkg::Options::="--force-overwrite" -y ripgrep >> raw_install.log 2>&1
+		  _last_command_log "ripgrep"
 	  ;;
 	esac
 }

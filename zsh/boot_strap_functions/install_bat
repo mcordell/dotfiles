@@ -7,8 +7,9 @@ _install_bat () {
 		  brew install bat
 	  ;;
 		Linux*)
-		  _installer_log "Installing linux bat" "green"
-		  sudo apt-get install -y bat
+		  _installer_log "Installing linux bat" "$reset_color"
+		  sudo apt-get install -y bat >> raw_install.log 2>&1
+		  _last_command_log "bat"
 		  sudo ln -s $(which batcat) /usr/local/bin/bat
 	  ;;
 	esac

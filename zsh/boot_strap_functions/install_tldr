@@ -7,8 +7,9 @@ _install_tldr () {
 		  brew install tealdeer
 	  ;;
 		Linux*)
-		  _installer_log "Installing linux tldr" "green"
-		  sudo apt-get install -y tldr
+		  _installer_log "Installing linux tldr" "$reset_color"
+		  sudo apt-get install -y tldr >> raw_install.log 2>&1
+		  _last_command_log "tldr"
 	  ;;
 	esac
 	tldr --update

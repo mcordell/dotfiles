@@ -5,8 +5,9 @@ _install_direnv () {
 		  brew install direnv
 	  ;;
 		Linux*)
-		  _installer_log "Installing linux bat" "green"
-		  sudo apt-get install -y direnv
+		  _installer_log "Installing linux direnv" "$reset_color"
+		  sudo apt-get install -y direnv >> raw_install.log 2>&1
+		  _last_command_log "direnv"
 	  ;;
   esac
 }

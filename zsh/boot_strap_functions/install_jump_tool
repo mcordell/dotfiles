@@ -7,8 +7,9 @@ _install_zoxide () {
 		  brew install zoxide
 	  ;;
 		Linux*)
-		  _installer_log "Installing linux zoxide" "green"
-		  sudo apt-get install -y zoxide
+		  _installer_log "Installing linux zoxide" "$reset_color"
+		  sudo apt-get install -y zoxide >> raw_install.log 2>&1
+		  _last_command_log "zoxide"
 	  ;;
 	esac
 }
