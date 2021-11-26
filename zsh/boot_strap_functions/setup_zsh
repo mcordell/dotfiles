@@ -10,7 +10,7 @@ _setup_zprofile_on_macos () {
 _setup_prezto () {
 	if [[ ! -d "$ZPREZTODIR" ]]; then
 		_installer_log "Installing prezto" "green"
-		git clone --recursive https://github.com/sorin-ionescu/prezto.git "$ZPREZTODIR"
+		git clone --recursive https://github.com/sorin-ionescu/prezto.git "$ZPREZTODIR" >> raw_install.log 2>&1
 		ln -s "$ZPREZTODIR"/runcoms/zlogin  "${ZDOTDIR:-$HOME}"/.zlogin
 		ln -s "$ZPREZTODIR"/runcoms/zlogout "${ZDOTDIR:-$HOME}"/.zlogout
 		mkdir $ZPREZTODIR/contrib
