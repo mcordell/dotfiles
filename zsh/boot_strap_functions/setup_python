@@ -35,11 +35,10 @@ _setup_pyenv_on_linux () {
 	echo 'eval "$(pyenv init -)"' >> ~/.zsh/pyenv_zshrc
 }
 
-
 _setup_pyenv () {
 	case $(_system) in
 		Darwin*)
-			_installer_log "Installing pyenv for mac" "green"
+			_installer_log "Installing pyenv for mac" "$reset_color"
 			brew install openssl readline sqlite3 xz zlib
 			brew install pyenv pyenv-virtualenvwrapper pyenv-virtualenv
 			echo 'eval "$(pyenv init --path)"' >> ~/.zsh/pyenv_profile
@@ -47,11 +46,11 @@ _setup_pyenv () {
 			_install_latest_python
 		;;
 		Linux*)
-			_installer_log "Installing pyenv for linux" "green"
+			_installer_log "Installing pyenv for linux" "$reset_color"
 			_install_pyenv_deps_linux
 			git clone https://github.com/pyenv/pyenv.git ~/.pyenv >> raw_install.log 2>&1
 			_last_command_log "pyenv"
-			cd ~/.pyenv && src/configure && make -C src
+			cd ~/.pyenv && src/configure >> raw_install.log 2>&1 && make -C src >> raw_install.log 2>@1
 			_setup_pyenv_on_linux
 			PYENV_COMMAND=~/.pyenv/bin/pyenv
 			git clone https://github.com/pyenv/pyenv-virtualenv.git $($PYENV_COMMAND root)/plugins/pyenv-virtualenv >> raw_install.log 2>&1
