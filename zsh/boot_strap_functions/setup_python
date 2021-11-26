@@ -7,7 +7,7 @@ _install_latest_python () {
 	fi
 	latest=$($PYENV_COMMAND install --list | grep --extended-regexp "^\s*[0-9][0-9.]*[0-9]\s*$" | tail -1 | xargs)
 	_installer_log "Installing latest python: $latest"
-	if $PYENV_COMMAND install $latest; then
+	if $PYENV_COMMAND install $latest >> raw_install.log 2>&1; then
 	   echo "PYTHON_VERSION=$latest" >> ~/.dotfiles/post_install.zsh
 	   echo "pyenv global $latest" >> ~/.zsh/pyenv_zshrc
    else
@@ -49,12 +49,12 @@ _setup_pyenv () {
 		Linux*)
 			_installer_log "Installing pyenv for linux" "green"
 			_install_pyenv_deps_linux
-			git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+			git clone https://github.com/pyenv/pyenv.git ~/.pyenv >> raw_install.log 2>&1
+			_last_command_log "pyenv"
 			cd ~/.pyenv && src/configure && make -C src
 			_setup_pyenv_on_linux
 			PYENV_COMMAND=~/.pyenv/bin/pyenv
-			git clone https://github.com/pyenv/pyenv-virtualenv.git $($PYENV_COMMAND root)/plugins/pyenv-virtualenv
-
+			git clone https://github.com/pyenv/pyenv-virtualenv.git $($PYENV_COMMAND root)/plugins/pyenv-virtualenv >> raw_install.log 2>&1
 			_install_latest_python
 		;;
 	esac
