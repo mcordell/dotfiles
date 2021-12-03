@@ -149,9 +149,9 @@ noremap <space>t :FZF<CR>
 
 noremap <space>n :NERDTreeToggle <CR>
 "noremap <C-t> :NERDTreeToggle <CR>
-noremap <space>gs :Gstatus<CR>
-noremap <space>gc :Gcommit<CR>
-noremap <space>gd :Gdiff<CR>
+noremap <space>gs :Git<CR>
+noremap <space>gc :Git commit<CR>
+noremap <space>gd :Gdiffsplit<CR>
 noremap <space>s  :Rg <SPACE>
 noremap <space>j  :Test run unit<CR>
 
