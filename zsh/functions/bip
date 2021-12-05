@@ -1,0 +1,17 @@
+# vim: set ft=zsh:
+
+bip() {
+	if [[ -z $1 ]]; then
+		query="/.*/"
+	else
+		query=$1
+	fi
+  local inst=$(brew search --formula $query | fzf -m)
+
+  if [[ $inst ]]; then
+    for prog in $(echo $inst);
+    do; brew install $prog; done;
+  fi
+}
+
+
