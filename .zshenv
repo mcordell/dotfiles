@@ -46,7 +46,6 @@ export EDITOR='nvim'
 export BUNDLER_EDITOR='nvim'
 export VISUAL='nvim'
 
-source ~/.zsh/zsh_aliases
 
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent

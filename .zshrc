@@ -1,4 +1,5 @@
 source ~/.zsh/zprezto_init
+source ~/.zsh/zsh_aliases
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
