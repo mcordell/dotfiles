@@ -5,6 +5,7 @@ _install_macos_essential_cli () {
 		'coreutils'
 		'pinentry-mac'
 		'gnupg'
+		'gnu-sed'
 	)
 	wanted=($universal $mac_specific)
 	have=(${=$(brew list --formula)})
