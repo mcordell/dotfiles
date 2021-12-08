@@ -1,10 +1,10 @@
 # vim: set ft=zsh:
-_install_powerline_mac () {
+_install_fonts_mac () {
   if [ -z `brew list | grep "font-inconsolata-dz-for-powerline"` ]
   then
 	  _installer_log "Installing incosolata-dz powerline" "green"
 	  brew tap homebrew/cask-fonts
-	  brew install font-inconsolata-dz-for-powerline
+	  brew install font-inconsolata-dz-for-powerline font-fira-code-nerd-font
   else
 	  _installer_log "incosolata-dz powerline already installed" "$reset_color"
   fi
@@ -22,10 +22,10 @@ _install_powerline_linux () {
 }
 
 
-install_powerline () {
+install_fonts () {
   case $(_system) in
 		Darwin*)
-			_install_powerline_mac
+			_install_fonts_mac
 	  ;;
 		Linux*)
 			_install_powerline_linux

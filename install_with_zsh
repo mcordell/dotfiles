@@ -25,7 +25,7 @@ _installer_log "👾 Command Line" "green" "bold"
 INDENT="  "
 _installer_log "🎨 Visual"
 INDENT="      "
-install_powerline
+install_fonts
 INDENT="  "
 install_cli_essentials
 INDENT="  "

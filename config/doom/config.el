@@ -18,7 +18,7 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Inconsolata for Powerline"
+(setq doom-font (font-spec :family "Fira Code"
                            :size 18
                            :weight 'normal) doom-variable-pitch-font (font-spec :family
                                                                                 "Droid Sans Mono for Powerline"
