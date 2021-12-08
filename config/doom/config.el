@@ -75,6 +75,11 @@
 
 %U
 %a
+")                                                 ("i" "idea" entry (file "~/org/inbox.org")
+                                                   "* %?
+
+%U
+%a
 ")
                                                   ("r" "review" entry (file+headline
                                                                        "~/org/qcentrix/qcentrix.org"
