@@ -5,6 +5,21 @@ autoload colors is-at-least
 colors
 INDENT=""
 
+_upgrade_brew_packages() {
+	_update_brew
+	outdated=$(brew outdated)
+	if [[ -z $outdated ]]; then
+		_installer_log "No brew package updates" "$reset_color"
+	else
+		_installer_log "Installing updates: \n $outdated"
+		brew upgrade
+	fi
+}
+
+_update_brew() {
+	brew update
+}
+
 _system () {
   if [[ -z $SYSTEM ]]; then
 	SYSTEM=$(uname)
