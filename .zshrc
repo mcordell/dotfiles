@@ -31,3 +31,10 @@ if which "zoxide" &> /dev/null; then
 	eval "$(zoxide init zsh)"
 fi
 
+if [ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]; then
+	. /opt/homebrew/opt/asdf/libexec/asdf.sh
+fi
+
+if [ -f "/usr/local/opt/asdf/libexec/asdf.sh" ]; then
+	. /usr/local/opt/asdf/libexec/asdf.sh
+fi
