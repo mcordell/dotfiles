@@ -8,5 +8,6 @@ _installer_log "Updating doom" "green" "bold"
 doom upgrade -f
 _installer_log "Updating dotfiles" "green" "bold"
 ~/.zsh/dot/dot.sh pull
+dot set
 _installer_log "Updating neovim" "green" "bold"
 nvim --headless +PlugUpdate +q +q
