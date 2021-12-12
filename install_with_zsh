@@ -53,6 +53,9 @@ INDENT="    "
 install_neovim
 setup_emacs
 
+# Languages
+install_asdf
+
 # GUI
 INDENT=""
 install_gui_programs $SYSTEM
