@@ -5,6 +5,19 @@ autoload colors is-at-least
 colors
 INDENT=""
 
+_install_brew_list() {
+	local empty_message="Nothing to install with brew"
+
+	have=(${=$(brew list --formula)})
+	need=(${wanted:|have})
+
+	if [ ${#need[@]} -eq 0 ]; then
+	    _installer_log $empty_message "$reset_color"
+	else
+		brew install $need
+	fi
+}
+
 _upgrade_brew_packages() {
 	_update_brew
 	outdated=$(brew outdated)
