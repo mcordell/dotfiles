@@ -13,6 +13,9 @@ INDENT=""
 # zsh
 setup_zsh $SYSTEM
 
+# tmux
+setup_tmux
+
 # Programming languages
 INDENT=""
 _installer_log "🗣 Installing languages" "green" "bold"

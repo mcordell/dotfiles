@@ -49,7 +49,9 @@ config/doom, ~/.config/doom
 .gitconfig, .gitconfig
 
 # tmux
-.tmux.conf, .tmux.conf
+.tmux.conf.local,.tmux.conf.local
+
+# asdf
 .asdfrc,.asdfrc
 global-tool-versions,.tool-versions
 .default-gems,.default-gems
