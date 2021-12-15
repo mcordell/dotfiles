@@ -51,4 +51,5 @@ config/doom, ~/.config/doom
 # tmux
 .tmux.conf, .tmux.conf
 .asdfrc,.asdfrc
-.tool-versions,.tool-versions
+global-tool-versions,.tool-versions
+.default-gems,.default-gems

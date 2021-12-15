@@ -16,3 +16,4 @@ custom_plan.rb
 .gemrelease
 .rubocop-*
 .stfolder
+.tool-versions
