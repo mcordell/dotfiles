@@ -20,11 +20,6 @@ source $HOME/.zsh/dot/dot.sh
 fpath=( "$HOME/.zsh/functions" "${fpath[@]}" )
 autoload -U $fpath[1]/*(.:t)
 
-# direnv
-if which "direnv" &> /dev/null; then
-	export DIRENV_LOG_FORMAT=""
-	eval "$(direnv hook zsh)"
-fi
 
 #zoxide (jump tool)
 if which "zoxide" &> /dev/null; then
@@ -33,6 +28,8 @@ fi
 
 if [ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]; then
 	. /opt/homebrew/opt/asdf/libexec/asdf.sh
+	eval "$(asdf exec direnv hook zsh)"
+	direnv() { asdf exec direnv "$@"; }
 fi
 
 if [ -f "/usr/local/opt/asdf/libexec/asdf.sh" ]; then

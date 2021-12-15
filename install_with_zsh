@@ -42,7 +42,6 @@ install_diffing_tool
 INDENT="  "
 _installer_log "💪 Installing Command Line enhancers"
 INDENT="      "
-install_direnv
 install_jump_tool
 install_ripgrep
 install_fzf

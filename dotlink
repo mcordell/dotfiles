@@ -55,3 +55,6 @@ config/doom, ~/.config/doom
 .asdfrc,.asdfrc
 global-tool-versions,.tool-versions
 .default-gems,.default-gems
+
+#direnv
+config/direnv, ~/.config/direnv
