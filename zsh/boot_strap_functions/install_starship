@@ -40,7 +40,7 @@ _install_starship () {
 		Linux*)
 		  _installer_log "No installer for starship on linux. Goto: https://:e
 		  Installing linux starship" "$reset_color"
-          PLATFORM="unknown-linux-musl" ;;
+          PLATFORM="unknown-linux-musl"
 
 		  if [ -z "${ARCH-}" ]; then
 		    ARCH="$(detect_arch)"
