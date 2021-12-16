@@ -19,6 +19,7 @@ setup_tmux
 # Programming languages
 INDENT=""
 _installer_log "🗣 Installing languages" "green" "bold"
+install_asdf
 INDENT="    "
 setup_python
 
@@ -56,9 +57,6 @@ _installer_log "✍️ Editor" "green" "bold"
 INDENT="    "
 install_neovim
 setup_emacs
-
-# Languages
-install_asdf
 
 # GUI
 INDENT=""

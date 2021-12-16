@@ -13,6 +13,14 @@ _install_asdf_dependencies() {
 	)
 
 	wanted=($node_specific $ruby_specific elixir_specific)
+	have=(${=$(brew list --formula)})
+	need=(${wanted:|have})
+
+	if [ ${#need[@]} -eq 0 ]; then
+	    _installer_log "All essential CLI already installed" "$reset_color"
+	else
+		brew install $need
+	fi
 }
 
 _install_asdf_plugins() {
@@ -21,6 +29,7 @@ _install_asdf_plugins() {
 	asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
 	asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 	asdf plugin add python https://github.com/danhper/asdf-python.git
+	asdf plugin add direnv https://github.com/asdf-community/asdf-direnv.git
 }
 
 _install_asdf () {
