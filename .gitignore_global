@@ -17,3 +17,4 @@ custom_plan.rb
 .rubocop-*
 .stfolder
 .tool-versions
+.envrc
