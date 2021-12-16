@@ -29,6 +29,8 @@ INDENT="  "
 _installer_log "🎨 Visual"
 INDENT="      "
 install_fonts
+install_starship
+
 INDENT="  "
 install_cli_essentials
 INDENT="  "

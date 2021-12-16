@@ -1,0 +1,61 @@
+# vim: set ft=zsh:
+
+detect_arch() {
+  arch="$(uname -m | tr '[:upper:]' '[:lower:]')"
+
+  case "${arch}" in
+    amd64) arch="x86_64" ;;
+    armv*) arch="arm" ;;
+    arm64) arch="aarch64" ;;
+  esac
+
+  # `uname -m` in some cases mis-reports 32-bit OS as 64-bit, so double check
+  if [ "${arch}" = "x86_64" ] && [ "$(getconf LONG_BIT)" -eq 32 ]; then
+    arch=i686
+  elif [ "${arch}" = "aarch64" ] && [ "$(getconf LONG_BIT)" -eq 32 ]; then
+    arch=arm
+  fi
+
+  printf '%s' "${arch}"
+}
+
+detect_target() {
+  arch="$1"
+  platform="$2"
+  target="$arch-$platform"
+
+  if [ "${target}" = "arm-unknown-linux-musl" ]; then
+    target="${target}eabihf"
+  fi
+
+  printf '%s' "${target}"
+}
+
+_install_starship () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac starship" "green"
+		  brew install starship
+	  ;;
+		Linux*)
+		  _installer_log "No installer for starship on linux. Goto: https://:e
+		  Installing linux starship" "$reset_color"
+          PLATFORM="unknown-linux-musl" ;;
+
+		  if [ -z "${ARCH-}" ]; then
+		    ARCH="$(detect_arch)"
+		  fi
+		  TARGET="$(detect_target "${ARCH}" "${PLATFORM}")"
+	      URL="https://github.com/starship/starship/releases/latest/download/starship-${TARGET}.tar.gz"
+		  curl -fL  "${URL}" | tar xz
+		  tool_path="/usr/local/bin/starship"
+  		  mv ./starship "${toolPath}"
+		  chmod +x "${tool_path}"
+		  _last_command_log "starship"
+	  ;;
+	esac
+}
+
+install_starship () {
+  _which_check "startship" "_install_starship"
+}
