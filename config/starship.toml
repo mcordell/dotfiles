@@ -1,7 +1,7 @@
 # Inserts a blank line between shell prompts
-add_newline = true
+add_newline = false
 
-format = "$directory$elixir$ruby$git_branch$character"
+format = "$jobs$directory$elixir$ruby$git_branch$git_metrics$git_commit$git_state$character"
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character]                            # The name of the module we are configuring is "character"
@@ -15,3 +15,10 @@ disabled = true
 full_symbol = "🔋 "
 charging_symbol = "⚡️ "
 discharging_symbol = "💀 "
+
+[git_metrics]
+disabled = false
+
+[git_branch]
+only_attached = true
+style = "bold yellow"
