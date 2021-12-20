@@ -1,46 +1,109 @@
-#!/bin/bash
+#!/bin/dash
 SYSTEM=`uname`
-pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd -P`
-popd > /dev/null
+DOT_REPO="https://github.com/mcordell/dotfiles"
+# DOT_PUSH allows a different push url, in this case we want push to the same
+# location but use ssh to avoid https authing
+DOT_PUSH="git@github.com:mcordell/dotfiles.git"
+DOT_PATH="$HOME/.dotfiles"
 
-function installEssentials () {
-	general_packages=('golang')
-
+setupPackageManager() {
 	case $SYSTEM in
 		Darwin*)
-			specific_packages=(
-			'ruby-install' 'chruby'
-			'golang')
-			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
-			eval $PKG_MANAGER' install '`join ' ' "${packages[@]}"`
+		echo "Allo osx"
+		setupCommandLineTools
+		installBrew
+		ensureBrew
+		brew tap homebrew/cask-versions
+		brew update
+;;
+		Linux*)
+		echo "Allo linux"
+		sudo apt-get install -y software-properties-common
+		sudo apt-get update
+	;;
+	esac;
+}
+
+ensureBrew() {
+	if [ -z `which brew | grep -v 'not found'` ]
+	then
+		echo "Brew not present, aborting."
+		exit
+	fi;
+}
+
+setupCommandLineTools() {
+	if xcode-select -p 1>/dev/null
+	then
+		echo "Xcode command line installed"
+	else
+		echo "Installing Xcode command line tools"
+		xcode-select --install
+	fi;
+}
+
+installBrew() {
+	if [ -z `which brew | grep -v 'not found'` ]
+	then
+		echo "getting brew"
+		ruby \
+		-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
+		</dev/null
+	else
+		echo "We already have brew"
+	fi;
+}
+
+installEssentials() {
+	case $SYSTEM in
+		Darwin*)
+			brew install zsh git
 	    ;;
 			Linux*)
-			specific_packages=('python-pip')
-			packages=( "${general_packages[@]}" "${specific_packages[@]}" )
-			eval $PKG_MANAGER' install -y '`join ' ' "${packages[@]}"`
+			sudo apt-get install -y zsh git
 		;;
-	esac
+	esac;
 }
 
-function setupConfig() {
-	mkdir $HOME/.config
-	ln -s "$SCRIPTPATH/config/wtf" $HOME/.config/wtf
+setupZsh() {
+	case $SYSTEM in
+		Darwin*)
+			ZSH_EXEC=$(brew --prefix)/bin/zsh
+			CURR_SHELL=$(dscl . -read /Users/$USER UserShell | cut -f 2 -d " ")
+			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
+			then
+				echo "Shell already set to $ZSH_EXEC for $USER"
+			else
+				echo "Setting shell to zsh"
+				sudo dscl . -create /Users/$USER UserShell "$ZSH_EXEC"
+				echo "Restart terminal and run install-with-zsh"
+			fi
+	    ;;
+			Linux*)
+			ZSH_EXEC=$(which zsh)
+			CURR_SHELL=$(awk -F: -v user="$USER" '$1 == user {print $NF}' /etc/passwd)
+			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
+			then
+				echo "Shell already set to $ZSH_EXEC for $USER"
+			else
+				echo "Setting shell to zsh"
+				chsh -s "$(which zsh)"
+				echo "Restart terminal and run install-with-zsh"
+			fi
+		;;
+	esac;
 }
 
-function setupTmux() {
-	ln -s "$SCRIPTPATH/.tmux.conf" $HOME/.tmux.conf
-	pip3 install powerline-status
+setupDotfiles() {
+	git clone --recursive $DOT_REPO $DOT_PATH && cd $DOT_PATH
+	git remote set-url --push origin $DOT_PUSH
+	export DOT_REPO
+	export DOT_PATH
+	zsh -c "source $DOT_PATH/zsh/dot/dot.sh; dot_main set"
 }
 
+setupPackageManager
 installEssentials
-setupTmux
-setupConfig
-
-cat postinstall.log
-echo " - Copy the theme from $SCRIPTPATH/iterm into iterm"
-echo " - Install ruby of choice with: ruby-install ruby #.#.#"
-echo " - Install 1Password: https://1password.com/downloads/mac/"
-echo " - Sign in to chrome"
-echo " - Setup GPG at ~/.gnupg"
-echo " - Setup git at ~/.computer_gitconfig"
+setupDotfiles
+setupZsh
