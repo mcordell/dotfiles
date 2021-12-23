@@ -22,3 +22,6 @@ disabled = false
 [git_branch]
 only_attached = true
 style = "bold yellow"
+
+[elixir]
+symbol = "🔮 "
