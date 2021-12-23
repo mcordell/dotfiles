@@ -4,9 +4,9 @@ _install_emacs () {
 	case $(_system) in
 		Darwin*)
 		  _installer_log "Installing mac emacs" "green"
-		  brew tap d12frosted/emacs-plus
-		  brew install emacs-plus
-		  ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+		  brew tap railwaycat/emacsmacport
+		  brew install emacs-mac --with-modules
+		  ln -s $(brew --prefix)/opt/emacs-plus/Emacs.app /Applications/Emacs.app
 	  ;;
 		Linux*)
 		  _installer_log "Installing emacs" "$reset_color"
