@@ -285,6 +285,7 @@ Participants: %^{Participants}
 (after! citar
   (setq citar-bibliography '("~/org/mylibrary/mylibrary.bib"))
   (setq citar-open-note-function 'orb-citar-edit-note)
+  (setq citar-notes-paths "~/org/roam/")
   (setq citar-file-note-org-include '(org-id org-roam-ref))
   (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
