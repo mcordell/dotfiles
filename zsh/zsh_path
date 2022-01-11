@@ -20,8 +20,8 @@ if [ -d "$HOME/.emacs.d/bin" ]; then
 	PATH="$HOME/.emacs.d/bin:$PATH"
 fi
 
-if [ -d "/usr/local/opt/postgresql@9.6/bin" ]; then
-	PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
+if [ -d "/usr/local/opt/postgresql@12/bin" ]; then
+	PATH="/usr/local/opt/postgresql@12/bin:$PATH"
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
