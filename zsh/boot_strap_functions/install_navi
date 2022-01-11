@@ -1,0 +1,18 @@
+# vim: set ft=zsh:
+
+_install_navi () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac navi" "green"
+		  brew install navi
+	  ;;
+		Linux*)
+		  _installer_log "Can't install navi" "$reset_color"
+		  _installer_log "Install linux navi: https://github.com/denisidoro/navi/blob/master/docs/installation.md" "yellow"
+	  ;;
+	esac
+}
+
+install_bat () {
+  _which_check "navi" "_install_navi"
+}

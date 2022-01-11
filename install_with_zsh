@@ -50,6 +50,7 @@ install_ripgrep
 install_fzf
 install_jq
 install_tldr
+install_navi
 
 # Editors
 INDENT=""

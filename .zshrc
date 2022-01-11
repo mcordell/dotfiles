@@ -26,4 +26,8 @@ if which "zoxide" &> /dev/null; then
 	eval "$(zoxide init zsh)"
 fi
 
+if which "navi" &> /dev/null; then
+	eval "$(navi widget zsh)"
+fi
+
 eval "$(starship init zsh)"
