@@ -13,6 +13,6 @@ _install_navi () {
 	esac
 }
 
-install_bat () {
+install_navi () {
   _which_check "navi" "_install_navi"
 }
