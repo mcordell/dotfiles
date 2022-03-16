@@ -1,0 +1,22 @@
+% text
+
+# remove first line
+tail -n +2
+
+# set gpg terminal
+echo UPDATESTARTUPTTY | gpg-connect-agent
+
+# create repo with aws
+aws codecommit create-repository --repository-name REPO_NAME --repository-description "REPO DESCRIPTION" | jq '.repositoryMetadata.cloneUrlSsh' | xargs git remote add amazon
+
+# open cheat sheet for editing
+fd . "$(navi info cheats-path)" | fzf | xargs -I {} nvim "{}"
+
+# current branch
+git rev-parse --abbrev-ref HEAD
+
+# git untracked files
+git ls-files --others --exclude-standard
+
+# preview files
+fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' --multi

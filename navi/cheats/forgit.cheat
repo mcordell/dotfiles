@@ -1,0 +1,30 @@
+% forgit, git, code
+
+# interactive git diff viewer
+gd
+
+# interactive git reset HEAD selector
+grh
+# interactive git checkout file selector
+gcf
+
+# interactive git checkout branch selector
+gcb
+
+# interactive git checkout commit selector
+gco
+
+# interactive git stash viewer
+gss
+
+# interactive git clean selector
+gclean
+
+# interactive git cherry-pick selector
+gcp
+
+# interactive git rebase -i selector
+grb
+
+# interactive fixup
+gfu
