@@ -31,3 +31,5 @@ if which "navi" &> /dev/null; then
 fi
 
 eval "$(starship init zsh)"
+
+. $(brew --prefix asdf)/libexec/asdf.sh
