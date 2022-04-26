@@ -20,3 +20,6 @@ git ls-files --others --exclude-standard
 
 # preview files
 fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' --multi
+
+# rg only list matched files
+rg --files-with-matches <regex>

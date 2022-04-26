@@ -1,0 +1,4 @@
+% macos
+
+# Search and replace within file destructively on mac
+sed -i '' s/<original-text>/<new-text>/g
