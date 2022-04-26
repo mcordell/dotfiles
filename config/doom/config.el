@@ -385,4 +385,3 @@ Participants: %^{Participants}
 
 (setq global-auto-revert-mode t)
 
-(add-to-list 'exec-path "/Users/michael/Code/elixir/elixir-ls/release")
