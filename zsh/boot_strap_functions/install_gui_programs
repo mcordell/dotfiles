@@ -8,7 +8,7 @@ _install_macos_gui_programs () {
 	'fantastical'
 	'firefox'
 	'hammerspoon'
-	'iterm2-nightly'
+	'iterm2-beta'
 	'karabiner-elements'
 	'mailmate'
 	'notion'
