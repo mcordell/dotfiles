@@ -3,6 +3,7 @@
 _install_macos_essential_cli () {
 	mac_specific=(
 		'coreutils'
+		'findutils'
 		'pinentry-mac'
 		'gnupg'
 		'gnu-sed'
@@ -19,11 +20,7 @@ _install_macos_essential_cli () {
 }
 
 _install_linux_essential_cli () {
-	mac_specific=(
-		'coreutils'
-		'pinentry-mac'
-		'gpg'
-	)
+	linux_specific=()
 	local wanted=($universal $linux_specific)
 	local have=(${=$(apt list --installed | cut -f 1 -d "/")})
 	local need=(${wanted:|have})
