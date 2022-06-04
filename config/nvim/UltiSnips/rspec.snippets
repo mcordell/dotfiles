@@ -86,10 +86,7 @@ endglobal
 
 snippet libdesc
 # frozen_string_literal: true
-require '`!p result = path.replace('_spec.rb', '')
-cleaned_path = result.replace('spec/lib/', '')
-snip.rv = cleaned_path
-`'
+
 module `!p path_parts = cleaned_path.split('/')
 class_name = snake_case_humanize(path_parts.pop())
 module_parts = []
@@ -99,7 +96,7 @@ for part in path_parts:
 snip.rv = '::'.join(module_parts)
 `
   RSpec.describe `!p snip.rv = class_name` do
-    subject(:instace) { described_class.new }
+    subject(:instance) { described_class.new }
 
   end
 end
@@ -145,3 +142,5 @@ it 'does something' do
   expect(1).to eq 1
 end
 endsnippet
+
+
