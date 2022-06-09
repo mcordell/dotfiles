@@ -66,6 +66,7 @@
 #+BEGIN_SRC %^{sourcetype}
  %c
 #+END_SRC")
+
                                                   ("t" "Task" entry (file "~/org/todos.org")
                                                    "* TODO %?
  %i
@@ -85,9 +86,10 @@
                                                                        "~/org/qcentrix/qcentrix.org"
                                                                        "Reviews")
                                                    "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
+
                                                   ("o" "one-on-one" entry (file
                                                                            "~/org/qcentrix/qcentrix.org")
-                                                   "* 1-1 %^{Bijal|Sujay|Brad|Brian|Do|Matt|Teo|Grace|Eric} %t
+                                                   "* %^{Bijal|Sujay|Brad|Brian|Do|Matt|Teo|Eric|Steve} 1-1 %t
 %?
 ")
                                                   ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
@@ -95,12 +97,23 @@
 Participants: %^{Participants}
 %?
 ")
-                                                  ("e" "evening" entry (file+olp+datetree
-                                                                        "~/org/journal.org")
-                                                   "* Evening :EVENING:
-** What did you learn today?
-       %?")
-                                                  ("q" "Q-Centrix Note" entry (file
+                                                  ("u" "stand up regulatory" entry (file+headline
+                                                                                     "~/org/qcentrix/projects/regulatory.org"
+                                                                                     "Stand ups"
+                                                                                     )
+                                                   "* %t
+| Person    | Card    | Status |
+|-----------+---------+--------|
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card1}][RRP-%\\2]] | %^{Stage|Peer|Lead|Done} |
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card2}][RRP-%\\5]] | %^{Stage|Peer|Lead|Done} |
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card3}][RRP-%\\8]] | %^{Stage|Peer|Lead|Done} |
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card4}][RRP-%\\11]] | %^{Stage|Peer|Lead|Done} |
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card5}][RRP-%\\14]] | %^{Stage|Peer|Lead|Done} |
+|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card6}][RRP-%\\17]] | %^{Stage|Peer|Lead|Done} |
+"
+                                                   )
+                                                  ("a" "q-centrix task")
+                                                  ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
 ")))
@@ -320,16 +333,34 @@ Participants: %^{Participants}
         (defun as-get-selected-mailmate-message ()
         (do-applescript (concat "tell application \"MailMate\"\n" " set allMessages to messages\n"
                                 " set theMessage to item 1 of allMessages\n"
-                                " return (message url of theMessage) & \"::split::Email\"\n"
+                                " return (message url of theMessage) & \"::split::\" & (name of theMessage)\n"
                                 " end tell\n")))
         (defun org-mac-mailmate-item-get-selected ()
         (interactive)
         (message "Applescript: Getting mailmate message...")
-        (org-mac-paste-applescript-links (as-get-selected-mailmate-message)))
+        (org-mac-link-paste-applescript-links (as-get-selected-mailmate-message)))
 
         (defun org-mac-mailmate-insert-selected ()
         (interactive)
-        (insert (org-mac-mailmate-item-get-selected))))
+        (insert (org-mac-mailmate-item-get-selected)))
+        (defun org-mac-link-applescript-chrome-get-frontmost-url ()
+        "AppleScript to get the links to the frontmost window of the Chrome.app."
+        (let ((result
+                (org-mac-link-do-applescript
+                (concat
+                "set frontmostApplication to path to frontmost application\n"
+                "tell application \"Brave\"\n"
+                "	set theUrl to get URL of active tab of first window\n"
+                "	set theResult to (get theUrl) & \"::split::\" & (get name of window 1)\n"
+                "end tell\n"
+                "activate application (frontmostApplication as text)\n"
+                "set links to {}\n"
+                "copy theResult to the end of links\n"
+                "return links as string\n"))))
+        (replace-regexp-in-string
+        "^\"\\|\"$" "" (car (split-string result "[\r\n]+" t)))))
+
+        )
 
 ;; Keymaps
 
