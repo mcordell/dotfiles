@@ -64,3 +64,5 @@ config/starship.toml, ~/.config/starship.toml
 
 #navi
 navi/cheats, "$HOME/Library/Application Support/navi/cheats"
+
+hammerspoon, ~/.hammerspoon
