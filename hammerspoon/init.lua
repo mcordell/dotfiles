@@ -75,14 +75,15 @@ hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
 
 hs.hotkey.bind(superKey, "C", function()
     source = [[
-      tell application "Google Chrome"
+      tell application "Brave Browser"
       activate
       set theURL to URL of active tab of front window
       set the clipboard to theURL & return
       end tell
       ]]
+
     hs.osascript.applescript(source)
-                                                     end
+end
 )
 hs.hotkey.bind({"cmd", "ctrl"}, "c", function()
     appLauncher.smartLaunchOrFocus("iTerm2")
