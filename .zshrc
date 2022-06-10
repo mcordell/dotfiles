@@ -1,14 +1,20 @@
-source ~/.zsh/zprezto_init
-source ~/.zsh/zsh_aliases
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.zsh_this_computer ] && source ~/.zsh_this_computer
-[ -f ~/.zsh/pyenv_zshrc ] && source ~/.zsh/pyenv_zshrc
-
-source ~/.zsh/gnupg.zsh
+setopt EXTENDED_GLOB
+files=(
+"${HOME}/.zsh/zprezto_init"
+"${HOME}/.zsh/zsh_aliases"
+"${HOME}/.fzf.zsh"
+"${HOME}/.zsh_this_computer"
+"${HOME}/.zsh/pyenv_zshrc"
+"${HOME}/.zsh/gnupg.zsh"
+"${HOME}/.zsh/git_keys"
+)
+for f ($^files(.N)) source $f
+unset files
 
 if [ "$TERM" != "dumb" ]; then
-	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+	export ITERM2_SQUELCH_MARK=1
+	f="${HOME}/.iterm2_shell_integration.zsh"
+	[ -f $f ] && source $f
 fi
 
 source ~/.zsh/plugins/forgit/forgit.plugin.zsh
