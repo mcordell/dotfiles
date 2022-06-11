@@ -23,4 +23,3 @@ _gf() {
 
 fzf-gf-widget() { local result=$(_gf | join-lines); zle reset-prompt; LBUFFER+=$result }
 zle -N fzf-gf-widget
-bindkey '^f' fzf-gf-widget

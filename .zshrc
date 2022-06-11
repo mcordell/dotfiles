@@ -7,6 +7,7 @@ files=(
 "${HOME}/.zsh/pyenv_zshrc"
 "${HOME}/.zsh/gnupg.zsh"
 "${HOME}/.zsh/git_keys"
+"${HOME}/.zsh/zsh_shortcuts"
 )
 for f ($^files(.N)) source $f
 unset files

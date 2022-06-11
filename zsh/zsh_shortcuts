@@ -1,0 +1,2 @@
+bindkey '^f' fzf-gf-widget
+bindkey -s '^s' "rgs\n"
