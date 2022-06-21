@@ -36,7 +36,7 @@ endsnippet
 
 snippet desi "describe instance method" b
 describe '#${1:instance_method}' do
-  subject { described_class.new.$1 }
+  subject { instance.$1 }
 
   it '${2}' do
     ${3}
@@ -86,7 +86,10 @@ endglobal
 
 snippet libdesc
 # frozen_string_literal: true
-
+require 'rails_helper'
+`!p result = path.replace('_spec.rb', '')
+cleaned_path = result.replace('spec/lib/', '')
+`
 module `!p path_parts = cleaned_path.split('/')
 class_name = snake_case_humanize(path_parts.pop())
 module_parts = []
