@@ -291,7 +291,7 @@ Participants: %^{Participants}
   :after org)
 
 (after! oc-csl
-  (setq org-cite-csl-styles-dir "~/.local/share/csl/styles")
+  (setq org-cite-csl-styles-dir "~/Zotero/styles")
   (setq org-cite-csl-locales-dir "~/.local/share/csl/locales")
   )
 
