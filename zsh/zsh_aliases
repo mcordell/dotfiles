@@ -1,46 +1,50 @@
-# Example aliases
+# zsh
 alias zshconfig="vim ~/.zshrc"
 alias reloadz="source ~/.zshrc"
-alias lg='nocorrect git lg'
-alias rspec='nocorrect rspec'
-alias berspec='nocorrect bundle exec rspec'
-alias be='bundle exec'
-alias bp='bundle exec rails_best_practices --format html; open rails_best_practices_output.html'
-alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES'
-alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO'
-alias s='subl .'
-alias v='nvim'
+
+# macOS
 alias desk='cd ~/Desktop'
-alias clear_gemlock='git reset HEAD Gemfile.lock; git checkout -- Gemfile.lock; bundle'
-alias clean_orig='find . -iregex .*\.orig -exec rm -rf {} \;'
-alias gras='git rebase -i --autosquash'
-alias wip='git commit -m "wip"'
+alias hidehidden='defaults write com.apple.finder AppleShowAllFiles NO'
 alias icloud='cd /Users/michael/Library/Mobile\ Documents/com~apple~CloudDocs/'
-alias gap='git add -p'
-alias g='git'
-alias clean_merged='git fetch --prune; git branch --merged master | grep -v "master" | xargs -n 1 git branch -D'
-alias reset_db='./bin/rails db:drop RAILS_ENV=test; ./bin/rails db:create RAILS_ENV=test; ./bin/rails db:migrate RAILS_ENV=test'
-alias jekylserve='./bin/jekyll serve -L -w'
-alias goserve='dev_appserver.py app.yaml'
+alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES'
+
+# ruby/rails
+alias be='bundle exec'
+alias berspec='nocorrect bundle exec rspec'
+alias bp='bundle exec rails_best_practices --format html; open rails_best_practices_output.html'
 alias randpw='openssl rand -base64'
+alias reset_db='./bin/rails db:drop RAILS_ENV=test; ./bin/rails db:create RAILS_ENV=test; ./bin/rails db:migrate RAILS_ENV=test'
+alias rspec='nocorrect rspec'
 
-#glados
-alias sshGlad='ssh 10.20.30.40'
+# git
+alias clean_merged='git fetch --prune; git branch --merged master | grep -v "master" | xargs -n 1 git branch -d'
+alias clean_orig='find . -iregex .*\.orig -exec rm -rf {} \;'
+alias clear_gemlock='git reset head gemfile.lock; git checkout -- gemfile.lock; bundle'
+alias fu="git log --oneline | fzf | awk '{ print \$1 }' | xargs -i{} git commit --fixup={}"
+alias g='git'
+alias gap='git add -p'
+alias gb="git for-each-ref --sort=committerdate refs/heads/ --format='%(refname:short)'"
+alias gras='git rebase -i --autosquash'
+alias lg='nocorrect git lg'
+alias wip='git commit -m "wip"'
 
-alias cat='bat'
-alias preview="fzf --preview 'bat --color \"always\" {}'"
+# fzf
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
+alias preview="fzf --preview 'bat --color \"always\" {}'"
 
-if type nvim >/dev/null 2>&1;then
-	alias vim='nvim'
-fi
-
-#exa
-alias ll='exa -lbF --git'
+# exa
 alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
-alias lx='exa -lbhHigmuSa@ --time-style=long-iso --git --color-scale'
+alias li='exa --icons'
+alias ll='exa -lbF --git'
+alias lld='exa -lbhHFGmuSa --group-directories-first'
+alias llm='exa -lbGF --git --sort=modified'
 alias llt='exa -l --git --tree'
 alias lt='exa --tree --level=2'
-alias llm='exa -lbGF --git --sort=modified'
-alias lld='exa -lbhHFGmuSa --group-directories-first'
-alias li='exa --icons'
+alias lx='exa -lbhHigmuSa@ --time-style=long-iso --git --color-scale'
+
+# default over-rides
+alias cat='bat'
+if type nvim >/dev/null 2>&1;then
+	alias vim='nvim'
+	alias v='nvim'
+fi
