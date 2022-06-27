@@ -296,11 +296,14 @@ Participants: %^{Participants}
   )
 
 (after! citar
-  (setq citar-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (setq org-cite-global-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
   (setq citar-open-note-function 'orb-citar-edit-note)
   (setq citar-notes-paths '("~/org/roam/"))
   (setq citar-file-note-org-include '(org-id org-roam-ref))
-  (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
+
+
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   (setq citar-at-point-function 'embark-act)
@@ -312,6 +315,7 @@ Participants: %^{Participants}
    (link .
            (,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
            ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'citar-icon-dim)))))
+
    ;; Here we define a face to dim non 'active' icons, but preserve alignment
    (defface citar-icon-dim
    '((((background dark)) :foreground "#282c34")
