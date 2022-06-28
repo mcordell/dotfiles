@@ -29,3 +29,9 @@ xargs -P
 
 # xargs by line
 xargs -d $'\n'
+
+# switch branches
+gsb
+
+# clean up branches
+clean_branches
