@@ -36,6 +36,7 @@ zsh, ~/.zsh
 .zshenv, .zshenv
 .zpreztorc, .zpreztorc
 .zprofile, .zprofile
+zsh/zsh_aliases, .zsh_aliases
 zsh/scripts/rgs, /usr/local/bin/rgs
 
 # (neo)Vim
