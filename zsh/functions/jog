@@ -1,3 +1,5 @@
+# vim: set ft=zsh:
+
  jog() {
       sqlite3 $HOME/.histdb/zsh-history.db "
   SELECT
