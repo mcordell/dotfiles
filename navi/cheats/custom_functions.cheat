@@ -1,0 +1,13 @@
+% zsh
+
+# interactive brew search and install
+bip
+
+# simple calculator
+calc
+
+# show and run common commands in this directory
+com
+
+# Look through $PATHs and binaries
+fp

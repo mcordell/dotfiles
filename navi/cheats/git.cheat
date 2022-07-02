@@ -1,0 +1,18 @@
+% git
+
+# current branch
+git rev-parse --abbrev-ref HEAD
+
+# git untracked files
+git ls-files --others --exclude-standard
+
+# switch branches
+gsb
+
+# clean up branches
+clean_branches
+
+# rspec mod
+bundle exec rspec <modified_specs>
+
+$ modified_specs: git ls-files --others --exclude-standard | grep '_spec.rb'; git diff --name-only | grep '_spec.rb'
