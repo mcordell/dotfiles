@@ -34,8 +34,11 @@ if [ -f '/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/He
 	PATH="/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers:$PATH"
 fi
 
-if [ -d "$(brew --prefix)/opt/findutils/libexec/gnubin" ]; then
-	PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+
+if which "brew" &> /dev/null; then
+	if [ -d "$(brew --prefix)/opt/findutils/libexec/gnubin" ]; then
+		PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+	fi
 fi
 
 # Ensure path arrays do not contain duplicates.

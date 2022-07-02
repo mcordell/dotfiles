@@ -39,4 +39,12 @@ fi
 
 eval "$(starship init zsh)"
 
-. $(brew --prefix asdf)/libexec/asdf.sh
+if which "brew" &> /dev/null; then
+	. $(brew --prefix asdf)/libexec/asdf.sh
+else
+    . $HOME/.asdf/asdf.sh
+	fpath=(${ASDF_DIR}/completions $fpath)
+	autoload -Uz compinit && compinit
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
