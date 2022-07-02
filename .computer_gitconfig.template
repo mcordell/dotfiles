@@ -1,0 +1,5 @@
+[user]
+	signingkey = 0xKEYID
+	email = mike@mikecordell.com
+[gpg]
+	program = /usr/local/bin/gpg
