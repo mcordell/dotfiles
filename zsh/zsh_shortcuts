@@ -1,2 +1,3 @@
 bindkey '^f' fzf-gf-widget
 bindkey -s '^s' "rgs\n"
+bindkey -s '^k' "com\n"

@@ -1,0 +1,23 @@
+# vim: set ft=zsh:
+
+# Run common commands in this directory
+com() {
+    eval $(sqlite3 $HOME/.histdb/zsh-history.db "
+    SELECT
+        replace(commands.argv, '
+    ', '
+    ')
+    FROM commands
+    JOIN history ON history.command_id = commands.id
+    JOIN places ON history.place_id = places.id
+    AND dir = '${PWD}'
+    AND places.host = '${HOST}'
+    AND commands.argv != 'jog'
+    AND commands.argv NOT LIKE 'z %'
+    AND commands.argv NOT LIKE 'cd %'
+    AND commands.argv != '..'
+    GROUP BY commands.id
+    ORDER BY COUNT(commands.id) DESC
+    LIMIT 10
+    " | fzf)
+}
