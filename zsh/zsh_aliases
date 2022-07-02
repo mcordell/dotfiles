@@ -21,7 +21,7 @@ alias clean_branches="git checkout master && git recentb | fzf -m --ansi | awk '
 alias clean_merged='git fetch --prune; git branch --merged master | grep -v "master" | xargs -n 1 git branch -d'
 alias clean_orig='find . -iregex .*\.orig -exec rm -rf {} \;'
 alias clear_gemlock='git reset head gemfile.lock; git checkout -- gemfile.lock; bundle'
-alias fu="git log --oneline | fzf | awk '{ print \$1 }' | xargs -i{} git commit --fixup={}"
+alias fu="git log --oneline | fzf | awk '{ print \$1 }' | xargs -I{} git commit --fixup={}"
 alias g='git'
 alias gap='git add -p'
 alias gb="git for-each-ref --sort=committerdate refs/heads/ --format='%(refname:short)'"
