@@ -1,3 +1,6 @@
+# vim: set ft=zsh:
+
+# Fixup since upstream
 function fuu() {
 	git log @{u}..HEAD --oneline | fzf | cut -w -f 1 | xargs git commit --fixup
 }
