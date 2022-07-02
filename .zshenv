@@ -73,3 +73,7 @@ if which "asdf" &> /dev/null; then
 	eval "$(asdf exec direnv hook zsh)"
 	direnv() { asdf exec direnv "$@"; }
 fi
+
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+  source "${VIRTUAL_ENV}/bin/activate"
+fi
