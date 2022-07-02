@@ -51,6 +51,7 @@ install_fzf
 install_jq
 install_tldr
 install_navi
+install_gpg
 
 # Editors
 INDENT=""

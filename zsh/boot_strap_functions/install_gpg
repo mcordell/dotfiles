@@ -1,0 +1,26 @@
+# vim: set ft=zsh:
+
+_set_gpg_conf () {
+	mkdir $HOME/.gpg
+	wget -o $HOME/.gpg/gpg.conf https://raw.githubusercontent.com/drduh/config/master/gpg.conf
+	wget -o $HOME/.gnupg/gpg-agent.conf https://raw.githubusercontent.com/drduh/config/master/gpg-agent.conf
+	chmod 600 gpg.conf
+}
+
+_install_gpg () {
+	case $(_system) in
+		Darwin*)
+	  ;;
+		Linux*)
+		  _installer_log "Installing requirements for yubikey" "$reset_color"
+		  _set_gpg_conf
+		  sudo apt-get install -y gnupg2 gnupg-agent gnupg1-curl scdaemon pcscd >> raw_install.log 2>&1
+		  _last_command_log "gnupg"
+	  ;;
+	esac
+}
+
+install_gpg () {
+  _install_gpg
+}
+
