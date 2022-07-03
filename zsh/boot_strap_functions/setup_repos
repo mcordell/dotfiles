@@ -1,0 +1,57 @@
+# vim: set ft=zsh:
+
+
+_setup_1password_repo() {
+	source_list=/etc/apt/sources.list.d/1password.list
+
+	if [[ ! -a $source_list ]]; then
+		curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+		echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee $source_list
+		 sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+		 curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+		 sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+		 curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+	fi
+}
+
+_setup_albert_repo() {
+	source_list=/etc/apt/sources.list.d/home:manuelschneid3r.list
+	if [[ ! -a $source_list ]]; then
+		# debian 11
+		echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/Debian_11/ /' | sudo tee $source_list
+		_get_source_key https://download.opensuse.org/repositories/home:manuelschneid3r/Debian_11/Release.key /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg
+	fi
+}
+
+_get_source_key() {
+	if [[ ! -a $2 ]]; then
+		curl -fsSL $1 | sudo gpg --dearmor -o $2
+	fi
+}
+
+_setup_docker_repo() {
+	source_list=/etc/apt/sources.list.d/docker.list
+	if [[ ! -a $source_list ]]; then
+		signing_key=/etc/apt/trusted.gpg.d/docker.gpg
+		_get_source_key https://download.docker.com/linux/debian/gpg $signing_key
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=$signing_key] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee $source_list
+	fi
+}
+
+_setup_spotify_repo() {
+	source_list=/etc/apt/sources.list.d/spotify.list
+	if [[ ! -a $source_list ]]; then
+		curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+		echo "deb http://repository.spotify.com stable non-free" | sudo tee $source_list
+	fi
+}
+
+_setup_syncthing_repo() {
+	source_list=/etc/apt/sources.list.d/syncthing.list
+	if [[ ! -a $source_list ]]; then
+		# debian 11
+		sudo curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
+		echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee $source_list
+	fi
+}

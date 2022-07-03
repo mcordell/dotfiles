@@ -1,0 +1,17 @@
+# vim: set ft=zsh:
+source $(dirname "$0")/setup_repos
+
+_install_docker () {
+	case $(_system) in
+		Linux*)
+		  _installer_log "Installing linux docker" "$reset_color"
+		  _setup_docker_repo
+		  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin >> raw_install.log 2>&1
+		  _last_command_log "docker"
+	  ;;
+	esac
+}
+
+install_docker () {
+  _which_check "docker" "_install_docker"
+}

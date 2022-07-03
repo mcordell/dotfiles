@@ -1,4 +1,5 @@
 # vim: set ft=zsh:
+source $(dirname "$0")/setup_repos
 
 _install_macos_gui_programs () {
 	wanted_casks=(
@@ -29,52 +30,12 @@ _install_macos_gui_programs () {
 	fi
 }
 
-_setup_albert_repo() {
-	source_list=/etc/apt/sources.list.d/home:manuelschneid3r.list
-	if [[ ! -a $source_list ]]; then
-		# debian 11
-		echo 'deb http://download.opensuse.org/repositories/home:/manuelschneid3r/Debian_11/ /' | sudo tee $source_list
-		curl -fsSL https://download.opensuse.org/repositories/home:manuelschneid3r/Debian_11/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_manuelschneid3r.gpg > /dev/null
-	fi
-}
-
-_setup_syncthing_repo() {
-	source_list=/etc/apt/sources.list.d/syncthing.list
-	if [[ ! -a $source_list ]]; then
-		# debian 11
-		sudo curl -o /usr/share/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
-		echo "deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee $source_list
-	fi
-
-}
-
-_setup_spotify_repo() {
-	source_list=/etc/apt/sources.list.d/spotify.list
-	if [[ ! -a $source_list ]]; then
-		curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
-		echo "deb http://repository.spotify.com stable non-free" | sudo tee $source_list
-	fi
-}
-
-_setup_1password_repo() {
-	source_list=/etc/apt/sources.list.d/1password.list
-
-	if [[ ! -a $source_list ]]; then
-		curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-		echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee $source_list
-		 sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-		 curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-		 sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-		 curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-	fi
-}
-
 _install_linux_gui_programs () {
 	_setup_spotify_repo
 	_setup_1password_repo
 	_setup_syncthing_repo
 	_setup_albert_repo
-	sudo apt-get update && sudo apt-get install spotify-client 1password albert syncthing
+	sudo apt-get update && sudo apt-get install spotify-client 1password albert syncthing vlc
 }
 
 install_gui_programs () {

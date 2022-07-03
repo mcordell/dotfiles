@@ -34,6 +34,7 @@ install_starship
 
 INDENT="  "
 install_cli_essentials
+install_docker
 INDENT="  "
 _installer_log "🏃 Installing Command Line improvements"
 INDENT="      "
