@@ -35,6 +35,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 
 # exa
+alias l='exa'
 alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
 alias li='exa --icons'
 alias ll='exa -lbF --git'
