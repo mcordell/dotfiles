@@ -13,11 +13,10 @@
 (package! org-ref)
 (package! org-download)
 (package! org-mac-link)
+(package! ox-hugo)
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
-(package! ox-hugo
-  :recipe (:host github :repo "jethrokuan/ox-hugo"))
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 
