@@ -45,6 +45,7 @@ config/nvim, ~/.config/nvim
 
 # emacs
 config/doom, ~/.config/doom
+doom.d, ~/.doom.d
 
 # git
 .gitignore_global, .gitignore_global
