@@ -18,6 +18,7 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
+
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono"
                            :size 18
                            :weight 'normal) doom-variable-pitch-font (font-spec :family
@@ -178,6 +179,12 @@ Participants: %^{Participants}
        (org-roam-db-update)))
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
+
+(setq org-roam-capture-templates
+        '(("d" "default" plain "#+bibliography: ../mylibrary/mylib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
+        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}")
+        :unnarrowed t)))
 )
 
 
@@ -298,6 +305,7 @@ Participants: %^{Participants}
 (after! citar
   (setq org-cite-global-bibliography '("~/org/mylibrary/mylibrary.bib"))
   (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
+  (setq citar-bibliography org-cite-global-bibliography)
   (setq citar-open-note-function 'orb-citar-edit-note)
   (setq citar-notes-paths '("~/org/roam/"))
   (setq citar-file-note-org-include '(org-id org-roam-ref))

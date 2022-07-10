@@ -3,5 +3,4 @@
 # key: bib
 # --
 -------
-** References
 #+print_bibliography:
