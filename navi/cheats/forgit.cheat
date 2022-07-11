@@ -21,10 +21,12 @@ gss
 gclean
 
 # interactive git cherry-pick selector
-gcp
+gcp <local_branches>
 
 # interactive git rebase -i selector
 grb
 
 # interactive fixup
 gfu
+
+$ local_branches: git branch | grep -v '*' | cut -c 3-
