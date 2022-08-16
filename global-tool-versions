@@ -2,5 +2,5 @@ nodejs 15.14.0
 ruby 3.0.3
 elixir 1.13.0
 erlang 24.1.7
-direnv 2.29.0
+direnv 2.32.1
 python 3.10.1
