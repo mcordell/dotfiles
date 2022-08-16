@@ -52,10 +52,6 @@ local planning = function()
   tripleSplit(fant, "MailMate", "Emacs")
 end
 
-local notion = function()
-  tripleSplit("Emacs", "Notion", chrome)
-end
-
 hs.hotkey.bind(superKey, "C", function()
     source = [[
       tell application "Brave Browser"
@@ -110,7 +106,6 @@ leftThird = hs.geometry.unitrect(0, 0, .333, 1)
 middleThird = hs.geometry.unitrect(.333, 0, .333, 1)
 rightThird = hs.geometry.unitrect(.666, 0, .333, 1)
 hs.hotkey.bind(superKey, "S", planning)
-hs.hotkey.bind(superKey, "N", notion)
 hs.urlevent.bind("flopmon", require('ext.flipFlopMonitors'))
 
 local setAudioOutput = function (name)
@@ -154,7 +149,6 @@ hs.hotkey.bind(superKey, "K", windowTools.maximizeWindow)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", windowTools.moveLeft)
 hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
 hs.hotkey.bind(superKey, "S", planning)
-hs.hotkey.bind(superKey, "N", notion)
 
 hs.hotkey.bind(mehKey, "a", toggleAudioOutputSource)
 hs.hotkey.bind(mehKey, "x", function()
