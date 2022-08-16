@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jlink
+# uuid: jlinkorg
+# key: jlink
+# condition: t
+# --
+[[https://qcentrix.atlassian.net/browse/$1][${1:card}]]
