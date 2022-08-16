@@ -171,17 +171,17 @@ Participants: %^{Participants}
                (file+head+olp "%<%Y-%m-%d>.org" ,head ("Morning Questions"))
                 :unnarrowed t
                ))))
+
   (add-hook
      'org-roam-capture-after-find-file-hook
      (lambda ()
        (org-id-get-create)
        (save-buffer)
        (org-roam-db-update)))
-  (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
 
 (setq org-roam-capture-templates
-        '(("d" "default" plain "#+bibliography: ../mylibrary/mylib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
+        '(("d" "default" plain "#+bibliography: ../mylibrary/mylibrary.bib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                 "#+title: ${title}")
         :unnarrowed t)))
@@ -330,11 +330,8 @@ Participants: %^{Participants}
   (setq citar-notes-paths '("~/org/roam/"))
   (setq citar-file-note-org-include '(org-id org-roam-ref))
   (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
-
-
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
   (setq citar-at-point-function 'embark-act)
+
    (setq citar-symbols
    `((file . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
            ,(all-the-icons-icon-for-file "foo.pdf" :face 'citar-icon-dim)))
@@ -448,3 +445,10 @@ Participants: %^{Participants}
 
 (setq global-auto-revert-mode t)
 
+(defun org-pass-link-to-system (link)
+  (if (string-match "^[\"a-zA-Z0-9]+:" link)
+    (shell-command (concat "open " link))
+    nil)
+  )
+
+(add-hook 'org-open-link-functions 'org-pass-link-to-system)
