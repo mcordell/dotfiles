@@ -56,23 +56,6 @@ local notion = function()
   tripleSplit("Emacs", "Notion", chrome)
 end
 
-hs.hotkey.bind(superKey, "pad3", windowTools.splitLowerRight)
-hs.hotkey.bind(superKey, "pad9", windowTools.splitUpperRight)
-hs.hotkey.bind(superKey, "pad7", windowTools.splitUpperLeft)
-hs.hotkey.bind(superKey, "pad1", windowTools.splitLowerLeft)
-hs.hotkey.bind(superKey, "pad8", windowTools.splitUpperMiddle)
-hs.hotkey.bind(superKey, "pad2", windowTools.splitLowerMiddle)
-hs.hotkey.bind(superKey, ";", windowTools.splitTwoThirdsRight)
-hs.hotkey.bind(superKey, "B", windowTools.splitTwoThirdsLeft)
-hs.hotkey.bind(superKey, "H", windowTools.splitLeft)
-hs.hotkey.bind(superKey, "I", windowTools.splitUp)
-hs.hotkey.bind(superKey, "L", windowTools.splitRight)
-hs.hotkey.bind(superKey, "M", windowTools.splitDown)
-hs.hotkey.bind(superKey, "U", windowTools.splitMiddle)
-hs.hotkey.bind(superKey, "K", windowTools.maximizeWindow)
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", windowTools.moveLeft)
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
-
 hs.hotkey.bind(superKey, "C", function()
     source = [[
       tell application "Brave Browser"
@@ -84,37 +67,6 @@ hs.hotkey.bind(superKey, "C", function()
 
     hs.osascript.applescript(source)
 end
-)
-hs.hotkey.bind({"cmd", "ctrl"}, "c", function()
-    appLauncher.smartLaunchOrFocus("iTerm2")
-                                     end
-)
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", reloadConfig)
-hs.hotkey.bind(superKey, "F", function()
-    windowTools.splitMainFocus(getApp(chrome), getApp("iTerm2"))
-end)
-hs.hotkey.bind(superKey, "D", function()
-    windowTools.splitMainFocus(getApp(chrome), getApp("Emacs"))
-end)
-
-hs.hotkey.bind({}, "F13", function()
-    appLauncher.smartLaunchOrFocus("Spotify")
-end
-)
-
-hs.hotkey.bind({"shift"}, "F13", function()
-    appLauncher.smartLaunchOrFocus("Slack")
-end
-)
-
-hs.hotkey.bind({}, "F14", function()
-    appLauncher.smartLaunchOrFocus(chrome)
-end
-)
-
-hs.hotkey.bind({}, "F15", function()
-    appLauncher.smartLaunchOrFocus("Emacs")
-                          end
 )
 
 leftScreen = nil
@@ -143,6 +95,7 @@ end
 if mainScreen == nil then
   mainScreen = mainLaptopScreen
 end
+
 if mainScreen == nil then
   log.df("Main screen %s", "is empty")
 else
@@ -167,7 +120,7 @@ local setAudioOutput = function (name)
 	end
 end
 
-hs.hotkey.bind(mehKey, "a", function()
+local toggleAudioOutputSource = function()
 	local current = hs.audiodevice.defaultOutputDevice():name()
 	if current == 'Audioengine HD3' then
 		setAudioOutput('USB Audio DAC   ')
@@ -175,19 +128,65 @@ hs.hotkey.bind(mehKey, "a", function()
 		setAudioOutput('Audioengine HD3')
 	end
 end
+
+local splitBrowserTerm = function()
+    windowTools.splitMainFocus(getApp(chrome), getApp("iTerm2"))
+end
+
+local splitBrowserEditor = function()
+	windowTools.splitMainFocus(getApp(chrome), getApp("Emacs"))
+end
+
+hs.hotkey.bind(superKey, "pad3", windowTools.splitLowerRight)
+hs.hotkey.bind(superKey, "pad9", windowTools.splitUpperRight)
+hs.hotkey.bind(superKey, "pad7", windowTools.splitUpperLeft)
+hs.hotkey.bind(superKey, "pad1", windowTools.splitLowerLeft)
+hs.hotkey.bind(superKey, "pad8", windowTools.splitUpperMiddle)
+hs.hotkey.bind(superKey, "pad2", windowTools.splitLowerMiddle)
+hs.hotkey.bind(superKey, ";", windowTools.splitTwoThirdsRight)
+hs.hotkey.bind(superKey, "B", windowTools.splitTwoThirdsLeft)
+hs.hotkey.bind(superKey, "H", windowTools.splitLeft)
+hs.hotkey.bind(superKey, "I", windowTools.splitUp)
+hs.hotkey.bind(superKey, "L", windowTools.splitRight)
+hs.hotkey.bind(superKey, "M", windowTools.splitDown)
+hs.hotkey.bind(superKey, "U", windowTools.splitMiddle)
+hs.hotkey.bind(superKey, "K", windowTools.maximizeWindow)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Left", windowTools.moveLeft)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "Right", windowTools.moveRight)
+hs.hotkey.bind(superKey, "S", planning)
+hs.hotkey.bind(superKey, "N", notion)
+
+hs.hotkey.bind(mehKey, "a", toggleAudioOutputSource)
+hs.hotkey.bind(mehKey, "x", function()
+	hs.eventtap.keyStroke({"alt"}, "x")
+end)
+
+hs.hotkey.bind({"cmd", "ctrl"}, "c", function()
+    appLauncher.smartLaunchOrFocus("iTerm2")
+                                     end
+)
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", reloadConfig)
+
+hs.hotkey.bind(superKey, "F", splitBrowserTerm)
+hs.hotkey.bind(superKey, "D", splitBrowserEditor)
+
+hs.hotkey.bind({}, "F13", function()
+    appLauncher.smartLaunchOrFocus("Spotify")
+end
 )
 
-hs.hotkey.bind(mehKey, "n", function()
-	hs.eventtap.keyStroke({"cmd", "shift"}, "k")
-	hs.timer.doAfter(1, function()
-		hs.eventtap.keyStroke({}, "return")
-		hs.timer.doAfter(1, function()
-			hs.eventtap.keyStroke({"cmd"}, "w")
-        hs.timer.doAfter(.3, function()
-          hs.eventtap.keyStroke({}, "escape")
-        end)
-  end)
-	end)
+hs.hotkey.bind({"shift"}, "F13", function()
+    appLauncher.smartLaunchOrFocus("Slack")
+end
+)
+
+hs.hotkey.bind({}, "F14", function()
+    appLauncher.smartLaunchOrFocus(chrome)
+end
+)
+
+hs.hotkey.bind({}, "F15", function()
+    appLauncher.smartLaunchOrFocus("Emacs")
 end
 )
 
