@@ -35,7 +35,7 @@
 	excludesfile = /Users/michael/.gitignore_global
 	autocrlf = input
 [push]
-	default = simple
+	default = current
 [github]
 	user = mcordell
 [merge]
