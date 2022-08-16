@@ -49,7 +49,7 @@ local planning = function()
   hs.application.launchOrFocus(fant)
   local fantastical = getApp(fant)
   setFantasticalToToday(fantastical)
-  tripleSplit(fant, "MailMate", "OmniFocus")
+  tripleSplit(fant, "MailMate", "Emacs")
 end
 
 local notion = function()
