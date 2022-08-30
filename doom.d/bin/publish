@@ -3,11 +3,11 @@
 (defun mcordell/publish (file)
   (with-current-buffer (find-file-noselect file)
     (projectile-mode -1)
-    (setq org-hugo-base-dir "/home/michael/Code/static_sites/brain")
+    (setq org-hugo-base-dir (substitute-in-file-name "$HOME/Code/static_sites/brain"))
     (org-hugo-export-wim-to-md)))
 
 (defcli! publish (&args files)
-  (require 'core-start)
+  (require 'doom-start)
   (require 'find-lisp)
   (dolist (file files)
     (mcordell/publish file)
