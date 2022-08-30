@@ -6,7 +6,6 @@ export DOT_PATH="$HOME/.dotfiles"
 export DOTFILES_DIR=$DOT_PATH
 export ICLOUD_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 
-source ~/.zsh/zsh_path
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH

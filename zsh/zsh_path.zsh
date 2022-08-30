@@ -1,11 +1,8 @@
-#
+#! /usr/bin/env zsh
 # Paths
-#
+
 path=(
     /usr/local/opt/gnu-sed/libexec/gnubin
-    /opt/homebrew/bin
-    /opt/homebrew/sbin
-    /usr/local/{bin,sbin}
 	/usr/local/opt/python/libexec/bin
 	/usr/local/opt/go/libexec/bin
 	/Users/michael/go/bin
@@ -14,14 +11,24 @@ path=(
     $path
 )
 
-if [ -f "$HOME/.cargo/env" ]; then source $HOME/.cargo/env; fi
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+
+if [ -f "/opt/homebrew/bin/brew" ]; then
+    path=(
+        /opt/homebrew/bin
+        /opt/homebrew/sbin
+        $path
+	)
+fi
+
+if [ -f "$HOME/.cargo/env" ]; then source "$HOME/.cargo/env"; fi
 
 if [ -d "$HOME/.emacs.d/bin" ]; then
 	PATH="$HOME/.emacs.d/bin:$PATH"
 fi
 
 if [ -d "/usr/local/opt/postgresql@12/bin" ]; then
-	PATH="/usr/local/opt/postgresql@12/bin:$PATH"
+    path+=('/usr/local/opt/postgresql@12/bin' $path)
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -39,7 +46,8 @@ if which "brew" &> /dev/null; then
 	if [ -d "$(brew --prefix)/opt/findutils/libexec/gnubin" ]; then
 		PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
 	fi
+    PATH="/opt/findutils/libexec/gnubin:$PATH"
 fi
 
 # Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
+typeset -gU cdpath fpath mailpath path PATH
