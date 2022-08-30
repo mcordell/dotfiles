@@ -329,7 +329,6 @@ Participants: %^{Participants}
   (setq citar-open-note-function 'orb-citar-edit-note)
   (setq citar-notes-paths '("~/org/roam/"))
   (setq citar-file-note-org-include '(org-id org-roam-ref))
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
   (setq citar-at-point-function 'embark-act)
 
    (setq citar-symbols
