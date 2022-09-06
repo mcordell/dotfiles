@@ -2,3 +2,12 @@
 
 # Search and replace within file destructively on mac
 sed -i '' s/<original-text>/<new-text>/g
+
+# Show current power management settings
+pmset -g
+
+# Set hibernate mode to safe sleep
+sudo pmset -a hibernatemode 3
+
+# Set hibernate mode to hibernate
+sudo pmset -a hibernatemode 25
