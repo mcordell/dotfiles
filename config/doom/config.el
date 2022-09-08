@@ -62,6 +62,14 @@
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")
       org-enforce-todo-dependencies t)
 
+(defun +org/opened-buffer-files ()
+  "Return the list of files currently opened in emacs"
+  (delq nil (mapcar (lambda (x)
+                      (if (and (buffer-file-name x)
+                               (string-match "\\.org$" (buffer-file-name x)))
+                          (buffer-file-name x)))
+                    (buffer-list))))
+
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
 #+BEGIN_SRC %^{sourcetype}
@@ -98,22 +106,11 @@
 Participants: %^{Participants}
 %?
 ")
-                                                  ("u" "stand up regulatory" entry (file+headline
-                                                                                     "~/org/qcentrix/projects/regulatory.org"
-                                                                                     "Stand ups"
-                                                                                     )
-                                                   "* %t
-| Person    | Card    | Status |
-|-----------+---------+--------|
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card1}][RRP-%\\2]] | %^{Stage|Peer|Lead|Done} |
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card2}][RRP-%\\5]] | %^{Stage|Peer|Lead|Done} |
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card3}][RRP-%\\8]] | %^{Stage|Peer|Lead|Done} |
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card4}][RRP-%\\11]] | %^{Stage|Peer|Lead|Done} |
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card5}][RRP-%\\14]] | %^{Stage|Peer|Lead|Done} |
-|  %^{Person|Alejandro|Emiliano|Rapo|Maxi|Juan|Diego}    | [[https://qcentrix.atlassian.net/browse/RRP-%^{Card6}][RRP-%\\17]] | %^{Stage|Peer|Lead|Done} |
-"
+                                                  ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
+                                                   "* TODO %^{Subject}
+%?
+")
                                                    )
-                                                  ("a" "q-centrix task")
                                                   ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
@@ -152,6 +149,11 @@ Participants: %^{Participants}
           ("PROJ" . +org-todo-project)
           ("NO"   . +org-todo-cancel)
           ("KILL" . +org-todo-cancel)))
+
+(setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
+      org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil
+      org-refile-allow-creating-parent-nodes 'confirm)
   (set-company-backend! 'org-mode '(company-capf))
   )
 
@@ -234,18 +236,6 @@ Participants: %^{Participants}
                          "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS ${tags}\n- \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
                          :unnarrowed t))))
 
-(defun +org/opened-buffer-files ()
-  "Return the list of files currently opened in emacs"
-  (delq nil (mapcar (lambda (x)
-                      (if (and (buffer-file-name x)
-                               (string-match "\\.org$" (buffer-file-name x)))
-                          (buffer-file-name x)))
-                    (buffer-list))))
-
-(setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
-(setq org-refile-use-outline-path 'file)
-(setq org-outline-path-complete-in-steps nil)
-(setq org-refile-allow-creating-parent-nodes 'confirm)
 
 (use-package! org-download
   :commands
@@ -318,8 +308,7 @@ Participants: %^{Participants}
   :after org)
 
 (after! oc-csl
-  (setq org-cite-csl-styles-dir "~/Zotero/styles")
-  (setq org-cite-csl-locales-dir "~/.local/share/csl/locales")
+  (setq org-cite-csl-styles-dir "~/Zotero/styles" org-cite-csl-locales-dir "~/.local/share/csl/locales")
   )
 
 (after! citar
@@ -434,8 +423,10 @@ Participants: %^{Participants}
 (use-package! org-roam-ui
     :after org-roam)
 
-(after! :projectile
-  (setq projectile-enable-caching f))
+(after! projectile
+  (require 'f)
+  (setq projectile-enable-caching nil projectile-project-search-path (f-directories "~/Code/Work/q-centrix/"))
+  )
 
 (defun mcordell/org-id-update-org-roam-files ()
   "Update Org-ID locations for all Org-roam files."
