@@ -4,7 +4,8 @@ _install_ripgrep () {
 	case $(_system) in
 		Darwin*)
 		  _installer_log "Installing mac ripgrep" "green"
-		  brew install ripgrep
+		  brew install rust
+		  cargo install --features pcre2 ripgrep
 	  ;;
 		Linux*)
 		  _installer_log "Installing linux ripgrep" "$reset_color"

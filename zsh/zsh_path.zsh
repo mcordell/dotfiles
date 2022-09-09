@@ -46,7 +46,9 @@ if which "brew" &> /dev/null; then
 	if [ -d "$(brew --prefix)/opt/findutils/libexec/gnubin" ]; then
 		PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
 	fi
-    PATH="/opt/findutils/libexec/gnubin:$PATH"
+	if [ -d "$(brew --prefix)/opt/grep/libexec/gnubin" ]; then
+		PATH="$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
+	fi
 fi
 
 # Ensure path arrays do not contain duplicates.

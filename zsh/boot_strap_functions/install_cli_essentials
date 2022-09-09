@@ -4,6 +4,7 @@ _install_macos_essential_cli () {
 	mac_specific=(
 		'coreutils'
 		'findutils'
+		'grep'
 		'pinentry-mac'
 		'gnupg'
 		'gnu-sed'
