@@ -58,9 +58,33 @@
 
 ;; Org
 
-(setq org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
+(setq global-auto-revert-mode t
+      org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")
-      org-enforce-todo-dependencies t)
+      org-enforce-todo-dependencies t
+      bibtex-completion-notes-path org_notes
+      bibtex-completion-bibliography zot_bib
+      bibtex-completion-pdf-field "file"
+      bibtex-completion-notes-template-multiple-files (concat
+                                                       "#+TITLE: ${title}\n"
+                                                       "#+ROAM_KEY: cite:${=key=}\n"
+                                                       "* TODO Notes\n"
+                                                       ":PROPERTIES:\n"
+                                                       ":Custom_ID: ${=key=}\n"
+                                                       ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+                                                       ":AUTHOR: ${author-abbrev}\n"
+                                                       ":JOURNAL: ${journaltitle}\n"
+                                                       ":DATE: ${date}\n"
+                                                       ":YEAR: ${year}\n"
+                                                       ":DOI: ${doi}\n"
+                                                       ":URL: ${url}\n"
+                                                       ":END:\n\n")
+ )
+
+(defun mcordell/org-id-update-org-roam-files ()
+  "Update Org-ID locations for all Org-roam files."
+  (interactive)
+  (org-id-update-id-locations (org-roam-list-files)))
 
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
@@ -69,6 +93,7 @@
                                (string-match "\\.org$" (buffer-file-name x)))
                           (buffer-file-name x)))
                     (buffer-list))))
+
 
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
@@ -110,30 +135,29 @@ Participants: %^{Participants}
                                                    "* TODO %^{Subject}
 %?
 ")
-                                                   )
                                                   ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
 ")))
   (setq org-todo-keywords
         '((sequence
-           "TODO(t)"  ; A task that needs doing & is ready to do
-           "PROJ(p)"  ; A project, which usually contains other tasks
-           "LOOP(r)"  ; A recurring task
-           "STRT(s)"  ; A task that is in progress
-           "WAIT(w@/!)"  ; Something external is holding up this task
-           "HOLD(h)"  ; This task is paused/on hold because of me
-           "IDEA(i)"  ; An unconfirmed and unapproved task or notion
+           "TODO(t)"             ; A task that needs doing & is ready to do
+           "PROJ(p)"             ; A project, which usually contains other tasks
+           "LOOP(r)"             ; A recurring task
+           "STRT(s)"             ; A task that is in progress
+           "WAIT(w@/!)"          ; Something external is holding up this task
+           "HOLD(h)"             ; This task is paused/on hold because of me
+           "IDEA(i)"             ; An unconfirmed and unapproved task or notion
            "DELG(l@/!)"
            "|"
-           "DONE(d)"  ; Task successfully completed
-           "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
+           "DONE(d)"    ; Task successfully completed
+           "KILL(k)")   ; Task was cancelled, aborted or is no longer applicable
           (sequence
-           "[ ](T)"   ; A task that needs doing
-           "[-](S)"   ; Task is in progress
-           "[?](W)"   ; Task is being held up or paused
+           "[ ](T)"                     ; A task that needs doing
+           "[-](S)"                     ; Task is in progress
+           "[?](W)"                     ; Task is being held up or paused
            "|"
-           "[X](D)")  ; Task was completed
+           "[X](D)")                    ; Task was completed
           (sequence
            "|"
            "OKAY(o)"
@@ -148,63 +172,51 @@ Participants: %^{Participants}
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
           ("NO"   . +org-todo-cancel)
-          ("KILL" . +org-todo-cancel)))
+          ("KILL" . +org-todo-cancel))
+        org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil
+        org-refile-allow-creating-parent-nodes 'confirm)
 
-(setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
-      org-refile-use-outline-path 'file
-      org-outline-path-complete-in-steps nil
-      org-refile-allow-creating-parent-nodes 'confirm)
+
+(defun org-pass-link-to-system (link)
+  (if (string-match "^[\"a-zA-Z0-9]+:" link)
+    (shell-command (concat "open " link))
+    nil)
+  )
+
+(add-hook 'org-open-link-functions 'org-pass-link-to-system)
   (set-company-backend! 'org-mode '(company-capf))
   )
 
-
-(setq org-roam-db-location "~/org/org-roam.db")
 (use-package! org-roam
   :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
   :config
-    (setq org-roam-dailies-capture-templates
-          (let ((head
-                 (concat "#+title: %<%Y-%m-%d (%A)>\n* Morning Questions\n"
-                         "** What Am I Grateful for?\n\n** What Would Make Today Great?\n** What am I worried about?\n"
-                         "* Evening Questions\n"
-                         "** How am I feeling?\n** What's Something Good That Happened Today?\n** What Did I Do Well?\n** What Could I Have Done Better?")))
-            `(("m" "journal" plain
-               "%?" :if-new
-               (file+head+olp "%<%Y-%m-%d>.org" ,head ("Morning Questions"))
-                :unnarrowed t
-               ))))
+    (setq org-roam-dailies-directory "daily/"
+          org-roam-db-location "~/org/org-roam.db"
+          org-roam-dailies-capture-templates (let ((head
+                                                    (concat "#+title: %<%Y-%m-%d (%A)>\n* Morning Questions\n"
+                                                            "** What Am I Grateful for?\n\n** What Would Make Today Great?\n** What am I worried about?\n"
+                                                            "* Evening Questions\n"
+                                                            "** How am I feeling?\n** What's Something Good That Happened Today?\n** What Did I Do Well?\n** What Could I Have Done Better?")))
+                                               `(("m" "journal" plain
+                                                  "%?" :if-new
+                                                  (file+head+olp "%<%Y-%m-%d>.org" ,head ("Morning Questions"))
+                                                  :unnarrowed t
+                                                  )))
+          org-roam-capture-templates
+          '(("d" "default" plain "#+bibliography: ../mylibrary/mylibrary.bib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
+             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}")
+             :unnarrowed t))
+          )
 
-  (add-hook
-     'org-roam-capture-after-find-file-hook
+    (add-hook 'org-roam-capture-after-find-file-hook
      (lambda ()
        (org-id-get-create)
        (save-buffer)
-       (org-roam-db-update)))
-  (setq org-roam-dailies-directory "daily/")
+       (org-roam-db-update))))
 
-(setq org-roam-capture-templates
-        '(("d" "default" plain "#+bibliography: ../mylibrary/mylibrary.bib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
-        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                "#+title: ${title}")
-        :unnarrowed t)))
-)
-
-
-(setq bibtex-completion-notes-path org_notes bibtex-completion-bibliography zot_bib
-      bibtex-completion-pdf-field "file" bibtex-completion-notes-template-multiple-files (concat
-                                                                                          "#+TITLE: ${title}\n"
-                                                                                          "#+ROAM_KEY: cite:${=key=}\n"
-                                                                                          "* TODO Notes\n"
-                                                                                          ":PROPERTIES:\n"
-                                                                                          ":Custom_ID: ${=key=}\n"
-                                                                                          ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-                                                                                          ":AUTHOR: ${author-abbrev}\n"
-                                                                                          ":JOURNAL: ${journaltitle}\n"
-                                                                                          ":DATE: ${date}\n"
-                                                                                          ":YEAR: ${year}\n"
-                                                                                          ":DOI: ${doi}\n"
-                                                                                          ":URL: ${url}\n"
-                                                                                          ":END:\n\n"))
 (after! calfw-org
   ;; hotfix: incorrect time range display
   ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
@@ -237,73 +249,6 @@ Participants: %^{Participants}
                          :unnarrowed t))))
 
 
-(use-package! org-download
-  :commands
-  org-download-dnd
-  org-download-yank
-  org-download-screenshot
-  org-download-clipboard
-  org-download-dnd-base64
-  :init
-  ;; HACK We add these manually so that org-download is truly lazy-loaded
-  (pushnew! dnd-protocol-alist
-            '("^\\(?:https?\\|ftp\\|file\\|nfs\\):" . org-download-dnd)
-            '("^data:" . org-download-dnd-base64))
-  (advice-add #'org-download-enable :override #'ignore)
-
- ;; (after! org
- ;;   ;; A shorter link to attachments
- ;;   (+org-define-basic-link "download" (lambda () (or org-download-image-dir org-attach-id-dir "."))
- ;;     :image-data-fun #'+org-image-file-data-fn
- ;;     :requires 'org-download))
-  :config
- (setq-default org-download-image-dir "~/org/img")
-  (unless org-download-image-dir
-    (setq org-download-image-dir org-attach-id-dir))
-  (setq org-download-method 'directory
-        org-download-timestamp "_%Y%m%d_%H%M%S"
-        org-download-screenshot-method
-        (cond (IS-MAC "screencapture -i %s")
-              (IS-LINUX
-               (cond ((executable-find "maim")  "maim -s %s")
-                     ((executable-find "scrot") "scrot -s %s")
-                     ((executable-find "gnome-screenshot") "gnome-screenshot -a -f %s"))))
-
-        org-download-heading-lvl ""
-        org-download-link-format "[[download:%s]]\n"
-        org-download-annotate-function (lambda (_link) "")
-        org-download-link-format-function
-        (lambda (filename)
-          (if (eq org-download-method 'attach)
-              (format "[[attachment:%s]]\n"
-                      (org-link-escape
-                       (file-relative-name filename (org-attach-dir))))
-            ;; Handle non-image files a little differently. Images should be
-            ;; inserted as normal with previews. Other files, like pdfs or zips,
-            ;; should be linked to, with an icon indicating the type of file.
-            (format (concat (unless (image-type-from-file-name filename)
-                              (concat (+org-attach-icon-for filename)
-                                      " "))
-                            org-download-link-format)
-                    (org-link-escape
-                     (funcall org-download-abbreviate-filename-function filename)))))
-        org-download-abbreviate-filename-function
-        (lambda (path)
-          (if (file-in-directory-p path org-download-image-dir)
-              (file-relative-name path org-download-image-dir)
-            path)))
-
-  (defadvice! +org--dragndrop-then-display-inline-images-a (_link filename)
-    :after #'org-download-insert-link
-    (when (image-type-from-file-name filename)
-      (save-excursion
-        (org-display-inline-images
-         t t
-         (progn (org-back-to-heading t) (point))
-         (progn (org-end-of-subtree t t)
-                (when (and (org-at-heading-p) (not (eobp))) (backward-char 1))
-                (point)))))))
-
 (use-package! ox-hugo
   :after org)
 
@@ -312,30 +257,28 @@ Participants: %^{Participants}
   )
 
 (after! citar
-  (setq org-cite-global-bibliography '("~/org/mylibrary/mylibrary.bib"))
-  (setq bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib"))
-  (setq citar-bibliography org-cite-global-bibliography)
-  (setq citar-open-note-function 'orb-citar-edit-note)
-  (setq citar-notes-paths '("~/org/roam/"))
-  (setq citar-file-note-org-include '(org-id org-roam-ref))
-  (setq citar-at-point-function 'embark-act)
-
-   (setq citar-symbols
-   `((file . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
-           ,(all-the-icons-icon-for-file "foo.pdf" :face 'citar-icon-dim)))
-   (note . (,(all-the-icons-icon-for-file "foo.txt") .
-           ,(all-the-icons-icon-for-file "foo.txt" :face 'citar-icon-dim)))
-   (link .
-           (,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
-           ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'citar-icon-dim)))))
-
+  (setq org-cite-global-bibliography '("~/org/mylibrary/mylibrary.bib")
+        bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib")
+        citar-bibliography org-cite-global-bibliography
+        citar-open-note-function 'orb-citar-edit-note
+        citar-notes-paths '("~/org/roam/")
+        citar-file-note-org-include '(org-id org-roam-ref)
+        citar-at-point-function 'embark-act
+        citar-symbols
+        `((file . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
+                ,(all-the-icons-icon-for-file "foo.pdf" :face 'citar-icon-dim)))
+        (note . (,(all-the-icons-icon-for-file "foo.txt") .
+                ,(all-the-icons-icon-for-file "foo.txt" :face 'citar-icon-dim)))
+        (link .
+                (,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
+                ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'citar-icon-dim))))
+        )
    ;; Here we define a face to dim non 'active' icons, but preserve alignment
    (defface citar-icon-dim
    '((((background dark)) :foreground "#282c34")
    (((background light)) :foreground "#fafafa"))
    "Face for obscuring/dimming icons"
-   :group 'all-the-icons-faces)
-)
+   :group 'all-the-icons-faces))
 
 (use-package! org-mac-link
         :after org
@@ -417,6 +360,7 @@ Participants: %^{Participants}
         :nv "m" #'alchemist-mix
         )))
 
+
 (use-package! websocket
     :after org-roam)
 
@@ -427,21 +371,6 @@ Participants: %^{Participants}
   (require 'f)
   (setq projectile-enable-caching nil projectile-project-search-path (f-directories "~/Code/Work/q-centrix/"))
   )
-
-(defun mcordell/org-id-update-org-roam-files ()
-  "Update Org-ID locations for all Org-roam files."
-  (interactive)
-  (org-id-update-id-locations (org-roam-list-files)))
-
-(setq global-auto-revert-mode t)
-
-(defun org-pass-link-to-system (link)
-  (if (string-match "^[\"a-zA-Z0-9]+:" link)
-    (shell-command (concat "open " link))
-    nil)
-  )
-
-(add-hook 'org-open-link-functions 'org-pass-link-to-system)
 
 (use-package! flymake-shellcheck
   :commands flymake-shellcheck-load
