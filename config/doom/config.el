@@ -18,8 +18,7 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-
-(setq doom-font (font-spec :family "FiraCode Nerd Font Mono"
+(setq doom-font (font-spec :family "PragmataPro Mono"
                            :size 18
                            :weight 'normal) doom-variable-pitch-font (font-spec :family
                                                                                 "Droid Sans Mono for Powerline"
@@ -61,6 +60,7 @@
 (setq global-auto-revert-mode t
       org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")
+      org-download-image-dir "~/org/img"
       org-enforce-todo-dependencies t
       bibtex-completion-notes-path org_notes
       bibtex-completion-bibliography zot_bib
@@ -173,11 +173,27 @@ Participants: %^{Participants}
           ("PROJ" . +org-todo-project)
           ("NO"   . +org-todo-cancel)
           ("KILL" . +org-todo-cancel))
+        org-default-priority 67
+          org-agenda-custom-commands '(
+                  ("o" "Agenda and Office-related tasks"
+                          ((agenda (org-agenda-span day))
+                          (tags-todo "work")
+                          (tags "office")))
+                  ("w" "multiple" (
+                          (agenda ""
+                          (
+                          (org-agenda-start-day "0d")
+                          (org-agenda-span 1)
+                          ))
+                          (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
+                                  (
+                                   (org-agenda-overriding-header "High Priority:")
+                                   (org-agenda-sorting-strategy '(priority-down))))))
+                  )
         org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm)
-
 
 (defun org-pass-link-to-system (link)
   (if (string-match "^[\"a-zA-Z0-9]+:" link)
@@ -216,6 +232,9 @@ Participants: %^{Participants}
        (org-id-get-create)
        (save-buffer)
        (org-roam-db-update))))
+(after! org-download
+  (setq org-download-method 'directory)
+  )
 
 (after! calfw-org
   ;; hotfix: incorrect time range display
@@ -328,6 +347,9 @@ Participants: %^{Participants}
       (:prefix "TAB"
                "TAB" #'evil-switch-to-windows-last-buffer)
       (:prefix "f"
+       ("a" (lambda ()
+             (interactive)
+             (org-agenda nil "w")))
        ("t"  #'treemacs))
       (:prefix "s"
        ("c"  #'evil-ex-nohighlight))

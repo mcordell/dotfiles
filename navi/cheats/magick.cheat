@@ -1,0 +1,9 @@
+% magick
+
+# convert a webp file to jpg
+magick <webp_file> <out_file_name>.jpg
+
+
+$ webp_file: ls *.webp
+
+

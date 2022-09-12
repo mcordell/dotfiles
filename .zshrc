@@ -51,3 +51,5 @@ fi
 
 
 source ~/.zsh/zsh_path.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
