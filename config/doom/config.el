@@ -398,3 +398,8 @@ Participants: %^{Participants}
   :commands flymake-shellcheck-load
   :init
   (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
+
+(add-hook 'code-review-mode-hook
+          (lambda ()
+            ;; include *Code-Review* buffer into current workspace
+            (persp-add-buffer (current-buffer))))
