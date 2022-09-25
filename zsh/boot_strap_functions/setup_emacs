@@ -5,7 +5,7 @@ _install_emacs () {
 		Darwin*)
 		  _installer_log "Installing mac emacs" "green"
 		  brew tap railwaycat/emacsmacport
-		  brew install emacs-mac --with-modules
+		  brew install emacs-mac --with-modules --with-native-comp
 		  ln -s $(brew --prefix)/opt/emacs-plus/Emacs.app /Applications/Emacs.app
 	  ;;
 		Linux*)
