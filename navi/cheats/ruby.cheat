@@ -1,0 +1,7 @@
+% ruby
+
+# install locally built gem
+gem install <local_gem>
+
+
+$ local_gem: ls *.gem
