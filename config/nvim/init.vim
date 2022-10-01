@@ -43,6 +43,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'lervag/vimtex'
 Plug 'exu/pgsql.vim'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
