@@ -44,11 +44,11 @@ Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
 Plug 'lervag/vimtex'
 Plug 'exu/pgsql.vim'
 Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
 Plug 'elixir-lang/vim-elixir', { 'for': ['elixir', 'eelixir'] }
-Plug 'kevinw/pyflakes-vim', { 'for': 'python' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 Plug 'mattn/emmet-vim', { 'for': ['html', 'php', 'eelixir'] }
@@ -382,3 +382,9 @@ nmap ga <Plug>(EasyAlign)
 set colorcolumn=80
 let g:xml_syntax_folding=1
 au FileType xml setlocal foldmethod=syntax
+
+lua <<EOF
+
+require'lspconfig'.pyright.setup{}
+
+EOF
