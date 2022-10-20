@@ -45,6 +45,7 @@ _zsh_autosuggest_strategy_histdb_top() {
 ZSH_AUTOSUGGEST_STRATEGY=histdb_top
 ## End hist-db stuff
 
+
 zstyle ':prezto:load' pmodule \
   'environment' \
   'terminal' \
@@ -60,7 +61,6 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'autosuggestions' \
   'osx' \
-  'rails' \
   'rsync' \
   'prompt'
 
