@@ -361,6 +361,7 @@ Participants: %^{Participants}
       (:map emacs-lisp-mode-map
        :nv "f"
        #'elisp-format-buffer)
+      :nv "t" #'projectile-toggle-between-implementation-and-test
       (:map org-mode-map
        :nv "o" #'org-open-at-point
        :nv "b" #'helm-bibtex
@@ -391,7 +392,7 @@ Participants: %^{Participants}
 
 (after! projectile
   (require 'f)
-  (setq projectile-enable-caching nil projectile-project-search-path (f-directories "~/Code/Work/q-centrix/"))
+  (setq projectile-enable-caching nil projectile-project-search-path (f-directories "~/Code/Work/q-centrix/") projectile-sort-order 'recently-active)
   )
 
 (use-package! flymake-shellcheck
