@@ -1,15 +1,31 @@
 % forgit, git, code
 
+# interactive git add selector
+ga
+
+# interactive git log viewer
+glo
+
+# interactive .gitignore generator
+gi
+
 # interactive git diff viewer
 gd
 
 # interactive git reset HEAD selector
 grh
+
 # interactive git checkout file selector
 gcf
 
 # interactive git checkout branch selector
 gcb
+
+# interactive git branch deletion
+gbd
+
+# interactive git revert
+grc
 
 # interactive git checkout commit selector
 gco
@@ -25,6 +41,9 @@ gcp <local_branches>
 
 # interactive git rebase -i selector
 grb
+
+# interactive git blame selector
+gbl
 
 # interactive fixup
 gfu

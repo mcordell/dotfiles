@@ -15,4 +15,8 @@ clean_branches
 # rspec mod
 bundle exec rspec <modified_specs>
 
+# git modified files
+git diff --name-status | awk '/^(M|A)/ {print $2}'
+
+
 $ modified_specs: git ls-files --others --exclude-standard | grep '_spec.rb'; git diff --name-only | grep '_spec.rb'
