@@ -75,6 +75,7 @@
 [rebase]
 	autosquash = true
 	autostash = true
+	updateRefs = true
 [hub]
 	protocol = ssh
 [pager]
