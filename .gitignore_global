@@ -18,3 +18,4 @@ custom_plan.rb
 .stfolder
 .tool-versions
 .envrc
+.stignore
