@@ -225,6 +225,11 @@ Participants: %^{Participants}
              :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                 "#+title: ${title}")
              :unnarrowed t))
+          org-roam-mode-sections
+                (list #'org-roam-backlinks-section
+                        #'org-roam-reflinks-section
+                        #'org-roam-unlinked-references-section
+                        )
           )
 
     (add-hook 'org-roam-capture-after-find-file-hook
@@ -404,3 +409,10 @@ Participants: %^{Participants}
           (lambda ()
             ;; include *Code-Review* buffer into current workspace
             (persp-add-buffer (current-buffer))))
+(defun file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
