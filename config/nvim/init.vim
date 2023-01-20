@@ -39,6 +39,8 @@ Plug 'jremmen/vim-ripgrep'
 Plug 'kennethzfeng/vim-raml', { 'for': 'raml' }
 
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'NoahTheDuke/vim-just'
+Plug 'IndianBoy42/tree-sitter-just'
 "Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'ervandew/supertab'
 Plug 'Raimondi/delimitMate'

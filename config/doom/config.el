@@ -416,3 +416,6 @@ Participants: %^{Participants}
    (lambda (key _value)
      (file-notify-rm-watch key))
    file-notify-descriptors))
+(use-package! justl
+  :config
+  (map! :n "e" 'justl-exec-recipe))

@@ -14,12 +14,17 @@
 (package! org-download)
 (package! org-mac-link)
 (package! ox-hugo)
+(package! org-roam
+        :recipe (:host github :repo "org-roam/org-roam" :branch "main")
+  )
 (package! org-roam-bibtex
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "jgru/org-roam-ui" :branch "add-export-capability" :files ("*.el" "out")))
 (package! flymake-shellcheck)
+(package! just-mode)
+(package! justl)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:

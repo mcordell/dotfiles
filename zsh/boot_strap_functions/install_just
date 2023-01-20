@@ -1,0 +1,17 @@
+# vim: set ft=zsh:
+_install_just () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac just" "green"
+		  brew install just
+	  ;;
+		Linux*)
+		  _installer_log "Trying to install just with cargo" "$reset_color"
+		  cargo install just
+	  ;;
+	esac
+}
+
+install_just () {
+  _which_check "just" "_install_just"
+}

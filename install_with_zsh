@@ -42,6 +42,7 @@ install_bat
 install_exa
 install_fd
 install_diffing_tool
+install_just
 
 INDENT="  "
 _installer_log "💪 Installing Command Line enhancers"
