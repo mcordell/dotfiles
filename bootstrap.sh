@@ -1,6 +1,6 @@
-#!/bin/dash
-SYSTEM=`uname`
-SCRIPTPATH=`pwd -P`
+#!/bin/sh
+#
+SYSTEM=$(uname)
 DOT_REPO="https://github.com/mcordell/dotfiles"
 # DOT_PUSH allows a different push url, in this case we want push to the same
 # location but use ssh to avoid https authing
@@ -10,7 +10,7 @@ DOT_PATH="$HOME/.dotfiles"
 setupPackageManager() {
 	case $SYSTEM in
 		Darwin*)
-		echo "Allo osx"
+		echo "hello osx"
 		setupCommandLineTools
 		installBrew
 		ensureBrew
@@ -18,7 +18,7 @@ setupPackageManager() {
 		brew update
 ;;
 		Linux*)
-		echo "Allo linux"
+		echo "hello linux"
 		sudo apt-get install -y software-properties-common
 		sudo apt-get update
 	;;
@@ -26,11 +26,10 @@ setupPackageManager() {
 }
 
 ensureBrew() {
-	if [ -z `which brew | grep -v 'not found'` ]
-	then
+	which brew 1> /dev/null || {
 		echo "Brew not present, aborting."
 		exit
-	fi;
+	}
 }
 
 setupCommandLineTools() {
@@ -44,14 +43,12 @@ setupCommandLineTools() {
 }
 
 installBrew() {
-	if [ -z `which brew | grep -v 'not found'` ]
+	if which brew 1>/dev/null
 	then
-		echo "getting brew"
-		ruby \
-		-e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
-		</dev/null
-	else
 		echo "We already have brew"
+	else
+		echo "getting brew"
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi;
 }
 
@@ -70,13 +67,13 @@ setupZsh() {
 	case $SYSTEM in
 		Darwin*)
 			ZSH_EXEC=$(brew --prefix)/bin/zsh
-			CURR_SHELL=$(dscl . -read /Users/$USER UserShell | cut -f 2 -d " ")
+			CURR_SHELL=$(dscl . -read "/Users/$USER" UserShell | cut -f 2 -d " ")
 			if [ "$ZSH_EXEC" = "$CURR_SHELL" ]
 			then
 				echo "Shell already set to $ZSH_EXEC for $USER"
 			else
 				echo "Setting shell to zsh"
-				sudo dscl . -create /Users/$USER UserShell "$ZSH_EXEC"
+				sudo dscl . -create "/Users/$USER" UserShell "$ZSH_EXEC"
 				echo "Restart terminal and run install-with-zsh"
 			fi
 	    ;;
@@ -96,11 +93,15 @@ setupZsh() {
 }
 
 setupDotfiles() {
-	git clone --recursive $DOT_REPO $DOT_PATH && cd $DOT_PATH
-	git remote set-url --push origin $DOT_PUSH
-	export DOT_REPO
-	export DOT_PATH
-	zsh -c "source $DOT_PATH/zsh/dot/dot.sh; dot_main set"
+	if [ -d "$DOT_PATH" ]; then
+		echo "Dotfile directory exists"
+	else
+		git clone --recursive "$DOT_REPO" "$DOT_PATH" && cd "$DOT_PATH" || exit
+		git remote set-url --push origin $DOT_PUSH
+		export DOT_REPO
+		export DOT_PATH
+		zsh -c "source $DOT_PATH/zsh/dot/dot.sh; dot_main set"
+	fi
 }
 
 setupPackageManager
