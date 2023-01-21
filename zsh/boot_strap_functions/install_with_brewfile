@@ -1,0 +1,17 @@
+# vim: set ft=zsh:
+
+
+install_with_brewfile () {
+	if [ -z `which brew | grep -v 'not found'` ]
+	then
+		_installer_log "brew not present, skipping installing with brewfile" "yellow"
+	else
+		BREWFILE_PATH="$SCRIPTPATH/Brewfile"
+		if [ -f "$BREWFILE_PATH" ]; then
+			_installer_log "Installing with brewfile" "green"
+			brew bundle --file "$BREWFILE_PATH"
+		else
+			_installer_log "Brewfile not present at $BREWFILE_PATH, skipping installing with brewfile" "yellow"
+		fi
+	fi
+}

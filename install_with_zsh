@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+SCRIPTPATH=`pwd -P`
+
 for file in ./zsh/boot_strap_functions/*; do
     source "$file"
 done
@@ -9,6 +11,8 @@ INDENT="    "
 source zsh/dot/dot.sh
 dot_main set
 INDENT=""
+
+install_with_brewfile
 
 # zsh
 setup_zsh $SYSTEM

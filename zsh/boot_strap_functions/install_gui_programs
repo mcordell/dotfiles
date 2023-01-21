@@ -13,7 +13,6 @@ _install_macos_gui_programs () {
 	'karabiner-elements'
 	'mailmate'
 	'notion'
-	'omnifocus'
 	'slack'
 	'spotify'
 	'viscosity'
