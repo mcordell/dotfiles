@@ -1,0 +1,19 @@
+# vim: set ft=zsh:
+
+_install_topgrade () {
+	case $(_system) in
+		Darwin*)
+		  _installer_log "Installing mac topgrade" "green"
+		  brew install topgrade
+	  ;;
+		Linux*)
+		  _installer_log "Trying to install topgrade with cargo" "$reset_color"
+		  cargo install just
+		  _last_command_log "topgrade"
+	  ;;
+	esac
+}
+
+install_topgrade () {
+  _which_check "topgrade" "_install_topgrade"
+}

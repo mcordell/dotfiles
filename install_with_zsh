@@ -46,7 +46,6 @@ install_bat
 install_exa
 install_fd
 install_diffing_tool
-install_just
 
 INDENT="  "
 _installer_log "💪 Installing Command Line enhancers"
@@ -58,6 +57,8 @@ install_jq
 install_tldr
 install_navi
 install_gpg
+install_topgrade
+install_just
 
 # Editors
 INDENT=""
