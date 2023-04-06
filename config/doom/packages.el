@@ -7,6 +7,7 @@
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
+(package! org-drill)
 (package! dash-at-point)
 (package! elisp-format)
 (package! helm-org-rifle)
@@ -22,6 +23,7 @@
 (unpin! org-roam company-org-roam)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "jgru/org-roam-ui" :branch "add-export-capability" :files ("*.el" "out")))
+(package! org-nursery :recipe (:host github :repo "chrisbarrett/nursery"))
 (package! flymake-shellcheck)
 (package! just-mode)
 (package! justl)

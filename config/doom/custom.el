@@ -6,7 +6,7 @@
  '(custom-safe-themes
    '("e074be1c799b509f52870ee596a5977b519f6d269455b84ed998666cf6fc802a" default))
  '(ignored-local-variable-values '((projectile-project-compilation-cmd . "./build")))
- '(package-selected-packages '(gh-notify))
+ '(package-selected-packages '(ts org-drill gh-notify))
  '(safe-local-variable-values
    '((projectile-project-compilation-cmd . "./build")
      (org-hugo-base-dir . "../hugo_test")
