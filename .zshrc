@@ -18,6 +18,8 @@ if [ "$TERM" != "dumb" ]; then
 	[ -f $f ] && source $f
 fi
 
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 source ~/.zsh/plugins/forgit/forgit.plugin.zsh
 
 fpath=($HOME/.zsh/dot $fpath)  # <- for completion
