@@ -358,6 +358,11 @@ Participants: %^{Participants}
        ("t"  #'treemacs))
       (:prefix "s"
        ("c"  #'evil-ex-nohighlight))
+      (:prefix "m"
+        (:map org-mode-map
+         :nv "r" #'org-roam-review
+        )
+      )
       (:prefix "o"
        ("/" #'org-roam-node-find)
        ("c" #'cfw:open-org-calendar)))
