@@ -28,6 +28,14 @@
 (package! just-mode)
 (package! justl)
 
+(package! transient
+      :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440"
+      :recipe (:host github :repo "magit/transient"))
+
+(package! with-editor
+          :pin "bbc60f68ac190f02da8a100b6fb67cf1c27c53ab"
+          :recipe (:host github :repo "magit/with-editor"))
+
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
