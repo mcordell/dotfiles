@@ -14,6 +14,7 @@ endfunction
 call plug#begin('~/.config/nvim/plugged')
 
 "Plugin essentials
+Plug 'github/copilot.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
