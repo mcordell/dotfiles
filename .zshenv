@@ -76,3 +76,7 @@ fi
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
+
+if [[ -f "$HOME/.zsh/pyenv_profile" ]]; then
+  source "$HOME/.zsh/pyenv_profile"
+fi
