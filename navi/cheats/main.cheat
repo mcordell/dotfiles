@@ -4,7 +4,7 @@
 echo UPDATESTARTUPTTY | gpg-connect-agent
 
 # create repo with aws
-aws codecommit create-repository --repository-name REPO_NAME --repository-description "REPO DESCRIPTION" | jq '.repositoryMetadata.cloneUrlSsh' | xargs git remote add amazon
+aws codecommit create-repository --repository-name <repo_name> --repository-description "<repo_description>" | jq '.repositoryMetadata.cloneUrlSsh' | xargs git remote add amazon
 
 # open cheat sheet for editing
 fd . "$(navi info cheats-path)" | fzf | xargs -I {} nvim "{}"
