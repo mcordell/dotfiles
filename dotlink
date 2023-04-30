@@ -42,6 +42,7 @@ zsh/scripts/rgs, /usr/local/bin/rgs
 # (neo)Vim
 .vimrc,.vimrc
 config/nvim, ~/.config/nvim
+astronvim_user_config, ~/.config/nvim/lua/user
 
 # emacs
 config/doom, ~/.config/doom
