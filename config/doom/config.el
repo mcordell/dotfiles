@@ -79,7 +79,44 @@
                                                        ":DOI: ${doi}\n"
                                                        ":URL: ${url}\n"
                                                        ":END:\n\n")
+      one-on-one-list
+      '(("Brian" . "Wednesday 09:00")
+        ("Matt" . "Wednesday 10:30")
+        ("Chris" . "Tuesday 13:00")
+        ("Andrew" . "Tuesday 13:30")
+        ("Teo" . "Tuesday 14:30")
+        ("Jamaal" . "Thursday 11:30")
+        ("Bijal" . "Thursday 15:00")
+        ("Brad" . "Thursday 16:00")
+        )
  )
+
+;; Creates a heading for a one-on-one meeting with the given NAME on the next occurrence of the day and time specified in the one-on-one list.
+;; The format for the heading is "* NAME 1-1 <Y-m-d a H:M>", where <Y-m-d a H:M> is the date and time of the next occurrence of the specified day and time.
+;; Returns the formatted heading as a string.
+(defun mcordell/create-one-on-one-heading (name)
+  (let* ((day-time (cdr (assoc name one-on-one-list)))
+         (today (current-time))
+         (desired-day (parse-time-string day-time))
+         (desired-dow (nth 6 desired-day))
+         (desired-hour (nth 2 desired-day))
+         (desired-min (nth 1 desired-day))
+         (current-dow (nth 6 (decode-time today)))
+         (days-until (- desired-dow current-dow)))
+    (if (< days-until 0)
+        (setq days-until (+ days-until 7)))
+    (let ((next-meeting-date (time-add today (days-to-time days-until))))
+      (format-time-string (concat "* " name " 1-1 <%Y-%m-%d %a %H:%M>")
+                          (encode-time 0 desired-min desired-hour
+                                       (nth 3 (decode-time next-meeting-date))
+                                       (nth 4 (decode-time next-meeting-date))
+                                       (nth 5 (decode-time next-meeting-date)))))))
+
+(defun mcordell/create-one-on-one-heading-with-prompt ()
+  (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
+         (heading (mcordell/create-one-on-one-heading name)))
+    heading))
+
 
 (defun mcordell/org-id-update-org-roam-files ()
   "Update Org-ID locations for all Org-roam files."
@@ -121,11 +158,14 @@
                                                                        "Reviews")
                                                    "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
 
-                                                  ("o" "one-on-one" entry (file
-                                                                           "~/org/qcentrix/qcentrix.org")
-                                                   "* %^{Bijal|Sujay|Brad|Brian|Do|Matt|Teo|Eric|Steve} 1-1 %t
-%?
-")
+("o" "One on One" entry
+                 (file "~/org/qcentrix/big_board.org")
+                 "%(mcordell/create-one-on-one-heading-with-prompt)
+%?"
+                 :empty-lines 1
+                 :unnarrowed t
+                 :jump-to-captured t
+                 )
                                                   ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
                                                    "* %^{Subject} <%<%Y-%m-%d %H:00>>
 Participants: %^{Participants}
