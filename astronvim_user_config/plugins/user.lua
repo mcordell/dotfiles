@@ -64,7 +64,11 @@ return {
       require("codegpt.config")
     end,
     event = "VeryLazy"
-  }
+  },
+  {
+    "AndrewRadev/splitjoin.vim",
+    event = "VeryLazy"
+  },
   -- You can also add new plugins here as well:
   -- Add plugins, the lazy syntax
   -- "andweeb/presence.nvim",
