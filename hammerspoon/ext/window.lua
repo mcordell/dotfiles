@@ -1,24 +1,32 @@
-local cache  = {}
-local module = { cache = cache }
+local cache              = {}
+local module             = { cache = cache }
 
-module.splitDemensions = function()
+module.cache.rightBottom = hs.geometry.unitrect(0.5, 0.5, 0.5, 0.5)
+module.cache.rightTop    = hs.geometry.unitrect(0.5, 0, 0.5, 0.5)
+module.cache.leftTop     = hs.geometry.unitrect(0, 0, 1, 0.5)
+module.cache.leftBotton  = hs.geometry.unitrect(0, 0.5, 1, 0.5)
+module.cache.leftThird   = hs.geometry.unitrect(0, 0, .333, 1)
+module.cache.middleThird = hs.geometry.unitrect(.333, 0, .333, 1)
+module.cache.rightThird  = hs.geometry.unitrect(.666, 0, .333, 1)
+
+module.splitDemensions   = function()
   local win, f, max, newWidth, increment = module.windowInfo()
 
   return newWidth
 end
 
-module.maximizeWindow = function()
+module.maximizeWindow    = function()
   hs.window.focusedWindow():maximize(0)
 end
 
-module.moveLeft = function()
+module.moveLeft          = function()
   local win = hs.window.focusedWindow()
   local target = win:screen():previous()
   win:moveToScreen(target, false, false, 0)
   win:maximize(0)
 end
 
-module.moveRight = function()
+module.moveRight         = function()
   local win = hs.window.focusedWindow()
   local target = win:screen():next()
   win:moveToScreen(target, false, false, 0)
@@ -53,7 +61,7 @@ module.splitUpperMiddle = function()
 end
 
 module.splitLowerMiddle = function()
-  local win, f, max, newWidth, increment = module.windowInfo()
+  local win, f, max, newWidth, _ = module.windowInfo()
   local half_h = max.h / 2
 
   f.w = newWidth
@@ -66,7 +74,7 @@ module.splitLowerMiddle = function()
 end
 
 module.splitUpperLeft = function()
-  local win, f, max, newWidth, increment = module.windowInfo()
+  local win, f, max, newWidth, _ = module.windowInfo()
   local half_h = max.h / 2
 
   f.w = newWidth
@@ -78,7 +86,7 @@ module.splitUpperLeft = function()
 end
 
 module.splitLowerLeft = function()
-  local win, f, max, newWidth, increment = module.windowInfo()
+  local win, f, max, newWidth, _ = module.windowInfo()
   local half_h = max.h / 2
 
   f.w = newWidth
@@ -170,28 +178,28 @@ module.splitTwoThirdsRight = function()
 end
 
 module.splitUp = function()
-    local win, f, max, newWidth, increment = module.windowInfo()
-	local half = max.h / 2
+  local win, f, max, newWidth, increment = module.windowInfo()
+  local half = max.h / 2
 
-	f.w = max.w
-	f.h = half
-	win:setFrame(f, 0)
+  f.w = max.w
+  f.h = half
+  win:setFrame(f, 0)
 
-	f.x = max.x
-	f.y = max.y
-	win:setFrame(f)
+  f.x = max.x
+  f.y = max.y
+  win:setFrame(f)
 end
 
 module.splitDown = function()
-    local win, f, max, newWidth, increment = module.windowInfo()
-    local half = max.h / 2
-    f.w = max.w
-    f.h = half
-    win:setFrame(f, 0)
+  local win, f, max, newWidth, increment = module.windowInfo()
+  local half = max.h / 2
+  f.w = max.w
+  f.h = half
+  win:setFrame(f, 0)
 
-    f.x = max.x
-    f.y = max.y + half
-    win:setFrame(f)
+  f.x = max.x
+  f.y = max.y + half
+  win:setFrame(f)
 end
 
 module.splitMiddle = function()
@@ -206,13 +214,13 @@ module.splitMiddle = function()
   win:setFrame(f)
 end
 
-module.splitTriple = function (leftApp, midApp, rightApp)
+module.splitTriple = function(leftApp, midApp, rightApp)
   leftApp:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, .333, 1))
   midApp:mainWindow():moveToUnit(hs.geometry.unitrect(.333, 0, .333, 1))
   rightApp:mainWindow():moveToUnit(hs.geometry.unitrect(.666, 0, .333, 1))
 end
 
-module.splitMainFocus = function (leftApp, rightApp)
+module.splitMainFocus = function(leftApp, rightApp)
   leftApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
   rightApp:mainWindow():moveToScreen(leftScreen, false, false, 0)
   leftApp:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, .5, 1))
@@ -221,7 +229,7 @@ module.splitMainFocus = function (leftApp, rightApp)
   rightApp:mainWindow():raise()
 end
 
-module.moveToMainFocus = function (app)
+module.moveToMainFocus = function(app)
   app:mainWindow():focus()
   app:mainWindow():moveToScreen(leftScreen, false, false, 0)
   app:mainWindow():moveToUnit(hs.geometry.unitrect(0, 0, 1, 1))
