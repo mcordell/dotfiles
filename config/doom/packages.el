@@ -27,6 +27,7 @@
 (package! flymake-shellcheck)
 (package! just-mode)
 (package! justl)
+(package! ts)
 
 (package! transient
       :pin "c2bdf7e12c530eb85476d3aef317eb2941ab9440"
