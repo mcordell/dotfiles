@@ -24,7 +24,11 @@ return {
     event = "VeryLazy",
     config = function()
       require('nvim-test').setup({
-        term = "toggleterm"
+        term = "toggleterm",
+        silent = true,
+        termOpts = {
+          go_back = true
+        }
       })
       require('nvim-test.runners.rspec'):setup {
         command = "bundle exec rspec", -- a command to run the test runner
