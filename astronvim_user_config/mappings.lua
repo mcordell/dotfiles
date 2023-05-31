@@ -22,10 +22,11 @@ return {
     -- this is useful for naming menus
     ["<leader>b"] = { name = "Buffers" },
     -- quick save
-    ["<leader>fs"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
-    [",ta"] = { ":TestVisit<cr>", desc = "test visit" }, -- change description but the same command
-    [",tt"] = { ":TestFile<cr>", desc = "test file" },   -- change description but the same command
-    [",,"] = { ":b#<cr>", desc = "last buffer" },        -- change description but the same command
+    ["<leader>fs"] = { ":w!<cr>", desc = "Save File" },
+    [",tr"] = { ":TestVisit<cr>", desc = "test visit" },
+    [",tt"] = { ":TestFile<cr>", desc = "test file" },
+    [",s"] = { ":TestNearest<cr><cr>", desc = "test nearest" },
+    [",,"] = { ":b#<cr>", desc = "last buffer" },
   },
   t = {
     -- setting a mapping to false will disable it
