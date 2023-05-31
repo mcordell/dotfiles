@@ -8,6 +8,7 @@ path=(
 	/Users/michael/go/bin
 	/usr/local/opt/grep/libexec/gnubin
 	/Users/michael/Code/shell/temp/git-fuzzy/bin
+	~/.docker/bin/
     $path
 )
 
