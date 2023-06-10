@@ -8,7 +8,8 @@ local module          = {
     teams = "Microsoft Teams",
     emacs = "Emacs",
     zoom = "zoom.us",
-    slack = "Slack"
+    slack = "Slack",
+    outlook = "Microsoft Outlook"
   }
 }
 local log             = hs.logger.new('init', 'debug')

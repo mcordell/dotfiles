@@ -16,7 +16,7 @@ module.setFantasticalToToday = function(fantastical)
 end
 
 module.shutDownWork = function()
-  for _, app in ipairs({ v.slack, v.zoom, v.teams }) do
+  for _, app in ipairs({ v.slack, v.zoom, v.teams, v.outlook }) do
     local application = hs.application.get(app)
     if application ~= nil then
       application:kill()
