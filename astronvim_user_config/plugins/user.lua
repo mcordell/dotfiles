@@ -20,6 +20,10 @@ return {
     lazy = false
   },
   {
+    "tpope/vim-rhubarb",
+    lazy = false
+  },
+  {
     "klen/nvim-test",
     event = "VeryLazy",
     config = function()
