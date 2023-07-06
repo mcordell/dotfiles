@@ -25,7 +25,7 @@ module.shutDownWork = function()
 end
 
 module.startWork = function()
-  for _, app in ipairs({ v.slack, v.zoom, v.teams, v.fantastical }) do
+  for _, app in ipairs({ v.slack, v.zoom, v.teams, v.fantastical, v.outlook }) do
     hs.application.open(app)
   end
 end
@@ -34,10 +34,15 @@ module.movePlaces = function()
   local spaceMap = {}
   spaceMap[v.teams] = spaces.vars.comToolsSpace
   spaceMap[v.zoom] = spaces.vars.comToolsSpace
+  spaceMap[v.outlook] = spaces.vars.comToolsSpace
   spaceMap[v.slack] = spaces.vars.mainLapSpace
   spaceMap[v.fantastical] = spaces.vars.mainLapSpace
   for app, spaceid in pairs(spaceMap) do
-    hs.spaces.moveWindowToSpace(hs.application.get(app):mainWindow(), spaceid)
+    window = hs.application.get(app):mainWindow()
+
+    if (window ~= nil) then
+      hs.spaces.moveWindowToSpace(window, spaceid)
+    end
   end
 end
 
