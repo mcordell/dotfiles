@@ -40,10 +40,6 @@ return {
     end
   },
   {
-    "github/copilot.vim",
-    event = "VeryLazy",
-  },
-  {
     "IndianBoy42/tree-sitter-just",
     event = "VeryLazy",
     config = function()
@@ -63,15 +59,21 @@ return {
     event = "VeryLazy"
   },
   {
-    "dpayne/CodeGPT.nvim",
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-    },
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
     config = function()
-      require("codegpt.config")
+      require("chatgpt").setup(
+        {
+          api_key_cmd = "op read op://Personal/OpenAIAPI/credential --no-newline",
+          actions_paths = { "/Users/michael/.dotfiles/astronvim_user_config/plugins/actions.json" }
+        }
+      )
     end,
-    event = "VeryLazy"
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
   },
   {
     "AndrewRadev/splitjoin.vim",
