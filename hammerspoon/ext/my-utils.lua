@@ -38,10 +38,15 @@ module.movePlaces = function()
   spaceMap[v.slack] = spaces.vars.mainLapSpace
   spaceMap[v.fantastical] = spaces.vars.mainLapSpace
   for app, spaceid in pairs(spaceMap) do
-    window = hs.application.get(app):mainWindow()
+    local mainApp =  hs.application.get(app)
+    local window = nil
 
-    if (window ~= nil) then
-      hs.spaces.moveWindowToSpace(window, spaceid)
+    if (mainApp ~= nil) then
+      window = mainApp:mainWindow()
+
+      if (window ~= nil) then
+        hs.spaces.moveWindowToSpace(window, spaceid)
+      end
     end
   end
 end
