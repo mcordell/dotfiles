@@ -23,8 +23,8 @@ return {
     ["<leader>b"] = { name = "Buffers" },
     -- quick save
     ["<leader>fs"] = { ":w!<cr>", desc = "Save File" },
-    [",tr"] = { ":TestVisit<cr>", desc = "test visit" },
-    [",tt"] = { ":TestFile<cr>", desc = "test file" },
+    [",tr"] = { ":TestVisit<cr><cr>", desc = "test visit" },
+    [",tt"] = { ":TestFile<cr><cr>", desc = "test file" },
     [",s"] = { ":TestNearest<cr><cr>", desc = "test nearest" },
     [",,"] = { ":b#<cr>", desc = "last buffer" },
   },
