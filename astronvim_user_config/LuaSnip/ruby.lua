@@ -67,5 +67,29 @@ return {
         i(3, "description of var")
       }
     )
+  ),
+  s(
+    { trig = "# retm", desc = "yard return tag", snippetType = "autosnippet" },
+    fmta("# @return [<>] <>",
+      {
+        i(1, "Types"),
+        i(0, "description"),
+      }
+    )
+  ),
+  s(
+    { trig = "# opth", desc = "define method", snippetType = "autosnippet" },
+    fmta(
+      [[
+      # @param [Hash] opts <>
+      # @option opts [<>] :<> <>
+    ]],
+      {
+        i(1, "opts description"),
+        i(2, "OptType"),
+        i(3, "opt_key"),
+        i(4, "opt description")
+      }
+    )
   )
 }
