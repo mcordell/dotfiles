@@ -82,12 +82,14 @@
       one-on-one-list
       '(("Brian" . "Wednesday 09:00")
         ("Matt" . "Wednesday 10:30")
-        ("Chris" . "Tuesday 13:00")
-        ("Andrew" . "Tuesday 13:30")
+        ("Chris" . "Tuesday 12:30")
+        ("Andrew" . "Tuesday 13:00")
         ("Teo" . "Tuesday 14:30")
         ("Jamaal" . "Thursday 11:30")
         ("Bijal" . "Thursday 15:00")
         ("Brad" . "Thursday 16:00")
+        ("Pierce" . "Wednesday 12:30")
+        ("Bryan" . "Wednesday 11:30")
         )
  )
 
@@ -234,7 +236,6 @@ Participants: %^{Participants}
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm)
-
 (defun org-pass-link-to-system (link)
   (if (string-match "^[\"a-zA-Z0-9]+:" link)
     (shell-command (concat "open " link))
