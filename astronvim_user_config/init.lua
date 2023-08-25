@@ -47,8 +47,15 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
+      "rubocop",
     },
+    config = {
+      rubocop = {
+        command = "bundle",
+        args = { "exec", "rubocop", "--lsp" }
+      }
+    }
+
   },
   -- Configure require("lazy").setup() options
   lazy = {
