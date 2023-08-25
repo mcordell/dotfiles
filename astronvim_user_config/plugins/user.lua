@@ -79,21 +79,6 @@ return {
     "AndrewRadev/splitjoin.vim",
     event = "VeryLazy"
   },
-  {
-    "L3MON4D3/LuaSnip",
-    config = function(plugin, opts)
-      opts["enable_autosnippets"] = true
-      -- include the default astronvim config that calls the setup call
-      require "plugins.configs.luasnip" (plugin, opts)
-      -- load snippets paths
-      require("luasnip.loaders.from_lua").load {
-        -- this can be used if your configuration lives in ~/.config/nvim
-        -- if your configuration lives in ~/.config/astronvim, the full path
-        -- must be specified in the next line
-        paths = { "~/.config/nvim/lua/user/LuaSnip/" }
-      }
-    end,
-  },
   -- You can also add new plugins here as well:
   -- Add plugins, the lazy syntax
   -- "andweeb/presence.nvim",

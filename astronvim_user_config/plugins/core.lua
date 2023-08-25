@@ -20,6 +20,32 @@ return {
       return opts
     end,
   },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+      region_check_events = "CursorMoved",
+    },
+    config = function(_, opts)
+      opts["enable_autosnippets"] = true
+
+      require("luasnip").config.setup(opts)
+      -- include the default astronvim config that calls the setup call
+      -- require "plugins.configs.luasnip" (plugin, opts)
+      -- load snippets paths
+      require("luasnip.loaders.from_vscode").load {
+        exclude = { "ruby" },
+      }
+      require("luasnip.loaders.from_lua").load {
+        -- this can be used if your configuration lives in ~/.config/nvim
+        -- if your configuration lives in ~/.config/astronvim, the full path
+        -- must be specified in the next line
+        paths = { "~/.config/nvim/lua/user/LuaSnip/" }
+      }
+    end,
+  },
   -- You can disable default plugins as follows:
   -- { "max397574/better-escape.nvim", enabled = false },
   --
