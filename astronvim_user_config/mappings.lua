@@ -26,6 +26,8 @@ return {
     [",tr"] = { ":TestVisit<cr><cr>", desc = "test visit" },
     [",tt"] = { ":TestFile<cr><cr>", desc = "test file" },
     [",s"] = { ":TestNearest<cr><cr>", desc = "test nearest" },
+    [",l"] = { ":TestLast<cr><cr>", desc = "test last" },
+    [",e"] = { ":TestEdit<cr><cr>", desc = "test edit" },
     [",,"] = { ":b#<cr>", desc = "last buffer" },
   },
   v = {
