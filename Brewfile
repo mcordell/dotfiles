@@ -103,7 +103,6 @@ brew "rust-analyzer"
 brew "rustup-init"
 brew "shellcheck"
 brew "sphinx-doc"
-brew "starship"
 brew "syncthing", restart_service: true
 brew "tealdeer"
 brew "tmux"

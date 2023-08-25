@@ -63,9 +63,6 @@ global-tool-versions,.tool-versions
 #direnv
 config/direnv, ~/.config/direnv
 
-#starship
-config/starship.toml, ~/.config/starship.toml
-
 #bat
 config/bat, ~/.config/bat
 
