@@ -55,7 +55,6 @@ local spiltParameters = function(args, _parent, _user_args)
   return output
 end
 
-local frozen = t("# frozen_string_literal: true")
 local itblock =
     fmta(
       [[
@@ -70,7 +69,6 @@ local itblock =
     )
 
 return {
-  -- A snippet that expands the trigger "hi" into the string "Hello, world!".
   s(
     { trig = "rd", desc = "disable a rubocop cop for selected block" },
     fmta("#rubocop:disable <>\n<>\n#rubocop:enable <>",
@@ -78,6 +76,34 @@ return {
         i(1, "cop name 2"),
         d(2, get_visual),
         rep(1)
+      }
+    )
+  ),
+  s(
+    { trig = "pry", desc = "disable a rubocop cop for selected block", snippetType = "autosnippet" },
+    t("require 'pry'; binding.pry")
+  ),
+  s(
+    { trig = "irb", desc = "bidning for irb" },
+    t("binding.irb")
+  ),
+  s(
+    { trig = ".map", desc = "map function", snippetType = "autosnippet", wordTrig = false },
+    fmta(".map { |<>| <> }",
+      {
+        i(1, "obj"),
+        i(0)
+      }
+    )
+  ),
+  s(
+    { trig = ".reduce ", desc = "reduce function", snippetType = "autosnippet", wordTrig = false },
+    fmta(".reduce(<>) { |<>,<>| <> }",
+      {
+        i(1, "object"),
+        i(3, "memo"),
+        i(2, "item"),
+        i(0)
       }
     )
   ),
@@ -119,14 +145,14 @@ return {
     )
   ),
   s(
-    { trig = "frozen", desc = "", snippetType = "autosnippet", condition = conds.line_begin },
-    frozen
+    { trig = "frozen", desc = "frozen", snippetType = "autosnippet", condition = conds.line_begin },
+    t("# frozen_string_literal: true")
   ),
   s(
     { trig = "rdesc", desc = "RSpec describe class", snippetType = "autosnippet" },
     fmta(
       [[
-    <>
+    # frozen_string_literal: true
 
     RSpec.describe <> do
       subject(:instance) { described_class.new }
@@ -135,7 +161,6 @@ return {
     end
     ]],
       {
-        frozen,
         d(1, function(_args, parent)
           local shorter = parent.snippet.env.TM_FILENAME:sub(1, -4)
 
