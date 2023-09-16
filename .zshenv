@@ -69,6 +69,7 @@ if [ -f "/usr/local/opt/asdf/libexec/asdf.sh" ]; then
 fi
 
 if which "asdf" &> /dev/null; then
+	export DIRENV_LOG_FORMAT=''
 	eval "$(asdf exec direnv hook zsh)"
 	direnv() { asdf exec direnv "$@"; }
 fi
