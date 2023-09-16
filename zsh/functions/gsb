@@ -1,0 +1,3 @@
+function gsb() {
+  recent_branches | grep -v '\*' | fzf -m --ansi | awk '{ print $3 }' | xargs git checkout
+}

@@ -1,0 +1,4 @@
+clean_merged() {
+  : ${DEFAULT_GIT_BRANCH:=master}
+  git fetch --prune; git branch --merged $DEFAULT_GIT_BRANCH | grep -v "${DEFAULT_GIT_BRANCH}" | xargs -n 1 git branch -d
+}

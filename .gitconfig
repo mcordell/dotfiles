@@ -29,7 +29,7 @@
 	files = !git diff --name-only $(git merge-base HEAD \"$MERGE_BASE\")
 	stat = !git diff --stat $(git merge-base HEAD \"$MERGE_BASE\")
 	review = !nvim -p $(git files) +\"tabdo Gdiff $MERGE_BASE\" +\"let g:gitgutter_diff_base = '$MERGE_BASE'\"
-	recentb = "!r() { refbranch=$1 count=$2; git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)|%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always --count=${count:-20} | while read line; do branch=$(echo \"$line\" | awk 'BEGIN { FS = \"|\" }; { print $1 }' | tr -d '*'); ahead=$(git rev-list --count \"${refbranch:-origin/master}..${branch}\"); behind=$(git rev-list --count \"${branch}..${refbranch:-origin/master}\"); colorline=$(echo \"$line\" | sed 's/^[^|]*|//'); echo \"$ahead|$behind|$colorline\" | awk -F'|' -vOFS='|' '{$5=substr($5,1,70)}1' ; done | column -ts'|';}; r"
+	recentb = !zsh_function_wrapper recent_branches
 [core]
 	editor = nvim
 	excludesfile = /Users/michael/.gitignore_global

@@ -17,8 +17,7 @@ alias reset_db='./bin/rails db:drop RAILS_ENV=test; ./bin/rails db:create RAILS_
 alias rspec='nocorrect rspec'
 
 # git
-alias clean_branches="git checkout master && git recentb | fzf -m --ansi | awk '{ print \$3 }' | xargs git branch -D"
-alias clean_merged='git fetch --prune; git branch --merged master | grep -v "master" | xargs -n 1 git branch -d'
+alias clean_branches="git checkout ${DEFAULT_GIT_BRANCH:="master"} && git recentb | fzf -m --ansi | awk '{ print \$3 }' | xargs git branch -D"
 alias clean_orig='find . -iregex .*\.orig -exec rm -rf {} \;'
 alias clear_gemlock='git reset HEAD -- Gemfile.lock; git checkout -- Gemfile.lock; bundle'
 alias fu="git log --oneline | fzf | awk '{ print \$1 }' | xargs -I{} git commit --fixup={}"
@@ -26,7 +25,6 @@ alias g='git'
 alias gap='git add -p'
 alias gb="git for-each-ref --sort=committerdate refs/heads/ --format='%(refname:short)'"
 alias gras='git rebase -i --autosquash'
-alias gsb="git recentb | grep -v '\\*' |fzf -m --ansi | awk '{ print \$3 }' | xargs git checkout"
 alias lg='nocorrect git lg'
 alias wip='git commit -m "wip"'
 

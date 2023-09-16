@@ -38,6 +38,7 @@ zsh, ~/.zsh
 .zprofile, .zprofile
 zsh/zsh_aliases, .zsh_aliases
 zsh/scripts/rgs, /usr/local/bin/rgs
+zsh/zsh_function_wrapper /usr/local/bin/zsh_function_wrapper
 
 # (neo)Vim
 .vimrc,.vimrc

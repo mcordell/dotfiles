@@ -1,0 +1,10 @@
+#! /usr/bin/env zsh
+
+fpath=( "$HOME/.zsh/functions" "${fpath[@]}" )
+autoload -U $fpath[1]/*(.:t)
+
+command=$1
+
+shift
+
+$command "$@"
