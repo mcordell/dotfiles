@@ -6,6 +6,7 @@ path=(
 	/usr/local/opt/python/libexec/bin
 	/usr/local/opt/go/libexec/bin
 	/Users/michael/go/bin
+	/Users/michael/.local/bin
 	/usr/local/opt/grep/libexec/gnubin
 	/Users/michael/Code/shell/temp/git-fuzzy/bin
 	~/.docker/bin/
