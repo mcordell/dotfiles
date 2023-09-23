@@ -84,6 +84,14 @@ return {
     t("require 'pry'; binding.pry")
   ),
   s(
+    { trig = "ise", desc = "it is_expected", snippetType = "autosnippet" },
+    fmta("it { is_expected.to <> }",
+      {
+        i(0)
+      }
+    )
+  ),
+  s(
     { trig = "irb", desc = "bidning for irb" },
     t("binding.irb")
   ),
@@ -117,11 +125,29 @@ return {
     )
   ),
   s(
-    { trig = "def", desc = "define method", snippetType = "autosnippet", condition = conds.line_begin },
+    { trig = "def", desc = "define method", condition = conds.line_begin },
     fmt("def {}({})\n  {}\nend",
       {
         i(1, "method_name"),
         i(2, "parameters"),
+        i(0)
+      }
+    )
+  ),
+  s(
+    { trig = "defd", desc = "define delegators", condition = conds.line_begin },
+    fmt("def_delegators :{}, {}",
+      {
+        i(1, "target"),
+        i(0)
+      }
+    )
+  ),
+  s(
+    { trig = "cont", desc = "cont", condition = conds.line_begin },
+    fmt("context '{}' do\n  {}\nend",
+      {
+        i(1, "description"),
         i(0)
       }
     )
