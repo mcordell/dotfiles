@@ -406,8 +406,18 @@ Participants: %^{Participants}
       )
       (:prefix "o"
        ("/" #'org-roam-node-find)
-       ("c" #'cfw:open-org-calendar)))
-
+       ("c" #'cfw:open-org-calendar))
+        (:map org-mode-map
+        (:prefix "r"
+         :desc "list - review" :nv "l" #'org-roam-review
+         :desc "accept" :nv "a" #'org-roam-review-accept
+         :desc "bury" :nv "b" #'org-roam-review-bury
+         :desc "evergreen" :nv "e" #'org-roam-review-set-evergreen
+         :desc "budding" :nv "b" #'org-roam-review-set-budding
+         :desc "seedling" :nv "s" #'org-roam-review-set-seedling
+         :desc "due" :nv "d" #'org-roam-review-list-due
+        )
+      ))
 (map! :prefix ","
       (:map emacs-lisp-mode-map
        :nv "f"
