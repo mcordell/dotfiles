@@ -197,7 +197,7 @@ return {
     )
   ),
   s(
-    { trig = "desc", desc = "describe block", snippetType = "autosnippet" },
+    { trig = "desc", desc = "describe block" },
     fmta(
       [[
     describe '<>' do
