@@ -1,15 +1,12 @@
 --- Allow controlling hammerspoon from CLI
 require("hs.ipc")
-local superKey        = { "cmd", "alt", "ctrl", "shift" }
-local mehKey          = { "alt", "ctrl", "shift" }
+local superKey     = { "cmd", "alt", "ctrl", "shift" }
+local mehKey       = { "alt", "ctrl", "shift" }
 
-local highlightWindow = require('ext.drawing').highlightWindow
-local template        = require('ext.template')
-local windowTools     = require('ext.window')
-local appLauncher     = require('ext.appLauncher')
-local getApp          = require('ext.appTools').getApp
-local reloadConfig    = function() hs.reload() end
-local chrome          = "Google Chrome"
+local windowTools  = require('ext.window')
+local appLauncher  = require('ext.appLauncher')
+local reloadConfig = function() hs.reload() end
+local chrome       = "Google Chrome"
 
 
 hs.hotkey.bind(superKey, "C", require('ext.my-utils').getBraveURL)
