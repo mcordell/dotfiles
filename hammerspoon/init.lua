@@ -11,7 +11,6 @@ local getApp          = require('ext.appTools').getApp
 local reloadConfig    = function() hs.reload() end
 local chrome          = "Google Chrome"
 
-hs.loadSpoon("GlobalMute")
 
 hs.hotkey.bind(superKey, "C", require('ext.my-utils').getBraveURL)
 
@@ -77,14 +76,3 @@ end
 hs.hotkey.bind({}, "F15", launchEmacs)
 
 hs.alert.show("Config loaded")
-
-require('ext.zoom')
-spoon.GlobalMute:bindHotkeys({
-  toggle = { {}, "F19" }
-})
-spoon.GlobalMute:configure({
-  enforce_desired_state = true,
-  stop_sococo_for_zoom  = true,
-  unmute_title          = "<---- THEY CAN HEAR YOU -----",
-  mute_title            = "<-- MUTE",
-})
