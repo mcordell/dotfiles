@@ -23,11 +23,18 @@ return {
     ["<leader>b"] = { name = "Buffers" },
     -- quick save
     ["<leader>fs"] = { ":w!<cr>", desc = "Save File" },
-    [",tr"] = { ":TestVisit<cr><cr>", desc = "test visit" },
-    [",tt"] = { ":TestFile<cr><cr>", desc = "test file" },
-    [",s"] = { ":TestNearest<cr><cr>", desc = "test nearest" },
-    [",l"] = { ":TestLast<cr><cr>", desc = "test last" },
-    [",e"] = { ":TestEdit<cr><cr>", desc = "test edit" },
+    [",tt"] = { function()
+      require("neotest").run.run(vim.fn.expand("%"))
+    end, desc = "test file" },
+    [",s"] = { function()
+      require("neotest").run.run()
+    end, desc = "test nearest" },
+    [",l"] = { function()
+      require("neotest").run.run_last()
+    end, desc = "test last" },
+    [",ts"] = { function()
+      require("neotest").output_panel.toggle()
+    end, desc = "test output" },
     [",,"] = { ":b#<cr>", desc = "last buffer" },
   },
   v = {

@@ -24,19 +24,22 @@ return {
     lazy = false
   },
   {
-    "klen/nvim-test",
+    "nvim-neotest/neotest",
     event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "jfpedroza/neotest-elixir",
+      "olimorris/neotest-rspec"
+    },
     config = function()
-      require('nvim-test').setup({
-        term = "toggleterm",
-        silent = true,
-        termOpts = {
-          go_back = true
+      require('neotest').setup({
+        adapters = {
+          require("neotest-elixir"),
+          require("neotest-rspec")
         }
       })
-      require('nvim-test.runners.rspec'):setup {
-        command = "bundle exec rspec", -- a command to run the test runner
-      }
     end
   },
   {
