@@ -475,3 +475,6 @@ Participants: %^{Participants}
 (use-package! justl
   :config
   (map! :n "e" 'justl-exec-recipe))
+
+
+(fset 'epg-wait-for-status 'ignore)
