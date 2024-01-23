@@ -42,7 +42,7 @@ INDENT="  "
 _installer_log "🏃 Installing Command Line improvements"
 INDENT="      "
 install_bat
-install_exa
+install_eza
 install_fd
 install_diffing_tool
 
