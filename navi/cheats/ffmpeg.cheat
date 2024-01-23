@@ -1,0 +1,7 @@
+% ffmpeg
+
+# inspect a source file
+ffmpeg -i SOURCE_FILE
+
+# Remux audio to support TV/audio system
+ffmpeg -hwaccel auto -y -i <input file> -map 0 -c:s copy -c:v copy -c:a ac3 -b:a 640k <output file>
