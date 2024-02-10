@@ -31,6 +31,7 @@ alias wip='git commit -m "wip"'
 # fzf
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
 alias preview="fzf -m --preview 'bat --color \"always\" {}'"
+alias select_remove="fzf -m | xargs rm -rf"
 
 # eza
 alias l='eza'
