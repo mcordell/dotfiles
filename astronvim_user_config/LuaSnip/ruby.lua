@@ -304,8 +304,17 @@ return {
     )
   ),
   s(
-    { trig = "# retm", desc = "yard return tag", snippetType = "autosnippet" },
+    { trig = "# ret", desc = "yard return tag", snippetType = "autosnippet" },
     fmta("# @return [<>] <>",
+      {
+        i(1, "Types"),
+        i(0, "description"),
+      }
+    )
+  ),
+  s(
+    { trig = "# rais", desc = "yard raise tag", snippetType = "autosnippet" },
+    fmta("# @raise [<>] <>",
       {
         i(1, "Types"),
         i(0, "description"),
