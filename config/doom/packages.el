@@ -15,6 +15,7 @@
 (package! helm-org-rifle)
 (package! org-ref)
 (package! exec-path-from-shell)
+(package! org-anki)
 (package! org-download)
 (package! org-mac-link)
 (package! ox-hugo)

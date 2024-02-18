@@ -282,6 +282,9 @@ Participants: %^{Participants}
 (after! org-download
   (setq org-download-method 'directory)
   )
+(use-package! org-anki
+  :custom org-anki-default-deck "Everything"
+  )
 
 (after! calfw-org
   ;; hotfix: incorrect time range display
