@@ -114,6 +114,11 @@
                                        (nth 3 (decode-time next-meeting-date))
                                        (nth 4 (decode-time next-meeting-date))
                                        (nth 5 (decode-time next-meeting-date)))))))
+(defun mcordell/org-agenda-todo-with-tag ()
+  (interactive)
+  (let* ((tags-list '("jamaal" "chris" "andrew" "brian" "teo" "brad" "brad-b")) ; Define your list of tags here
+         (tag (completing-read "Choose tag: " tags-list)))
+    (org-tags-view nil (concat "TODO=\"TODO\"&" tag))))
 
 (defun mcordell/create-one-on-one-heading-with-prompt ()
   (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
@@ -128,11 +133,16 @@
 
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
-  (delq nil (mapcar (lambda (x)
-                      (if (and (buffer-file-name x)
-                               (string-match "\\.org$" (buffer-file-name x)))
-                          (buffer-file-name x)))
-                    (buffer-list))))
+  (delete-dups
+   (append
+    (delq nil (mapcar (lambda (x)
+                        (if (and (buffer-file-name x)
+                                 (string-match "\\.org$" (buffer-file-name x)))
+                            (buffer-file-name x)))
+                      (buffer-list)))
+    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    ))
+  )
 
 
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
