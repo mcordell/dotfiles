@@ -156,6 +156,8 @@ return {
     { trig = "^%s*class", desc = "Class", wordTrig = false, regTrig = true, snippetType = "autosnippet" },
     fmta(
       [[
+      # frozen_string_literal: true
+
       class <>
           <>
       end
