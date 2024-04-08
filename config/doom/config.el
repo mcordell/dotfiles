@@ -20,9 +20,7 @@
 ;; font string. You generally only need these two:
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono"
                            :size 18
-                           :weight 'normal) doom-variable-pitch-font (font-spec :family
-                           "Droid Sans Mono for Powerline"
-                           :size 13))
+                           :weight 'normal))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -125,6 +123,17 @@
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
 
+(defun mcordell/publish (file)
+  "Convert an org file into the markdown version for brain pages"
+  (with-current-buffer (find-file-noselect file)
+    (setq org-hugo-base-dir (substitute-in-file-name "$HOME/Code/static_sites/brain"))
+    (org-hugo-export-wim-to-md)))
+
+(defun mcordell/rebuild-brain ()
+  "Build org files that are newer than corresponding markdown files"
+  (interactive)
+  (mcordell/build-brain "/Users/michael/org/roam" "/Users/michael/Code/static_sites/brain/content/posts")
+  )
 
 (defun mcordell/org-id-update-org-roam-files ()
   "Update Org-ID locations for all Org-roam files."
@@ -144,6 +153,24 @@
     ))
   )
 
+(defun mcordell/build-brain (source-dir dest-dir)
+  "Check for files in SOURCE-DIR that are newer than their counterparts in DEST-DIR or if the counterpart does not exist, including their modification times."
+  (let ((source-files (directory-files source-dir t "\\.org\\'")))
+    (dolist (source-file source-files)
+      (let* ((base-name (file-name-base source-file))
+             (dest-file (concat dest-dir "/" base-name ".md"))
+             (source-time (nth 5 (file-attributes source-file)))
+             (dest-time (if (file-exists-p dest-file) (nth 5 (file-attributes dest-file)) nil)))
+
+        (if (or (not dest-time)
+                (time-less-p dest-time source-time))
+            (progn
+              (print (format "File to update or missing: %s | Source Mod Time: %s | Dest Mod Time: %s"
+                             source-file
+                             (format-time-string "%Y-%m-%d %H:%M:%S" source-time)
+                             (if dest-time (format-time-string "%Y-%m-%d %H:%M:%S" dest-time) "DOES NOT EXIST")))
+              (mcordell/publish source-file))
+          )))))
 
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
@@ -497,3 +524,8 @@ Participants: %^{Participants}
 
 (fset 'epg-wait-for-status 'ignore)
 (use-package! all-the-icons)
+
+
+
+
+
