@@ -71,6 +71,10 @@ return {
     },
   },
   {
+    "jlcrochet/vim-rbs",
+    ft = "rbs"
+  },
+  {
     "IndianBoy42/tree-sitter-just",
     event = "VeryLazy",
     config = function()
