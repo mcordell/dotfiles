@@ -55,6 +55,43 @@ local spiltParameters = function(args, _parent, _user_args)
   return output
 end
 
+local splitParamDoc = function(args, _parent, _user_args)
+  local output = {}
+
+  for param in args[1][1]:gmatch("([^, ]+)") do
+    table.insert(output, "# @param " .. param .. " [Type] description")
+  end
+
+  return output
+end
+
+local function split(str, delimiter)
+  local result = {}
+  for match in (str .. delimiter):gmatch("(.-)" .. delimiter) do
+    table.insert(result, match)
+  end
+  return result
+end
+
+local dynamicModuleName = function(_args, parent)
+  local rel = parent.snippet.env.RELATIVE_FILEPATH
+  local shorter = parent.snippet.env.TM_FILENAME
+  -- Split the relative path
+  local parts = split(rel, "/")
+
+  -- Remove the file name from the list
+  table.remove(parts)
+  if parts[1] == "lib" then
+    table.remove(parts, 1)
+  end
+  for it, v in ipairs(parts) do
+    parts[it] = snakeToCamelCase(v)
+  end
+  local result = table.concat(parts, "::")
+  return sn(nil, i(1, result))
+end
+
+
 local itblock =
     fmta(
       [[
@@ -67,6 +104,28 @@ local itblock =
         i(0)
       }
     )
+
+local classNode = fmta(
+  [[
+      # <>
+      class <>
+          <>
+      end
+    ]],
+  {
+    i(2, "docstring"),
+    d(1, function(_args, parent)
+      local shorter = parent.snippet.env.TM_FILENAME:sub(1, -4)
+
+      return sn(nil, i(1, snakeToCamelCase(shorter)))
+    end),
+    i(0)
+  }
+)
+
+local get_class_node = function(_args, _parent)
+  return sn(nil, classNode)
+end
 
 return {
   s(
@@ -117,8 +176,9 @@ return {
   ),
   s(
     { trig = "init", desc = "initializer", snippetType = "autosnippet", condition = conds.line_begin },
-    fmt("def initialize({})\n{}\nend",
+    fmt("{}\ndef initialize({})\n{}\nend",
       {
+        f(splitParamDoc, { 1 }),
         i(1, "parameters"),
         f(spiltParameters, { 1 })
       }
@@ -153,25 +213,34 @@ return {
     )
   ),
   s(
-    { trig = "^%s*class", desc = "Class", wordTrig = false, regTrig = true, snippetType = "autosnippet" },
+    { trig = "^%s*mod", desc = "module", wordTrig = false, regTrig = true, snippetType = "autosnippet" },
     fmta(
       [[
       # frozen_string_literal: true
 
-      class <>
-          <>
+      module <>
+        <>
       end
     ]],
       {
-        d(1, function(_args, parent)
-          local shorter = parent.snippet.env.TM_FILENAME:sub(1, -4)
-
-          return sn(nil, i(1, snakeToCamelCase(shorter)))
-        end),
-        i(0)
+        d(1, dynamicModuleName),
+        d(2, get_class_node)
+      },
+      {
+        merge_child_ext_opts = false
       }
     )
   ),
+  s(
+    { trig = "^%s*class", desc = "Class", wordTrig = false, regTrig = true, snippetType = "autosnippet" },
+    vim.list_extend(
+      {
+        t({ "# frozen_string_literal: true", "", "" })
+      },
+      classNode
+    )
+  ),
+
   s(
     { trig = "frozen", desc = "frozen", snippetType = "autosnippet", condition = conds.line_begin },
     t("# frozen_string_literal: true")
@@ -292,6 +361,38 @@ return {
     t("require 'spec_helper'")
   ),
   s(
+    { trig = "atread", desc = "attr_reader with yard doc", snippetType = "autosnippet" },
+    fmta(
+      [[
+    # @!attribute [r] <>
+    #   @return [<>] <>
+    attr_reader :<>
+    ]],
+      {
+        rep(1),
+        i(2, "Type"),
+        i(0),
+        i(1, "attribute_name")
+      }
+    )
+  ),
+  s(
+    { trig = "atacc", desc = "attr_reader with yard doc", snippetType = "autosnippet" },
+    fmta(
+      [[
+    # @!attribute [rw] <>
+    #   @return [<>] <>
+    attr_accessor :<>
+    ]],
+      {
+        rep(1),
+        i(2, "Type"),
+        i(0),
+        i(1, "attribute_name")
+      }
+    )
+  ),
+  s(
     { trig = "# api", desc = "yard api tag", snippetType = "autosnippet" },
     t("# @api private")
   ),
@@ -320,6 +421,19 @@ return {
       {
         i(1, "Types"),
         i(0, "description"),
+      }
+    )
+  ),
+  s(
+    { trig = "# opt", desc = "define method", snippetType = "autosnippet" },
+    fmta(
+      [[
+      # @option opts [<>] :<> <>
+    ]],
+      {
+        i(1, "OptType"),
+        i(2, "opt_key"),
+        i(3, "opt description")
       }
     )
   ),
