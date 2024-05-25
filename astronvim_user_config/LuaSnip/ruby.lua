@@ -185,6 +185,15 @@ return {
     )
   ),
   s(
+    { trig = "bool", desc = "define bool method", condition = conds.line_begin },
+    fmt("# @return [Boolean] {}\ndef {}?\n  false\nend",
+      {
+        i(0, "description"),
+        i(1, "method_name"),
+      }
+    )
+  ),
+  s(
     { trig = "def", desc = "define method", condition = conds.line_begin },
     fmt("def {}({})\n  {}\nend",
       {

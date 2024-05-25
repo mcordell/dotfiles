@@ -30,6 +30,7 @@ return {
     },
     config = function(_, opts)
       opts["enable_autosnippets"] = true
+      opts["store_selection_keys"] = "<Tab>"
 
       require("luasnip").config.setup(opts)
       -- include the default astronvim config that calls the setup call
