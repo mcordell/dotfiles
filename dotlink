@@ -68,6 +68,9 @@ config/direnv, ~/.config/direnv
 #bat
 config/bat, ~/.config/bat
 
+#bat
+config/zellij, ~/.config/zellij
+
 #navi
 navi/cheats, "$HOME/Library/Application Support/navi/cheats"
 
