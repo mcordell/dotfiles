@@ -39,6 +39,7 @@ zsh, ~/.zsh
 zsh/zsh_aliases, .zsh_aliases
 zsh/scripts/rgs, /usr/local/bin/rgs
 zsh/zsh_function_wrapper /usr/local/bin/zsh_function_wrapper
+zsh/.p10k.zsh, ~/.p10k.zsh
 
 # (neo)Vim
 .vimrc,.vimrc
