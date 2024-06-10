@@ -155,6 +155,7 @@
 
 (defun mcordell/build-brain (source-dir dest-dir)
   "Check for files in SOURCE-DIR that are newer than their counterparts in DEST-DIR or if the counterpart does not exist, including their modification times."
+  (org-id-update-id-locations (directory-files "/Users/Michael/org/roam/" :full "\.org\$" :nosort) :silent)
   (let ((source-files (directory-files source-dir t "\\.org\\'")))
     (dolist (source-file source-files)
       (let* ((base-name (file-name-base source-file))
