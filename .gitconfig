@@ -2,6 +2,39 @@
 	name = Michael Cordell
 [include]
 	path = .computer_gitconfig
+[core]
+	editor = nvim
+	excludesfile = /Users/michael/.gitignore_global
+	autocrlf = input
+[pull]
+	rebase = true
+[push]
+	default = current
+[init]
+	defaultBranch = master
+[rerere]
+	enabled = true
+[commit]
+	gpgsign = true
+[color]
+	ui = true
+[rebase]
+	autosquash = true
+	autostash = true
+	updateRefs = true
+
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+
+# Third party 
+[github]
+	user = mcordell
+[hub]
+	protocol = ssh
+
+# Aliases
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ir = rebase -i --autosquash @{u}
@@ -30,36 +63,8 @@
 	stat = !git diff --stat $(git merge-base HEAD \"$MERGE_BASE\")
 	review = !nvim -p $(git files) +\"tabdo Gdiff $MERGE_BASE\" +\"let g:gitgutter_diff_base = '$MERGE_BASE'\"
 	recentb = !zsh_function_wrapper recent_branches
-[core]
-	editor = nvim
-	excludesfile = /Users/michael/.gitignore_global
-	autocrlf = input
-[push]
-	default = current
-[github]
-	user = mcordell
-[merge]
-	tool = fugitive
-[mergetool "fugitive"]
-	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
-[filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
-[rerere]
-	enabled = true
-[commit]
-	gpgsign = true
-[color]
-	ui = true
-[pull]
-	rebase = true
-[rebase]
-	autosquash = true
-	autostash = true
-	updateRefs = true
-[hub]
-	protocol = ssh
+
+# diff and merge related
 [pager]
     diff = delta
     log = delta
@@ -80,12 +85,15 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
-[init]
-	defaultBranch = master
 [diff]
     tool = difftastic
 [difftool "difftastic"]
     cmd = difft "$LOCAL" "$REMOTE"
 [difftool]
     prompt = false
+[merge]
+	tool = fugitive
+[mergetool "fugitive"]
+	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
+
 
