@@ -7,6 +7,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 setopt EXTENDED_GLOB
+
+source ~/.zsh/zsh_path.zsh
+
 files=(
 "${HOME}/.zsh/zprezto_init"
 "${HOME}/.zsh/zsh_aliases"
@@ -60,11 +63,7 @@ fi
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
-
-source ~/.zsh/zsh_path.zsh
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [[ ! -f ~/.oai ]] || source ~/.oai
-
