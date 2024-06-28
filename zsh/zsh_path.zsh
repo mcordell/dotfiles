@@ -21,7 +21,11 @@ if [ -f "/opt/homebrew/bin/brew" ]; then
 	)
 fi
 
-if [ -f "$HOME/.cargo/env" ]; then source "$HOME/.cargo/env"; fi
+if [[ -f "$HOME/.cargo/env" ]]; then
+    source "$HOME/.cargo/env"
+elif [[ -d "$HOME/.cargo/bin" ]]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
 
 if [ -d "$HOME/.emacs.d/bin" ]; then
 	PATH="$HOME/.emacs.d/bin:$PATH"
