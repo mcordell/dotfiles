@@ -39,9 +39,6 @@ export BUNDLER_EDITOR='nvim'
 export VISUAL='nvim'
 
 
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-
 # Programs
 
 # Less
