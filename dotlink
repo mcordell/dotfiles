@@ -41,10 +41,8 @@ zsh/scripts/rgs, /usr/local/bin/rgs
 zsh/zsh_function_wrapper /usr/local/bin/zsh_function_wrapper
 zsh/.p10k.zsh, ~/.p10k.zsh
 
-# (neo)Vim
+# Vim
 .vimrc,.vimrc
-config/nvim, ~/.config/nvim
-astronvim_user_config, ~/.config/nvim/lua/user
 
 # emacs
 config/doom, ~/.config/doom

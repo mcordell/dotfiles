@@ -1,7 +1,7 @@
 # vim: set ft=zsh:
 
 _install_neovim_plugins () {
-	nvim -c 'autocmd VimEnter * PlugInstall | silent! source $MYVIMRC'
+	nvim --headless '+Lazy! update' +qa
 }
 
 _install_neovim () {
@@ -17,7 +17,8 @@ _install_neovim () {
 	  ;;
 	esac
 
-	_install_neovim_plugins
+	mkdir -p $HOME/.config
+	git clone https://github.com/mcordell/astronvim_config.git $HOME/.config/nvim
 
 	tee -a ~/.dotfiles/post_install.zsh << EOF > /dev/null
 if [[ -z \$PYTHON_VERSION ]]; then
