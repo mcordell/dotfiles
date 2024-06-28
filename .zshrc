@@ -10,7 +10,6 @@ setopt EXTENDED_GLOB
 files=(
 "${HOME}/.zsh/zprezto_init"
 "${HOME}/.zsh/zsh_aliases"
-"${HOME}/.fzf.zsh"
 "${HOME}/.zsh_this_computer"
 "${HOME}/.zsh/pyenv_zshrc"
 "${HOME}/.zsh/gnupg.zsh"
@@ -47,6 +46,10 @@ if which "navi" &> /dev/null; then
 	eval "$(navi widget zsh)"
 fi
 
+if which "fzf" &> /dev/null; then
+	source <(fzf --zsh)
+fi
+
 if which "brew" &> /dev/null; then
 	. $(brew --prefix asdf)/libexec/asdf.sh
 else
@@ -60,9 +63,8 @@ fi
 
 source ~/.zsh/zsh_path.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [[ ! -f ~/.oai ]] || source ~/.oai
+

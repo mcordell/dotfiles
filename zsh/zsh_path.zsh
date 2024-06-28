@@ -13,8 +13,6 @@ path=(
     $path
 )
 
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
-
 if [ -f "/opt/homebrew/bin/brew" ]; then
     path=(
         /opt/homebrew/bin
@@ -55,3 +53,4 @@ fi
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path PATH
+
