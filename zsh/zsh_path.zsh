@@ -23,6 +23,8 @@ fi
 
 if [[ -f "$HOME/.cargo/env" ]]; then
     source "$HOME/.cargo/env"
+elif [[ -f "$HOME/.asdf/installs/rust/1.79.0/env" ]]; then
+    source "$HOME/.asdf/installs/rust/1.79.0/env"
 elif [[ -d "$HOME/.cargo/bin" ]]; then
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
