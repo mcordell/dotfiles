@@ -92,22 +92,31 @@
         )
       )
 (defun mcordell/insert-rrp-jira ()
-  "Insert a JIRA link from the clipboard in Org-mode."
+  "Insert a JIRA or GitHub PR link from the clipboard in Org-mode."
   (interactive)
   (let* ((clipboard-content (with-temp-buffer
                               (call-process "pbpaste" nil t)
                               (buffer-string)))
          (jira-url-regex "https://qcentrix.atlassian.net/browse/\\(RRP-[0-9]+\\)")
          (jira-key-regex "\\(RRP-[0-9]+\\)")
+         (github-url-regex "https://github.com/q-centrix/\\(.*\\)/pull/[0-9]+")
          (jira-key (if (string-match jira-url-regex clipboard-content)
                        (match-string 1 clipboard-content)
                      (if (string-match jira-key-regex clipboard-content)
                          (match-string 1 clipboard-content)
-                       nil))))
-    (if jira-key
-        (let ((jira-link (format "[[https://qcentrix.atlassian.net/browse/%s][%s]]" jira-key jira-key)))
-          (insert jira-link))
-      (message "No JIRA key found in clipboard"))))
+                       nil)))
+         (github-repo (if (string-match github-url-regex clipboard-content)
+                          (match-string 1 clipboard-content)
+                        nil)))
+    (cond
+     (jira-key
+      (let ((jira-link (format "[[https://qcentrix.atlassian.net/browse/%s][%s]]" jira-key jira-key)))
+        (insert jira-link)))
+     (github-repo
+      (let ((github-link (format "[[%s][%s PR]]" clipboard-content github-repo)))
+        (insert github-link)))
+     (t
+      (message "No JIRA or GitHub link found in clipboard")))))
 
 ;; Creates a heading for a one-on-one meeting with the given NAME on the next occurrence of the day and time specified in the one-on-one list.
 ;; The format for the heading is "* NAME 1-1 <Y-m-d a H:M>", where <Y-m-d a H:M> is the date and time of the next occurrence of the specified day and time.
@@ -543,6 +552,7 @@ Participants: %^{Participants}
 
 (fset 'epg-wait-for-status 'ignore)
 (use-package! all-the-icons)
+
 
 
 
