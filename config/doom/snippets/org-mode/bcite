@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: begin_cite
+# uuid:
+# key: bcite
+# condition: t
+# --
+
+#+begin_cite
+#+end_cite
