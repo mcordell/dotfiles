@@ -29,7 +29,7 @@
   :recipe (:host github :repo "org-roam/org-roam-bibtex"))
 (unpin! org-roam company-org-roam)
 (package! websocket)
-(package! org-roam-ui :recipe (:host github :repo "jgru/org-roam-ui" :branch "add-export-capability" :files ("*.el" "out")))
+(package! org-roam-ui)
 (package! org-nursery :recipe (:host github :repo "chrisbarrett/nursery"))
 (package! flymake-shellcheck)
 (package! just-mode)
@@ -75,3 +75,4 @@
                                         ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
+
