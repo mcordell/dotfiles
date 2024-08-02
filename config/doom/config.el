@@ -138,6 +138,7 @@
                                        (nth 3 (decode-time next-meeting-date))
                                        (nth 4 (decode-time next-meeting-date))
                                        (nth 5 (decode-time next-meeting-date)))))))
+
 (defun mcordell/org-agenda-todo-with-tag ()
   (interactive)
   (let* ((tags-list '("jamaal" "chris" "andrew" "brian" "teo" "brad" "brad-b")) ; Define your list of tags here
@@ -148,6 +149,11 @@
   (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
+
+(defun mcordell/publish-buffer ()
+  (interactive)
+  (mcordell/publish (buffer-file-name))
+  )
 
 (defun mcordell/publish (file)
   "Convert an org file into the markdown version for brain pages"
@@ -467,7 +473,9 @@ Participants: %^{Participants}
                ("a" (lambda ()
                       (interactive)
                       (org-agenda nil "w")))
-               ("t"  #'treemacs))
+               ("t"  #'treemacs)
+               ("w"  #'+default/search-project)
+               )
       (:prefix "s"
                ("c"  #'evil-ex-nohighlight))
       (:prefix "m"
@@ -480,16 +488,17 @@ Participants: %^{Participants}
                ("/" #'org-roam-node-find)
                ("c" #'cfw:open-org-calendar))
       (:map org-mode-map
-            (:prefix "r"
-             :desc "list - review" :nv "l" #'org-roam-review
-             :desc "accept" :nv "a" #'org-roam-review-accept
-             :desc "bury" :nv "b" #'org-roam-review-bury
-             :desc "evergreen" :nv "e" #'org-roam-review-set-evergreen
-             :desc "budding" :nv "b" #'org-roam-review-set-budding
-             :desc "seedling" :nv "s" #'org-roam-review-set-seedling
-             :desc "due" :nv "d" #'org-roam-review-list-due
-             )
-            ))
+       :nv "e" #'mcordell/publish-buffer
+       (:prefix "r"
+        :desc "list - review" :nv "l" #'org-roam-review
+        :desc "accept" :nv "a" #'org-roam-review-accept
+        :desc "bury" :nv "b" #'org-roam-review-bury
+        :desc "evergreen" :nv "e" #'org-roam-review-set-evergreen
+        :desc "budding" :nv "b" #'org-roam-review-set-budding
+        :desc "seedling" :nv "s" #'org-roam-review-set-seedling
+        :desc "due" :nv "d" #'org-roam-review-list-due
+        )
+       ))
 (map! :prefix ","
       (:map emacs-lisp-mode-map
        :nv "f"
@@ -552,9 +561,4 @@ Participants: %^{Participants}
 
 (fset 'epg-wait-for-status 'ignore)
 (use-package! all-the-icons)
-
-
-
-
-
 

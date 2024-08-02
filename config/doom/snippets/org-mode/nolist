@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: nolist
+# uuid:
+# key: nolist
+# condition: t
+# --
+#+attr_html: :class list-none
