@@ -27,6 +27,7 @@ alias gb="git for-each-ref --sort=committerdate refs/heads/ --format='%(refname:
 alias gras='git rebase -i --autosquash'
 alias lg='nocorrect git lg'
 alias wip='git commit -m "wip"'
+alias gdu='git diff @{u}'
 
 # fzf
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvim {})+abort'"
@@ -51,3 +52,4 @@ if type nvim >/dev/null 2>&1;then
 	alias vim='nvim'
 	alias v='nvim'
 fi
+
