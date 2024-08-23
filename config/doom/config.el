@@ -161,6 +161,32 @@
     (setq org-hugo-base-dir (substitute-in-file-name "$HOME/Code/static_sites/brain"))
     (org-hugo-export-wim-to-md)))
 
+(require 'async)
+(defun my/async-org-hugo-export ()
+  "Asynchronously export the current Org file to Hugo Markdown."
+  (interactive)
+  (let* ((current-file (buffer-file-name))
+         (doom-load-path load-path)
+         (doom-emacs-dir user-emacs-directory)
+         (org-hugo-base-dir (file-name-directory current-file)))
+    (if current-file
+        (async-start
+         `(lambda ()
+            (setq load-path ',doom-load-path)
+            (setq user-emacs-directory ,doom-emacs-dir)
+            (package-initialize)
+            (require 'org)
+            (require 'org-archive)
+            (require 'ox)
+            (require 'ox-hugo)
+            (find-file ,current-file)
+            (setq org-hugo-base-dir ,org-hugo-base-dir)
+            (org-hugo-export-wim-to-md))
+         (lambda (result)
+           (message result)))
+      (message "Buffer is not visiting a file"))))
+
+
 (defun mcordell/rebuild-brain ()
   "Build org files that are newer than corresponding markdown files"
   (interactive)
@@ -204,6 +230,16 @@
                              (if dest-time (format-time-string "%Y-%m-%d %H:%M:%S" dest-time) "DOES NOT EXIST")))
               (mcordell/publish source-file))
           )))))
+
+(defun mcordell/org-roam-publish-hook ()
+  "Hook that runs on buffer save for Org-roam files."
+  (when (and (eq major-mode 'org-mode)
+             (buffer-file-name)
+             (string-match-p "roam" (buffer-file-name)))
+    (mcordell/publish (buffer-file-name)))
+  )
+(after! org
+  (add-hook! 'after-save-hook :append #'mcordell/org-roam-publish-hook))
 
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
@@ -251,7 +287,10 @@ Participants: %^{Participants}
                                                   ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/qcentrix/qcentrix.org")
                                                    "* %? %t
-")))
+"))
+
+
+                          )
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"             ; A task that needs doing & is ready to do
@@ -320,6 +359,7 @@ Participants: %^{Participants}
 (use-package! org-roam
   :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
   :config
+  (setq org-roam-database-connector 'sqlite)
   (setq org-roam-dailies-directory "daily/"
         org-roam-db-location "~/org/org-roam.db"
         org-roam-dailies-capture-templates (let ((head
@@ -561,4 +601,3 @@ Participants: %^{Participants}
 
 (fset 'epg-wait-for-status 'ignore)
 (use-package! all-the-icons)
-
