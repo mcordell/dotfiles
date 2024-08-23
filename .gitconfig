@@ -73,6 +73,12 @@
     reflog = delta
     show = delta
   	difftool = true
+[merge]
+	tool = fugitive
+
+[mergetool "fugitive"]
+	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
+
 [interactive]
     diffFilter = delta --color-only --features=interactive
 [delta]
