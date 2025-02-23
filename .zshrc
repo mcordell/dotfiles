@@ -53,13 +53,8 @@ if which "fzf" &> /dev/null; then
 	source <(fzf --zsh)
 fi
 
-if which "brew" &> /dev/null; then
-	. $(brew --prefix asdf)/libexec/asdf.sh
-else
-    . $HOME/.asdf/asdf.sh
-	fpath=(${ASDF_DIR}/completions $fpath)
-	autoload -Uz compinit && compinit
-fi
+export ASDF_DATA_DIR="/Users/michael/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
