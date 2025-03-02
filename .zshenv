@@ -57,14 +57,6 @@ fi
 # Use ripgrep to find files for fzf (respects gitignore)
 export FZF_DEFAULT_COMMAND='rg --files'
 
-if [ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]; then
-	. /opt/homebrew/opt/asdf/libexec/asdf.sh
-fi
-
-if [ -f "/usr/local/opt/asdf/libexec/asdf.sh" ]; then
-	. /usr/local/opt/asdf/libexec/asdf.sh
-fi
-
 if which "asdf" &> /dev/null; then
 	export DIRENV_LOG_FORMAT=''
 	eval "$(asdf exec direnv hook zsh)"
