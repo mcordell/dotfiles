@@ -10,29 +10,79 @@
 	rebase = true
 [push]
 	default = current
+	autoSetupRemote = true
+	followTags = true
 [init]
 	defaultBranch = master
 [rerere]
 	enabled = true
+	autoupdate = true
 [commit]
 	gpgsign = true
+	verbose = true
 [color]
 	ui = true
+[column]
+	ui = auto
+[branch]
+	sort = committerdate
+[tag]
+	sort = version:refname
 [rebase]
 	autosquash = true
 	autostash = true
 	updateRefs = true
-
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
 
 # Third party 
 [github]
 	user = mcordell
 [hub]
 	protocol = ssh
+
+# diff and merge related
+[diff]
+	colorMoved = zebra
+	algorithm = histogram
+	mnemoicPrefix = true
+	renames = true
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+  	difftool = true
+[merge]
+	tool = fugitive
+	conflictstyle = zdiff3
+
+[mergetool "fugitive"]
+	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+[delta]
+    features = decorations side-by-side
+    dark = true
+    colorMoved = true
+  	navigate = true
+[delta "interactive"]
+    keep-plus-minus-markers = false
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
 
 # Aliases
 [alias]
@@ -63,35 +113,3 @@
 	stat = !git diff --stat $(git merge-base HEAD \"$MERGE_BASE\")
 	review = !nvim -p $(git files) +\"tabdo Gdiff $MERGE_BASE\" +\"let g:gitgutter_diff_base = '$MERGE_BASE'\"
 	recentb = !zsh_function_wrapper recent_branches
-
-# diff and merge related
-[diff]
-	colorMoved = zebra
-[pager]
-    diff = delta
-    log = delta
-    reflog = delta
-    show = delta
-  	difftool = true
-[merge]
-	tool = fugitive
-
-[mergetool "fugitive"]
-	cmd = nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gdiffsplit!\" \"$MERGED\"
-
-[interactive]
-    diffFilter = delta --color-only --features=interactive
-[delta]
-    features = decorations side-by-side
-    dark = true
-    colorMoved = true
-[delta "interactive"]
-    keep-plus-minus-markers = false
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
