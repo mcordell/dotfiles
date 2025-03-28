@@ -53,8 +53,6 @@ if which "fzf" &> /dev/null; then
 	source <(fzf --zsh)
 fi
 
-export ASDF_DATA_DIR="/Users/michael/.asdf"
-export PATH="$ASDF_DATA_DIR/shims:$PATH"
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
@@ -62,4 +60,6 @@ export PATH="$ASDF_DATA_DIR/shims:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [[ ! -f ~/.oai ]] || source ~/.oai
+
+eval "$(mise activate zsh)"
 
