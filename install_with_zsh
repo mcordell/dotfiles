@@ -23,7 +23,6 @@ setup_tmux
 # Programming languages
 INDENT=""
 _installer_log "🗣 Installing languages" "green" "bold"
-install_asdf
 INDENT="    "
 setup_python
 
