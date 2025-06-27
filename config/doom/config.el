@@ -22,7 +22,8 @@
 ;;
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono"
                            :size 18
-                           :weight 'normal))
+                           :weight 'normal)
+      )
 
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
@@ -37,16 +38,29 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-nord)
 
-;; Prevents some cases of Emacs flickering
-(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/org/"
+      org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
+      zot_bib "~/org/mylibrary/mylibrary.bib" 
+      one-on-one-list
+      '(("Brian" . "Thursday 13:00")
+        ("Matt" . "Friday 11:30")
+        ("Chris" . "Tuesday 12:30")
+        ("Andrew" . "Tuesday 13:00")
+        ("Teo" . "Tuesday 14:30")
+        ("Jamaal" . "Thursday 11:30")
+        ("Brad" . "Wednesday 9:00")
+        ("Pierce" . "Wednesday 12:30")
+        ("Bryan" . "Wednesday 13:30")
+        ("Brad Bell" . "Monday 13:00")
+        ("Preeti" . "Friday 12:00")
+        )
+      )
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -82,43 +96,6 @@
 ;; they are implemented.
 
 ;; Org
-
-
-(setq global-auto-revert-mode t
-      org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
-      org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
-      org-download-image-dir "~/org/img"
-      bibtex-completion-notes-path org_notes
-      bibtex-completion-bibliography zot_bib
-      bibtex-completion-pdf-field "file"
-      bibtex-completion-notes-template-multiple-files (concat
-                                                       "#+TITLE: ${title}\n"
-                                                       "#+ROAM_KEY: cite:${=key=}\n"
-                                                       "* TODO Notes\n"
-                                                       ":PROPERTIES:\n"
-                                                       ":Custom_ID: ${=key=}\n"
-                                                       ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-                                                       ":AUTHOR: ${author-abbrev}\n"
-                                                       ":JOURNAL: ${journaltitle}\n"
-                                                       ":DATE: ${date}\n"
-                                                       ":YEAR: ${year}\n"
-                                                       ":DOI: ${doi}\n"
-                                                       ":URL: ${url}\n"
-                                                       ":END:\n\n")
-      one-on-one-list
-      '(("Brian" . "Thursday 13:00")
-        ("Matt" . "Friday 11:30")
-        ("Chris" . "Tuesday 12:30")
-        ("Andrew" . "Tuesday 13:00")
-        ("Teo" . "Tuesday 14:30")
-        ("Jamaal" . "Thursday 11:30")
-        ("Brad" . "Wednesday 9:00")
-        ("Pierce" . "Wednesday 12:30")
-        ("Bryan" . "Wednesday 13:30")
-        ("Brad Bell" . "Monday 13:00")
-        ("Preeti" . "Friday 12:00")
-        )
-      )
 (defun mcordell/insert-rrp-jira ()
   "Insert a JIRA or GitHub PR link from the clipboard in Org-mode."
   (interactive)
@@ -177,55 +154,6 @@
   (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
-
-(defun mcordell/publish-buffer ()
-  (interactive)
-  (mcordell/publish (buffer-file-name))
-  )
-
-(defun mcordell/publish (file)
-  "Convert an org file into the markdown version for brain pages"
-  (with-current-buffer (find-file-noselect file)
-    (setq org-hugo-base-dir (substitute-in-file-name "$HOME/Code/static_sites/brain"))
-    (org-hugo-export-wim-to-md)))
-
-(require 'async)
-(defun my/async-org-hugo-export ()
-  "Asynchronously export the current Org file to Hugo Markdown."
-  (interactive)
-  (let* ((current-file (buffer-file-name))
-         (doom-load-path load-path)
-         (doom-emacs-dir user-emacs-directory)
-         (org-hugo-base-dir (file-name-directory current-file)))
-    (if current-file
-        (async-start
-         `(lambda ()
-            (setq load-path ',doom-load-path)
-            (setq user-emacs-directory ,doom-emacs-dir)
-            (package-initialize)
-            (require 'org)
-            (require 'org-archive)
-            (require 'ox)
-            (require 'ox-hugo)
-            (find-file ,current-file)
-            (setq org-hugo-base-dir ,org-hugo-base-dir)
-            (org-hugo-export-wim-to-md))
-         (lambda (result)
-           (message result)))
-      (message "Buffer is not visiting a file"))))
-
-
-(defun mcordell/rebuild-brain ()
-  "Build org files that are newer than corresponding markdown files"
-  (interactive)
-  (mcordell/build-brain "/Users/michael/org/roam" "/Users/michael/Code/static_sites/brain/content/posts")
-  )
-
-(defun mcordell/org-id-update-org-roam-files ()
-  "Update Org-ID locations for all Org-roam files."
-  (interactive)
-  (org-id-update-id-locations (org-roam-list-files)))
-
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
   (delete-dups
@@ -238,37 +166,6 @@
     (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
     ))
   )
-
-(defun mcordell/build-brain (source-dir dest-dir)
-  "Check for files in SOURCE-DIR that are newer than their counterparts in DEST-DIR or if the counterpart does not exist, including their modification times."
-  (org-id-update-id-locations (directory-files "/Users/Michael/org/roam/" :full "\.org\$" :nosort) :silent)
-  (let ((source-files (directory-files source-dir t "\\.org\\'")))
-    (dolist (source-file source-files)
-      (let* ((base-name (file-name-base source-file))
-             (dest-file (concat dest-dir "/" base-name ".md"))
-             (source-time (nth 5 (file-attributes source-file)))
-             (dest-time (if (file-exists-p dest-file) (nth 5 (file-attributes dest-file)) nil)))
-
-        (if (or (not dest-time)
-                (time-less-p dest-time source-time))
-            (progn
-              (print (format "File to update or missing: %s | Source Mod Time: %s | Dest Mod Time: %s"
-                             source-file
-                             (format-time-string "%Y-%m-%d %H:%M:%S" source-time)
-                             (if dest-time (format-time-string "%Y-%m-%d %H:%M:%S" dest-time) "DOES NOT EXIST")))
-              (mcordell/publish source-file))
-          )))))
-
-(defun mcordell/org-roam-publish-hook ()
-  "Hook that runs on buffer save for Org-roam files."
-  (when (and (eq major-mode 'org-mode)
-             (buffer-file-name)
-             (string-match-p "roam" (buffer-file-name)))
-    (mcordell/publish (buffer-file-name)))
-  )
-(after! org
-  (add-hook! 'after-save-hook :append #'mcordell/org-roam-publish-hook))
-
 (after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
 #+BEGIN_SRC %^{sourcetype}
@@ -383,109 +280,6 @@ Participants: %^{Participants}
   (add-hook 'org-open-link-functions 'org-pass-link-to-system)
   (set-company-backend! 'org-mode '(company-capf))
   )
-
-(use-package! org-roam
-  :custom org-roam-directory "~/org/roam" org-roam-prefer-id-links t
-  :config
-  (setq org-roam-database-connector 'sqlite)
-  (setq org-roam-dailies-directory "daily/"
-        org-roam-db-location "~/org/org-roam.db"
-        org-roam-dailies-capture-templates (let ((head
-                                                  (concat "#+title: %<%Y-%m-%d (%A)>\n* Morning Questions\n"
-                                                          "** What Am I Grateful for?\n\n** What Would Make Today Great?\n** What am I worried about?\n"
-                                                          "* Evening Questions\n"
-                                                          "** How am I feeling?\n** What's Something Good That Happened Today?\n** What Did I Do Well?\n** What Could I Have Done Better?")))
-                                             `(("m" "journal" plain
-                                                "%?" :if-new
-                                                (file+head+olp "%<%Y-%m-%d>.org" ,head ("Morning Questions"))
-                                                :unnarrowed t
-                                                )))
-        org-roam-capture-templates
-        '(("d" "default" plain "#+bibliography: ../mylibrary/mylibrary.bib\n#+cite_export: csl nature.csl\n%?\n-------\n#+print_bibliography:\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+title: ${title}")
-           :unnarrowed t))
-        org-roam-mode-sections
-        (list #'org-roam-backlinks-section
-              #'org-roam-reflinks-section
-              #'org-roam-unlinked-references-section
-              )
-        )
-
-  (add-hook 'org-roam-capture-after-find-file-hook
-            (lambda ()
-              (org-id-get-create)
-              (save-buffer)
-              (org-roam-db-update))))
-(after! org-download
-  (setq org-download-method 'directory)
-  )
-(use-package! org-anki
-  :custom org-anki-default-deck "Everything"
-  )
-
-(after! calfw-org
-  ;; hotfix: incorrect time range display
-  ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
-  (defun cfw:org-get-timerange (text)
-    "Return a range object (begin end text). If TEXT does not have a range, return nil."
-    (let* ((dotime (cfw:org-tp text 'dotime)))
-      (and (stringp dotime) (string-match org-ts-regexp dotime)
-	   (let* ((matches  (s-match-strings-all org-ts-regexp dotime))
-                  (start-date (nth 1 (car matches)))
-                  (end-date (nth 1 (nth 1 matches)))
-	          (extra (cfw:org-tp text 'extra)))
-	     (if (string-match "(\\([0-9]+\\)/\\([0-9]+\\)): " extra)
-                 ( list( calendar-gregorian-from-absolute
-                         (time-to-days
-                          (org-read-date nil t start-date))
-                         )
-                       (calendar-gregorian-from-absolute
-                        (time-to-days
-                         (org-read-date nil t end-date))) text)))))))
-
-(use-package! org-roam-bibtex
-  :after (org-roam)
-  :hook (org-roam-mode . org-roam-bibtex-mode)
-  :config (setq orb-preformat-keywords '("=key=" "title" "url" "file" "author-or-editor"
-                                         "keywords"))
-  (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point) ""
-                         :file-name "${slug}"
-                         :head
-                         "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS ${tags}\n- \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
-                         :unnarrowed t))))
-
-(use-package! ox-hugo
-  :after org)
-
-(after! oc-csl
-  (setq org-cite-csl-styles-dir "~/Zotero/styles" org-cite-csl-locales-dir "~/.local/share/csl/locales")
-  )
-
-(after! citar
-  (setq org-cite-global-bibliography '("~/org/mylibrary/mylibrary.bib")
-        bibtex-completion-bibliography '("~/org/mylibrary/mylibrary.bib")
-        citar-bibliography org-cite-global-bibliography
-        citar-open-note-function 'orb-citar-edit-note
-        citar-notes-paths '("~/org/roam/")
-        citar-file-note-org-include '(org-id org-roam-ref)
-        citar-at-point-function 'embark-act
-        citar-symbols
-        `((file . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
-                   ,(all-the-icons-icon-for-file "foo.pdf" :face 'citar-icon-dim)))
-          (note . (,(all-the-icons-icon-for-file "foo.txt") .
-                   ,(all-the-icons-icon-for-file "foo.txt" :face 'citar-icon-dim)))
-          (link .
-                (,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
-                 ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'citar-icon-dim))))
-        )
-  ;; Here we define a face to dim non 'active' icons, but preserve alignment
-  (defface citar-icon-dim
-    '((((background dark)) :foreground "#282c34")
-      (((background light)) :foreground "#fafafa"))
-    "Face for obscuring/dimming icons"
-    :group 'all-the-icons-faces))
-
 (use-package! org-mac-link
   :after org
   :init
@@ -545,24 +339,12 @@ Participants: %^{Participants}
       (:prefix "m"
                (:map org-mode-map
                 :nv "j" #'mcordell/insert-rrp-jira
-                :nv "r" #'org-roam-review
                 )
                )
       (:prefix "o"
-               ("/" #'org-roam-node-find)
                ("c" #'cfw:open-org-calendar))
-      (:map org-mode-map
-       :nv "e" #'mcordell/publish-buffer
-       (:prefix "r"
-        :desc "list - review" :nv "l" #'org-roam-review
-        :desc "accept" :nv "a" #'org-roam-review-accept
-        :desc "bury" :nv "b" #'org-roam-review-bury
-        :desc "evergreen" :nv "e" #'org-roam-review-set-evergreen
-        :desc "budding" :nv "b" #'org-roam-review-set-budding
-        :desc "seedling" :nv "s" #'org-roam-review-set-seedling
-        :desc "due" :nv "d" #'org-roam-review-list-due
-        )
-       ))
+      )
+
 (map! :prefix ","
       (:map emacs-lisp-mode-map
        :nv "f"
@@ -589,39 +371,3 @@ Participants: %^{Participants}
                (:map elixir-mode-map
                 :nv "m" #'alchemist-mix
                 )))
-
-
-(use-package! websocket
-  :after org-roam)
-
-(use-package! org-roam-ui
-  :after org-roam)
-
-(after! projectile
-  (require 'f)
-  (setq projectile-enable-caching nil projectile-project-search-path (f-directories "~/Code/Work/q-centrix/") projectile-sort-order 'recently-active)
-  )
-
-(use-package! flymake-shellcheck
-  :commands flymake-shellcheck-load
-  :init
-  (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
-
-(add-hook 'code-review-mode-hook
-          (lambda ()
-            ;; include *Code-Review* buffer into current workspace
-            (persp-add-buffer (current-buffer))))
-(defun file-notify-rm-all-watches ()
-  "Remove all existing file notification watches from Emacs."
-  (interactive)
-  (maphash
-   (lambda (key _value)
-     (file-notify-rm-watch key))
-   file-notify-descriptors))
-(use-package! justl
-  :config
-  (map! :n "e" 'justl-exec-recipe))
-
-
-(fset 'epg-wait-for-status 'ignore)
-(use-package! all-the-icons)
