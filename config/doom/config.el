@@ -35,8 +35,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -56,11 +54,11 @@
 
 ;; Org
 
+
 (setq global-auto-revert-mode t
       org_notes "~/org/org-roam" zot_bib "~/org/mylibrary/mylibrary.bib" org-directory "~/org/"
-      org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/")
+      org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
       org-download-image-dir "~/org/img"
-      org-enforce-todo-dependencies t
       bibtex-completion-notes-path org_notes
       bibtex-completion-bibliography zot_bib
       bibtex-completion-pdf-field "file"
@@ -89,6 +87,7 @@
         ("Pierce" . "Wednesday 12:30")
         ("Bryan" . "Wednesday 13:30")
         ("Brad Bell" . "Monday 13:00")
+        ("Preeti" . "Friday 12:00")
         )
       )
 (defun mcordell/insert-rrp-jira ()
@@ -426,10 +425,6 @@ Participants: %^{Participants}
                          :head
                          "#+TITLE: ${title}\n#+ROAM_KEY: ${ref}\n#+ROAM_TAGS ${tags}\n- \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
                          :unnarrowed t))))
-
-(use-package! asdf
-  :config (asdf-enable)
-  )
 
 (use-package! ox-hugo
   :after org)
