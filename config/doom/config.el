@@ -56,9 +56,8 @@
         ("Jamaal" . "Thursday 11:30")
         ("Brad" . "Wednesday 9:00")
         ("Pierce" . "Wednesday 12:30")
-        ("Bryan" . "Wednesday 13:30")
-        ("Brad Bell" . "Monday 13:00")
         ("Preeti" . "Friday 12:00")
+        ("Mark" . "Wednesday 11:00")
         )
       )
 
@@ -154,6 +153,7 @@
   (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
+
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
   (delete-dups
@@ -201,8 +201,7 @@
                                                    :jump-to-captured t
                                                    )
                                                   ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
-                                                   "* %^{Subject} <%<%Y-%m-%d %H:00>>
-Participants: %^{Participants}
+                                                   "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
 %?
 ")
                                                   ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
@@ -216,11 +215,32 @@ Participants: %^{Participants}
 
 
                           )
+  (setq
+
+   org-agenda-custom-commands '(
+                                ("o" "Agenda and Office-related tasks"
+                                 ((agenda (org-agenda-span day))
+                                  (tags-todo "work")
+                                  (tags "office")))
+                                ("w" "multiple" (
+                                                 (agenda ""
+                                                         (
+                                                          (org-agenda-start-day "0d")
+                                                          (org-agenda-span 1)
+                                                          ))
+                                                 (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
+                                                            (
+                                                             (org-agenda-overriding-header "High Priority:")
+                                                             (org-agenda-sorting-strategy '(priority-down))))))
+                                )
+
+   )
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"             ; A task that needs doing & is ready to do
            "PROJ(p)"             ; A project, which usually contains other tasks
            "LOOP(r)"             ; A recurring task
+           "QUEST(q)"            ; A question
            "STRT(s)"             ; A task that is in progress
            "WAIT(w@/!)"          ; Something external is holding up this task
            "HOLD(h)"             ; This task is paused/on hold because of me
@@ -241,33 +261,33 @@ Participants: %^{Participants}
            "YES(y)"
            "NO(n)"))
         org-todo-keyword-faces
-        '(("[-]"  . +org-todo-active)
+        '(("[-]" . +org-todo-active)
           ("STRT" . +org-todo-active)
-          ("[?]"  . +org-todo-onhold)
+          ("[?]" . +org-todo-onhold)
           ("WAIT" . +org-todo-onhold)
           ("DELG" . +org-todo-onhold)
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
-          ("NO"   . +org-todo-cancel)
-          ("KILL" . +org-todo-cancel))
-        org-default-priority 67
-        org-agenda-custom-commands '(
-                                     ("o" "Agenda and Office-related tasks"
-                                      ((agenda (org-agenda-span day))
-                                       (tags-todo "work")
-                                       (tags "office")))
-                                     ("w" "multiple" (
-                                                      (agenda ""
-                                                              (
-                                                               (org-agenda-start-day "0d")
-                                                               (org-agenda-span 1)
-                                                               ))
-                                                      (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
-                                                                 (
-                                                                  (org-agenda-overriding-header "High Priority:")
-                                                                  (org-agenda-sorting-strategy '(priority-down))))))
-                                     )
-        org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
+          ("NO" . +org-todo-cancel)
+          ("KILL" . +org-todo-cancel)
+          org-default-priority 67
+          org-agenda-custom-commands '(
+                                       ("o" "Agenda and Office-related tasks"
+                                        ((agenda (org-agenda-span day))
+                                         (tags-todo "work")
+                                         (tags "office")))
+                                       ("w" "multiple" (
+                                                        (agenda ""
+                                                                (
+                                                                 (org-agenda-start-day "0d")
+                                                                 (org-agenda-span 1)
+                                                                 ))
+                                                        (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
+                                                                   (
+                                                                    (org-agenda-overriding-header "High Priority:")
+                                                                    (org-agenda-sorting-strategy '(priority-down))))))
+                                       )
+          org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm)
@@ -280,6 +300,28 @@ Participants: %^{Participants}
   (add-hook 'org-open-link-functions 'org-pass-link-to-system)
   (set-company-backend! 'org-mode '(company-capf))
   )
+(use-package! calfw-org
+  :after org
+  :config
+  (defun my/open-calendar ()
+    (interactive)
+    (cfw:open-org-calendar)))
+
+(after! calfw
+  ;; Custom RET handler
+  (defun my/cfw-open-entry-at-point ()
+    "Show the calendar item details at point, if any."
+    (interactive)
+    (let ((cp (cfw:get-cur-cell)))
+      (when cp
+        (let ((contents (cfw:cp-get-contents cp)))
+          (if contents
+              (cfw:show-details contents)
+            (message "No entry under cursor."))))))
+
+  ;; Override RET key in calendar view
+  (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))
+
 (use-package! org-mac-link
   :after org
   :init
@@ -321,7 +363,11 @@ Participants: %^{Participants}
        "^\"\\|\"$" "" (car (split-string result "[\r\n]+" t)))))
 
   )
-
+(load! "lisp/meeting-creator.el")
+(use-package! meeting-creator
+  :commands (qcentrix-add-meetings)
+  :after org           ; if you want to enforce load order
+  )
 ;; Keymaps
 
 (map! :leader
@@ -369,5 +415,4 @@ Participants: %^{Participants}
                 :nv "a" #'org-archive-subtree))
       (:prefix ("m" . "mix")
                (:map elixir-mode-map
-                :nv "m" #'alchemist-mix
-                )))
+                :nv "m" #'alchemist-mix)))
