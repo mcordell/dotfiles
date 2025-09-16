@@ -215,26 +215,6 @@
 
 
                           )
-  (setq
-
-   org-agenda-custom-commands '(
-                                ("o" "Agenda and Office-related tasks"
-                                 ((agenda (org-agenda-span day))
-                                  (tags-todo "work")
-                                  (tags "office")))
-                                ("w" "multiple" (
-                                                 (agenda ""
-                                                         (
-                                                          (org-agenda-start-day "0d")
-                                                          (org-agenda-span 1)
-                                                          ))
-                                                 (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
-                                                            (
-                                                             (org-agenda-overriding-header "High Priority:")
-                                                             (org-agenda-sorting-strategy '(priority-down))))))
-                                )
-
-   )
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"             ; A task that needs doing & is ready to do
@@ -276,17 +256,25 @@
                                         ((agenda (org-agenda-span day))
                                          (tags-todo "work")
                                          (tags "office")))
-                                       ("w" "multiple" (
-                                                        (agenda ""
-                                                                (
-                                                                 (org-agenda-start-day "0d")
-                                                                 (org-agenda-span 1)
-                                                                 ))
-                                                        (tags-todo "+PRIORITY={A}|+PRIORITY={B}"
-                                                                   (
-                                                                    (org-agenda-overriding-header "High Priority:")
-                                                                    (org-agenda-sorting-strategy '(priority-down))))))
-                                       )
+                                       ("w" "multiple"
+                                        ((agenda ""
+                                                 ((org-agenda-start-day "0d")
+                                                  (org-agenda-span 1)
+                                                  ;; Keep only TODO/QUEST items in the agenda block
+                                                  (org-agenda-skip-function
+                                                   (lambda ()
+                                                     (save-excursion
+                                                       (org-back-to-heading t)
+                                                       (let ((kw (org-get-todo-state)))
+                                                         (unless (member kw '("TODO" "QUEST"))
+                                                           (or (outline-next-heading) (point-max)))))))))
+                                         ;; High priority list, limited to TODO|QUEST and A/B priority
+                                         (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
+                                                    ((org-agenda-overriding-header "High Priority:")
+                                                     (org-agenda-sorting-strategy '(priority-down)))))
+                                        ;; Settings applied to all blocks in this command
+                                        ((org-agenda-files
+                                          (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
           org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
