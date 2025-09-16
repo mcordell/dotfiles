@@ -1,0 +1,192 @@
+* Autoloads
+** mcordell/normalize-name-to-tag
+Given a name, convert it to a org-header tag
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/normalize-name-to-tag (name)
+  "Convert NAME to a tag-friendly string, e.g. \"Brian\" -> \"brian\"."
+  (let* ((lower (downcase name)))
+    (replace-regexp-in-string "[^a-z0-9_@#%]+" "_" lower)))
+#+end_src
+
+** mcordell/agenda-one-on-one
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/agenda-one-on-one ()
+  "Prompt for a 1:1 name, then show open TODOs tagged with that person."
+  (interactive)
+  (let* ((names (mapcar #'car mcordell/one-on-one-list))
+         (choice (completing-read "1:1 with: " names nil t))
+         (when-str (or (cdr (assoc choice mcordell/one-on-one-list)) ""))  ; optional, for header
+         (tag (mcordell/normalize-name-to-tag choice))
+         ;; Localize agenda files only for this command:
+         (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
+         ;; Nice header
+         (org-agenda-overriding-header
+          (format "Open TODOs for %s  %s" choice
+                  (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
+    ;; Show only TODO entries with the selected tag:
+    ;; org-tags-view: first arg non-nil => TODO-only
+    (org-tags-view t (concat "+" tag))))
+#+end_src
+** +org/opened-buffer-files
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun +org/opened-buffer-files ()
+  "Return the list of files currently opened in emacs"
+  (delete-dups
+   (append
+    (delq nil (mapcar (lambda (x)
+                        (if (and (buffer-file-name x)
+                                 (string-match "\\.org$" (buffer-file-name x)))
+                            (buffer-file-name x)))
+                      (buffer-list)))
+    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    ))
+  )
+#+end_src
+** +org/org-pass-link-to-system
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun +org/org-pass-link-to-system  ()
+  "Return the list of files currently opened in emacs"
+  (delete-dups
+   (append
+    (delq nil (mapcar (lambda (x)
+                        (if (and (buffer-file-name x)
+                                 (string-match "\\.org$" (buffer-file-name x)))
+                            (buffer-file-name x)))
+                      (buffer-list)))
+    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    ))
+  )
+#+end_src
+* Config
+** Vars
+*** mcordell/work-org-directory
+Define a directory for work org files
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/work-org-directory "~/org/qcentrix")
+#+end_src
+*** mcordell/one-on-one-list
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/one-on-one-list
+'(
+  ("Matt" . "Friday 11:30")
+  ("Chris" . "Tuesday 12:30")
+  ("Andrew" . "Tuesday 13:00")
+  ("Teo" . "Tuesday 14:30")
+  ("Jamaal" . "Thursday 11:30")
+  ("Brad" . "Wednesday 9:00")
+  ("Pierce" . "Wednesday 12:30")
+  ("Preeti" . "Friday 12:00")
+  ("Mark" . "Wednesday 11:00")
+  ))
+#+end_src
+*** mcordell/one-on-one-files-dir
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
+#+end_src
+** Main Config
+*** org configuration
+**** Keywords
+#+begin_src emacs-lisp :tangle config.el
+(after! org
+  (setq org-todo-keywords
+        '((sequence
+           "TODO(t)"             ; A task that needs doing & is ready to do
+           "PROJ(p)"             ; A project, which usually contains other tasks
+           "LOOP(r)"             ; A recurring task
+           "QUEST(q)"            ; A question
+           "STRT(s)"             ; A task that is in progress
+           "WAIT(w@/!)"          ; Something external is holding up this task
+           "HOLD(h)"             ; This task is paused/on hold because of me
+           "IDEA(i)"             ; An unconfirmed and unapproved task or notion
+           "DELG(l@/!)"
+           "|"
+           "DONE(d)"    ; Task successfully completed
+           "KILL(k)")   ; Task was cancelled, aborted or is no longer applicable
+          (sequence
+           "[ ](T)"                     ; A task that needs doing
+           "[-](S)"                     ; Task is in progress
+           "[?](W)"                     ; Task is being held up or paused
+           "|"
+           "[X](D)")                    ; Task was completed
+          (sequence
+           "|"
+           "OKAY(o)"
+           "YES(y)"
+           "NO(n)"))
+        org-todo-keyword-faces
+        '(("[-]" . +org-todo-active)
+          ("STRT" . +org-todo-active)
+          ("QUEST" . +org-todo-active)
+          ("[?]" . +org-todo-onhold)
+          ("WAIT" . +org-todo-onhold)
+          ("DELG" . +org-todo-onhold)
+          ("HOLD" . +org-todo-onhold)
+          ("PROJ" . +org-todo-project)
+          ("NO" . +org-todo-cancel)
+          ("KILL" . +org-todo-cancel))
+          org-default-priority 67))
+#+end_src
+**** Main
+#+begin_src emacs-lisp :tangle config.el
+(after! org
+  (add-hook 'org-open-link-functions '+org/org-pass-link-to-system)
+  (set-company-backend! 'org-mode '(company-capf))
+)
+#+end_src
+*** capture templates
+#+begin_src emacs-lisp :tangle config.el
+(after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
+                                                   "* Snippet: %a
+,#+BEGIN_SRC %^{sourcetype}
+ %c
+,#+END_SRC")
+
+                                                  ("t" "Task" entry (file "~/org/todos.org")
+                                                   "* TODO %?
+ %i
+ %a")
+                                                  ("n" "note" entry (file "~/org/notes.org")
+                                                   "* %? :NOTE:
+
+%U
+%a
+")                                                 ("i" "idea" entry (file "~/org/inbox.org")
+                                                   "* %?
+
+%U
+%a
+")
+                                                  ("r" "review" entry (file+headline
+                                                                       "~/org/qcentrix/qcentrix.org"
+                                                                       "Reviews")
+                                                   "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
+
+                                                  ("o" "One on One" entry
+                                                   (file "~/org/qcentrix/big_board.org")
+                                                   "%(mcordell/create-one-on-one-heading-with-prompt)
+%?"
+                                                   :empty-lines 1
+                                                   :unnarrowed t
+                                                   :jump-to-captured t
+                                                   )
+                                                  ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
+                                                   "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
+%?
+")
+                                                  ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
+                                                   "* TODO %^{Subject}
+%?
+")
+                                                  ("x" "Q-Centrix Note" entry (file
+                                                                               "~/org/qcentrix/qcentrix.org")
+                                                   "* %? %t
+"))
+
+
+                          )
+  )
+#+end_src

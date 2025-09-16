@@ -17,7 +17,11 @@
                 )
                )
       (:prefix "o"
-               ("c" #'cfw:open-org-calendar))
+               ("c" #'cfw:open-org-calendar)
+               ("w" (lambda ()
+                      (interactive)
+                      (org-agenda nil "o")))
+               )
       )
 
 (map! :prefix ","

@@ -15,44 +15,7 @@
 (setq org-directory "~/org/"
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
       zot_bib "~/org/mylibrary/mylibrary.bib" 
-      one-on-one-list
-      '(
-        ("Matt" . "Friday 11:30")
-        ("Chris" . "Tuesday 12:30")
-        ("Andrew" . "Tuesday 13:00")
-        ("Teo" . "Tuesday 14:30")
-        ("Jamaal" . "Thursday 11:30")
-        ("Brad" . "Wednesday 9:00")
-        ("Pierce" . "Wednesday 12:30")
-        ("Preeti" . "Friday 12:00")
-        ("Mark" . "Wednesday 11:00")
-        )
       )
-
-(defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
-
-(defun mcordell/normalize-name-to-tag (name)
-  "Convert NAME to a tag-friendly string, e.g. \"Brian\" -> \"brian\"."
-  (let* ((lower (downcase name)))
-    (replace-regexp-in-string "[^a-z0-9_@#%]+" "_" lower)))
-
-(defun mcordell/agenda-one-on-one ()
-  "Prompt for a 1:1 name, then show open TODOs tagged with that person."
-  (interactive)
-  (let* ((names (mapcar #'car one-on-one-list))
-         (choice (completing-read "1:1 with: " names nil t))
-         (when-str (or (cdr (assoc choice one-on-one-list)) ""))  ; optional, for header
-         (tag (mcordell/normalize-name-to-tag choice))
-         ;; Localize agenda files only for this command:
-         (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
-         ;; Nice header
-         (org-agenda-overriding-header
-          (format "Open TODOs for %s  %s" choice
-                  (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
-    ;; Show only TODO entries with the selected tag:
-    ;; org-tags-view: first arg non-nil => TODO-only
-    (org-tags-view t (concat "+" tag))))
-
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -146,139 +109,38 @@
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
 
-(defun +org/opened-buffer-files ()
-  "Return the list of files currently opened in emacs"
-  (delete-dups
-   (append
-    (delq nil (mapcar (lambda (x)
-                        (if (and (buffer-file-name x)
-                                 (string-match "\\.org$" (buffer-file-name x)))
-                            (buffer-file-name x)))
-                      (buffer-list)))
-    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
-    ))
-  )
-(after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
-                                                   "* Snippet: %a
-#+BEGIN_SRC %^{sourcetype}
- %c
-#+END_SRC")
-
-                                                  ("t" "Task" entry (file "~/org/todos.org")
-                                                   "* TODO %?
- %i
- %a")
-                                                  ("n" "note" entry (file "~/org/notes.org")
-                                                   "* %? :NOTE:
-
-%U
-%a
-")                                                 ("i" "idea" entry (file "~/org/inbox.org")
-                                                   "* %?
-
-%U
-%a
-")
-                                                  ("r" "review" entry (file+headline
-                                                                       "~/org/qcentrix/qcentrix.org"
-                                                                       "Reviews")
-                                                   "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
-
-                                                  ("o" "One on One" entry
-                                                   (file "~/org/qcentrix/big_board.org")
-                                                   "%(mcordell/create-one-on-one-heading-with-prompt)
-%?"
-                                                   :empty-lines 1
-                                                   :unnarrowed t
-                                                   :jump-to-captured t
-                                                   )
-                                                  ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
-                                                   "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
-%?
-")
-                                                  ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
-                                                   "* TODO %^{Subject}
-%?
-")
-                                                  ("x" "Q-Centrix Note" entry (file
-                                                                               "~/org/qcentrix/qcentrix.org")
-                                                   "* %? %t
-"))
-
-
-                          )
-  (setq org-todo-keywords
-        '((sequence
-           "TODO(t)"             ; A task that needs doing & is ready to do
-           "PROJ(p)"             ; A project, which usually contains other tasks
-           "LOOP(r)"             ; A recurring task
-           "QUEST(q)"            ; A question
-           "STRT(s)"             ; A task that is in progress
-           "WAIT(w@/!)"          ; Something external is holding up this task
-           "HOLD(h)"             ; This task is paused/on hold because of me
-           "IDEA(i)"             ; An unconfirmed and unapproved task or notion
-           "DELG(l@/!)"
-           "|"
-           "DONE(d)"    ; Task successfully completed
-           "KILL(k)")   ; Task was cancelled, aborted or is no longer applicable
-          (sequence
-           "[ ](T)"                     ; A task that needs doing
-           "[-](S)"                     ; Task is in progress
-           "[?](W)"                     ; Task is being held up or paused
-           "|"
-           "[X](D)")                    ; Task was completed
-          (sequence
-           "|"
-           "OKAY(o)"
-           "YES(y)"
-           "NO(n)"))
-        org-todo-keyword-faces
-        '(("[-]" . +org-todo-active)
-          ("STRT" . +org-todo-active)
-          ("[?]" . +org-todo-onhold)
-          ("WAIT" . +org-todo-onhold)
-          ("DELG" . +org-todo-onhold)
-          ("HOLD" . +org-todo-onhold)
-          ("PROJ" . +org-todo-project)
-          ("NO" . +org-todo-cancel)
-          ("KILL" . +org-todo-cancel)
-          org-default-priority 67
-          org-agenda-custom-commands '(
-                                       ("o" "Agenda and Office-related tasks"
-                                        ((agenda (org-agenda-span day))
-                                         (tags-todo "work")
-                                         (tags "office")))
-                                       ("w" "multiple"
-                                        ((agenda ""
-                                                 ((org-agenda-start-day "0d")
-                                                  (org-agenda-span 1)
-                                                  ;; Keep only TODO/QUEST items in the agenda block
-                                                  (org-agenda-skip-function
-                                                   (lambda ()
-                                                     (save-excursion
-                                                       (org-back-to-heading t)
-                                                       (let ((kw (org-get-todo-state)))
-                                                         (unless (member kw '("TODO" "QUEST"))
-                                                           (or (outline-next-heading) (point-max)))))))))
-                                         ;; High priority list, limited to TODO|QUEST and A/B priority
-                                         (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
-                                                    ((org-agenda-overriding-header "High Priority:")
-                                                     (org-agenda-sorting-strategy '(priority-down)))))
-                                        ;; Settings applied to all blocks in this command
-                                        ((org-agenda-files
-                                          (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
-          org-refile-targets '((+org/opened-buffer-files :maxlevel . 9)))
+(after! org
+  (setq org-agenda-custom-commands '(
+                                     ("o" "Work tasks"
+                                      ((tags-todo "*"
+                                                  ((org-agenda-overriding-header "Work tasks")))
+                                       )
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'")))
+                                      )
+                                     ("w" "multiple"
+                                      ((agenda ""
+                                               ((org-agenda-start-day "0d")
+                                                (org-agenda-span 1)
+                                                ;; Keep only TODO/QUEST items in the agenda block
+                                                (org-agenda-skip-function
+                                                 (lambda ()
+                                                   (save-excursion
+                                                     (org-back-to-heading t)
+                                                     (let ((kw (org-get-todo-state)))
+                                                       (unless (member kw '("TODO" "QUEST"))
+                                                         (or (outline-next-heading) (point-max)))))))))
+                                       ;; High priority list, limited to TODO|QUEST and A/B priority
+                                       (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
+                                                  ((org-agenda-overriding-header "High Priority:")
+                                                   (org-agenda-sorting-strategy '(priority-down)))))
+                                      ;; Settings applied to all blocks in this command
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
+        org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-refile-allow-creating-parent-nodes 'confirm)
-  (defun org-pass-link-to-system (link)
-    (if (string-match "^[\"a-zA-Z0-9]+:" link)
-        (shell-command (concat "open " link))
-      nil)
-    )
-
-  (add-hook 'org-open-link-functions 'org-pass-link-to-system)
-  (set-company-backend! 'org-mode '(company-capf))
   )
 (use-package! calfw-org
   :after org
