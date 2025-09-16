@@ -48,7 +48,7 @@
       org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
       zot_bib "~/org/mylibrary/mylibrary.bib" 
       one-on-one-list
-      '(("Brian" . "Thursday 13:00")
+      '(
         ("Matt" . "Friday 11:30")
         ("Chris" . "Tuesday 12:30")
         ("Andrew" . "Tuesday 13:00")
@@ -60,6 +60,30 @@
         ("Mark" . "Wednesday 11:00")
         )
       )
+
+(defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
+
+(defun mcordell/normalize-name-to-tag (name)
+  "Convert NAME to a tag-friendly string, e.g. \"Brian\" -> \"brian\"."
+  (let* ((lower (downcase name)))
+    (replace-regexp-in-string "[^a-z0-9_@#%]+" "_" lower)))
+
+(defun mcordell/agenda-one-on-one ()
+  "Prompt for a 1:1 name, then show open TODOs tagged with that person."
+  (interactive)
+  (let* ((names (mapcar #'car one-on-one-list))
+         (choice (completing-read "1:1 with: " names nil t))
+         (when-str (or (cdr (assoc choice one-on-one-list)) ""))  ; optional, for header
+         (tag (mcordell/normalize-name-to-tag choice))
+         ;; Localize agenda files only for this command:
+         (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
+         ;; Nice header
+         (org-agenda-overriding-header
+          (format "Open TODOs for %s  %s" choice
+                  (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
+    ;; Show only TODO entries with the selected tag:
+    ;; org-tags-view: first arg non-nil => TODO-only
+    (org-tags-view t (concat "+" tag))))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
