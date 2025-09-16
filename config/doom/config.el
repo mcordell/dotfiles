@@ -49,66 +49,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; Org
-(defun mcordell/insert-rrp-jira ()
-  "Insert a JIRA or GitHub PR link from the clipboard in Org-mode."
-  (interactive)
-  (let* ((clipboard-content (with-temp-buffer
-                              (call-process "pbpaste" nil t)
-                              (buffer-string)))
-         (jira-url-regex "https://qcentrix.atlassian.net/browse/\\(RRP-[0-9]+\\)")
-         (jira-key-regex "\\(RRP-[0-9]+\\)")
-         (github-url-regex "https://github.com/q-centrix/\\(.*\\)/pull/[0-9]+")
-         (jira-key (if (string-match jira-url-regex clipboard-content)
-                       (match-string 1 clipboard-content)
-                     (if (string-match jira-key-regex clipboard-content)
-                         (match-string 1 clipboard-content)
-                       nil)))
-         (github-repo (if (string-match github-url-regex clipboard-content)
-                          (match-string 1 clipboard-content)
-                        nil)))
-    (cond
-     (jira-key
-      (let ((jira-link (format "[[https://qcentrix.atlassian.net/browse/%s][%s]]" jira-key jira-key)))
-        (insert jira-link)))
-     (github-repo
-      (let ((github-link (format "[[%s][%s PR]]" clipboard-content github-repo)))
-        (insert github-link)))
-     (t
-      (message "No JIRA or GitHub link found in clipboard")))))
-
-;; Creates a heading for a one-on-one meeting with the given NAME on the next occurrence of the day and time specified in the one-on-one list.
-;; The format for the heading is "* NAME 1-1 <Y-m-d a H:M>", where <Y-m-d a H:M> is the date and time of the next occurrence of the specified day and time.
-;; Returns the formatted heading as a string.
-(defun mcordell/create-one-on-one-heading (name)
-  (let* ((day-time (cdr (assoc name one-on-one-list)))
-         (today (current-time))
-         (desired-day (parse-time-string day-time))
-         (desired-dow (nth 6 desired-day))
-         (desired-hour (nth 2 desired-day))
-         (desired-min (nth 1 desired-day))
-         (current-dow (nth 6 (decode-time today)))
-         (days-until (- desired-dow current-dow)))
-    (if (< days-until 0)
-        (setq days-until (+ days-until 7)))
-    (let ((next-meeting-date (time-add today (days-to-time days-until))))
-      (format-time-string (concat "* " name " 1-1 <%Y-%m-%d %a %H:%M>")
-                          (encode-time 0 desired-min desired-hour
-                                       (nth 3 (decode-time next-meeting-date))
-                                       (nth 4 (decode-time next-meeting-date))
-                                       (nth 5 (decode-time next-meeting-date)))))))
-
-(defun mcordell/org-agenda-todo-with-tag ()
-  (interactive)
-  (let* ((tags-list '("jamaal" "chris" "andrew" "brian" "teo" "brad" "brad-b")) ; Define your list of tags here
-         (tag (completing-read "Choose tag: " tags-list)))
-    (org-tags-view nil (concat "TODO=\"TODO\"&" tag))))
-
-(defun mcordell/create-one-on-one-heading-with-prompt ()
-  (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
-         (heading (mcordell/create-one-on-one-heading name)))
-    heading))
-
 (after! org
   (setq org-agenda-custom-commands '(
                                      ("o" "Work tasks"
