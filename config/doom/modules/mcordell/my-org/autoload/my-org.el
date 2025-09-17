@@ -52,7 +52,7 @@
 
 ;;;###autoload
 (defun mcordell/create-one-on-one-heading (name)
-  (let* ((day-time (cdr (assoc name one-on-one-list)))
+  (let* ((day-time (cdr (assoc name mcordell/one-on-one-list)))
          (today (current-time))
          (desired-day (parse-time-string day-time))
          (desired-dow (nth 6 desired-day))
@@ -68,7 +68,6 @@
                                        (nth 3 (decode-time next-meeting-date))
                                        (nth 4 (decode-time next-meeting-date))
                                        (nth 5 (decode-time next-meeting-date)))))))
-
 ;;;###autoload
 (defun mcordell/org-agenda-todo-with-tag ()
   (interactive)
@@ -78,7 +77,7 @@
 
 ;;;###autoload
 (defun mcordell/create-one-on-one-heading-with-prompt ()
-  (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
+  (let* ((name (completing-read "Select a name: " (mapcar 'car mcordell/one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
 
