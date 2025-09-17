@@ -66,7 +66,7 @@ Returns the formatted heading as a string.
 #+begin_src emacs-lisp :tangle autoload/my-org.el
 ;;;###autoload
 (defun mcordell/create-one-on-one-heading (name)
-  (let* ((day-time (cdr (assoc name one-on-one-list)))
+  (let* ((day-time (cdr (assoc name mcordell/one-on-one-list)))
          (today (current-time))
          (desired-day (parse-time-string day-time))
          (desired-dow (nth 6 desired-day))
@@ -96,7 +96,7 @@ Returns the formatted heading as a string.
 #+begin_src emacs-lisp :tangle autoload/my-org.el
 ;;;###autoload
 (defun mcordell/create-one-on-one-heading-with-prompt ()
-  (let* ((name (completing-read "Select a name: " (mapcar 'car one-on-one-list)))
+  (let* ((name (completing-read "Select a name: " (mapcar 'car mcordell/one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
 #+end_src
@@ -142,17 +142,17 @@ Define a directory for work org files
 *** mcordell/one-on-one-list
 #+begin_src emacs-lisp :tangle config.el
 (defvar mcordell/one-on-one-list
-'(
-  ("Matt" . "Friday 11:30")
-  ("Chris" . "Tuesday 12:30")
-  ("Andrew" . "Tuesday 13:00")
-  ("Teo" . "Tuesday 14:30")
-  ("Jamaal" . "Thursday 11:30")
-  ("Brad" . "Wednesday 9:00")
-  ("Pierce" . "Wednesday 12:30")
-  ("Preeti" . "Friday 12:00")
-  ("Mark" . "Wednesday 11:00")
-  ))
+  '(
+    ("Matt" . "Friday 11:30")
+    ("Chris" . "Tuesday 12:30")
+    ("Andrew" . "Tuesday 13:00")
+    ("Teo" . "Tuesday 14:30")
+    ("Jamaal" . "Thursday 11:30")
+    ("Brad" . "Wednesday 9:00")
+    ("Pierce" . "Wednesday 12:30")
+    ("Preeti" . "Friday 12:00")
+    ("Mark" . "Wednesday 11:00")
+    ))
 #+end_src
 *** mcordell/one-on-one-files-dir
 #+begin_src emacs-lisp :tangle config.el
@@ -200,14 +200,19 @@ Define a directory for work org files
           ("PROJ" . +org-todo-project)
           ("NO" . +org-todo-cancel)
           ("KILL" . +org-todo-cancel))
-          org-default-priority 67))
+        org-default-priority 67))
 #+end_src
 **** Main
 #+begin_src emacs-lisp :tangle config.el
 (after! org
   (add-hook 'org-open-link-functions '+org/org-pass-link-to-system)
   (set-company-backend! 'org-mode '(company-capf))
-)
+  (setq org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil
+        org-refile-allow-creating-parent-nodes 'confirm
+        )
+  )
 #+end_src
 *** capture templates
 #+begin_src emacs-lisp :tangle config.el
@@ -260,5 +265,83 @@ Define a directory for work org files
 
 
                           )
+  )
+#+end_src
+
+*** agenda views
+#+begin_src emacs-lisp :tangle config.el
+(after! org
+  (setq org-agenda-custom-commands '(
+                                     ("o" "Work tasks"
+                                      ((tags-todo "*"
+                                                  ((org-agenda-overriding-header "Work tasks")))
+                                       )
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'")))
+                                      )
+                                     ("w" "multiple"
+                                      ((agenda ""
+                                               ((org-agenda-start-day "0d")
+                                                (org-agenda-span 1)
+                                                ;; Keep only TODO/QUEST items in the agenda block
+                                                (org-agenda-skip-function
+                                                 (lambda ()
+                                                   (save-excursion
+                                                     (org-back-to-heading t)
+                                                     (let ((kw (org-get-todo-state)))
+                                                       (unless (member kw '("TODO" "QUEST"))
+                                                         (or (outline-next-heading) (point-max)))))))))
+                                       ;; High priority list, limited to TODO|QUEST and A/B priority
+                                       (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
+                                                  ((org-agenda-overriding-header "High Priority:")
+                                                   (org-agenda-sorting-strategy '(priority-down)))))
+                                      ;; Settings applied to all blocks in this command
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
+        )
+  )
+#+end_src
+** Org-mac-link extension
+#+begin_src emacs-lisp :tangle config.el
+(use-package! org-mac-link
+  :after org
+  :init
+  (defun as-get-selected-finder-items ()
+    (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
+                            " set links to {}\n" " repeat with theItem in theSelection\n"
+                            " set theLink to \"file+sys://\" & (POSIX path of (theItem as string)) & \"::split::\" & (get the name of theItem) & \"\n\"\n"
+                            " copy theLink to the end of links\n" " end repeat\n"
+                            " return links as string\n" "end tell\n")))
+
+  (defun as-get-selected-mailmate-message ()
+    (do-applescript (concat "tell application \"MailMate\"\n" " set allMessages to messages\n"
+                            " set theMessage to item 1 of allMessages\n"
+                            " return (message url of theMessage) & \"::split::\" & (name of theMessage)\n"
+                            " end tell\n")))
+  (defun org-mac-mailmate-item-get-selected ()
+    (interactive)
+    (message "Applescript: Getting mailmate message...")
+    (org-mac-link-paste-applescript-links (as-get-selected-mailmate-message)))
+
+  (defun org-mac-mailmate-insert-selected ()
+    (interactive)
+    (insert (org-mac-mailmate-item-get-selected)))
+  (defun org-mac-link-applescript-chrome-get-frontmost-url ()
+    "AppleScript to get the links to the frontmost window of the Chrome.app."
+    (let ((result
+           (org-mac-link-do-applescript
+            (concat
+             "set frontmostApplication to path to frontmost application\n"
+             "tell application \"Brave\"\n"
+             "	set theUrl to get URL of active tab of first window\n"
+             "	set theResult to (get theUrl) & \"::split::\" & (get name of window 1)\n"
+             "end tell\n"
+             "activate application (frontmostApplication as text)\n"
+             "set links to {}\n"
+             "copy theResult to the end of links\n"
+             "return links as string\n"))))
+      (replace-regexp-in-string
+       "^\"\\|\"$" "" (car (split-string result "[\r\n]+" t)))))
+
   )
 #+end_src

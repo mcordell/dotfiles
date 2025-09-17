@@ -68,6 +68,7 @@
                                        (nth 3 (decode-time next-meeting-date))
                                        (nth 4 (decode-time next-meeting-date))
                                        (nth 5 (decode-time next-meeting-date)))))))
+
 ;;;###autoload
 (defun mcordell/org-agenda-todo-with-tag ()
   (interactive)

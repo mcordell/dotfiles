@@ -49,39 +49,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(after! org
-  (setq org-agenda-custom-commands '(
-                                     ("o" "Work tasks"
-                                      ((tags-todo "*"
-                                                  ((org-agenda-overriding-header "Work tasks")))
-                                       )
-                                      ((org-agenda-files
-                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'")))
-                                      )
-                                     ("w" "multiple"
-                                      ((agenda ""
-                                               ((org-agenda-start-day "0d")
-                                                (org-agenda-span 1)
-                                                ;; Keep only TODO/QUEST items in the agenda block
-                                                (org-agenda-skip-function
-                                                 (lambda ()
-                                                   (save-excursion
-                                                     (org-back-to-heading t)
-                                                     (let ((kw (org-get-todo-state)))
-                                                       (unless (member kw '("TODO" "QUEST"))
-                                                         (or (outline-next-heading) (point-max)))))))))
-                                       ;; High priority list, limited to TODO|QUEST and A/B priority
-                                       (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
-                                                  ((org-agenda-overriding-header "High Priority:")
-                                                   (org-agenda-sorting-strategy '(priority-down)))))
-                                      ;; Settings applied to all blocks in this command
-                                      ((org-agenda-files
-                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
-        org-refile-targets '((+org/opened-buffer-files :maxlevel . 9))
-        org-refile-use-outline-path 'file
-        org-outline-path-complete-in-steps nil
-        org-refile-allow-creating-parent-nodes 'confirm)
-  )
 (use-package! calfw-org
   :after org
   :config
@@ -104,47 +71,6 @@
   ;; Override RET key in calendar view
   (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))
 
-(use-package! org-mac-link
-  :after org
-  :init
-  (defun as-get-selected-finder-items ()
-    (do-applescript (concat "tell application \"Finder\"\n" " set theSelection to the selection\n"
-                            " set links to {}\n" " repeat with theItem in theSelection\n"
-                            " set theLink to \"file+sys://\" & (POSIX path of (theItem as string)) & \"::split::\" & (get the name of theItem) & \"\n\"\n"
-                            " copy theLink to the end of links\n" " end repeat\n"
-                            " return links as string\n" "end tell\n")))
-
-  (defun as-get-selected-mailmate-message ()
-    (do-applescript (concat "tell application \"MailMate\"\n" " set allMessages to messages\n"
-                            " set theMessage to item 1 of allMessages\n"
-                            " return (message url of theMessage) & \"::split::\" & (name of theMessage)\n"
-                            " end tell\n")))
-  (defun org-mac-mailmate-item-get-selected ()
-    (interactive)
-    (message "Applescript: Getting mailmate message...")
-    (org-mac-link-paste-applescript-links (as-get-selected-mailmate-message)))
-
-  (defun org-mac-mailmate-insert-selected ()
-    (interactive)
-    (insert (org-mac-mailmate-item-get-selected)))
-  (defun org-mac-link-applescript-chrome-get-frontmost-url ()
-    "AppleScript to get the links to the frontmost window of the Chrome.app."
-    (let ((result
-           (org-mac-link-do-applescript
-            (concat
-             "set frontmostApplication to path to frontmost application\n"
-             "tell application \"Brave\"\n"
-             "	set theUrl to get URL of active tab of first window\n"
-             "	set theResult to (get theUrl) & \"::split::\" & (get name of window 1)\n"
-             "end tell\n"
-             "activate application (frontmostApplication as text)\n"
-             "set links to {}\n"
-             "copy theResult to the end of links\n"
-             "return links as string\n"))))
-      (replace-regexp-in-string
-       "^\"\\|\"$" "" (car (split-string result "[\r\n]+" t)))))
-
-  )
 (load! "lisp/meeting-creator.el")
 (use-package! meeting-creator
   :commands (qcentrix-add-meetings)
