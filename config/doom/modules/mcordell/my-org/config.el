@@ -15,6 +15,8 @@
 
 (defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
 
+(defvar mcordell/work-meeting-file "~/org/qcentrix/meetings.org" "Org file where meeting headings are stored.")
+
 (after! org
   (setq org-todo-keywords
         '((sequence
@@ -187,3 +189,25 @@
        "^\"\\|\"$" "" (car (split-string result "[\r\n]+" t)))))
 
   )
+
+(use-package! calfw-org
+  :after org
+  :config
+  (defun my/open-calendar ()
+    (interactive)
+    (cfw:open-org-calendar)))
+
+(after! calfw
+  ;; Custom RET handler
+  (defun my/cfw-open-entry-at-point ()
+    "Show the calendar item details at point, if any."
+    (interactive)
+    (let ((cp (cfw:get-cur-cell)))
+      (when cp
+        (let ((contents (cfw:cp-get-contents cp)))
+          (if contents
+              (cfw:show-details contents)
+            (message "No entry under cursor."))))))
+
+  ;; Override RET key in calendar view
+  (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))

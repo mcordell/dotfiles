@@ -83,6 +83,42 @@
     heading))
 
 ;;;###autoload
+(defun mcordell/read-time (prompt)
+  "Read a time string like “09:00” (adds “:00” if only an hour is given)."
+  (let* ((raw (read-string prompt nil nil
+                           (format-time-string "%H:%M")))
+         ;; Accept “9”, “9:30”, “09”, etc.
+         (parts (split-string raw ":"))
+         (hour  (format "%02d" (string-to-number (car parts))))
+         (mins  (if (cadr parts) (cadr parts) "00")))
+    (concat hour ":" mins)))
+
+;;;###autoload
+(defun mcordell/add-meetings-for-day ()
+  "Prompt for a date, number of meetings, then loop to create headings.
+
+Each heading has the form:
+
+  * SUBJECT <YYYY-MM-DD HH:MM>
+
+Entries are appended to `mcordell/work-meeting-file`."
+  (interactive)
+  (let* ((date (org-read-date nil nil nil "Select meeting date: "))
+         (count (read-number "Number of meetings to add: " 1)))
+    (with-current-buffer (find-file-noselect mcordell/work-meeting-file)
+      (goto-char (point-max))
+      (dotimes (i count)
+        (let* ((time (mcordell/read-time
+                      (format "Start time for meeting %d (HH or HH:MM): "
+                              (1+ i))))
+               (subject (read-string
+                         (format "Subject for meeting %d: " (1+ i)))))
+          (insert (format "* %s <%s %s>\n" subject date time))))
+      (save-buffer))
+    (message "Added %d meeting%s to %s"
+             count (if (= count 1) "" "s") mcordell/work-meeting-file)))
+
+;;;###autoload
 (defun +org/opened-buffer-files ()
   "Return the list of files currently opened in emacs"
   (delete-dups

@@ -48,33 +48,4 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-(use-package! calfw-org
-  :after org
-  :config
-  (defun my/open-calendar ()
-    (interactive)
-    (cfw:open-org-calendar)))
-
-(after! calfw
-  ;; Custom RET handler
-  (defun my/cfw-open-entry-at-point ()
-    "Show the calendar item details at point, if any."
-    (interactive)
-    (let ((cp (cfw:get-cur-cell)))
-      (when cp
-        (let ((contents (cfw:cp-get-contents cp)))
-          (if contents
-              (cfw:show-details contents)
-            (message "No entry under cursor."))))))
-
-  ;; Override RET key in calendar view
-  (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))
-
-(load! "lisp/meeting-creator.el")
-(use-package! meeting-creator
-  :commands (qcentrix-add-meetings)
-  :after org           ; if you want to enforce load order
-  )
-
 (load! "+bindings")
