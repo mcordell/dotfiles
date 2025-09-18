@@ -2,15 +2,15 @@
 
 (defvar mcordell/one-on-one-list
   '(
-    ("Matt" . "Friday 11:30")
-    ("Chris" . "Tuesday 12:30")
     ("Andrew" . "Tuesday 13:00")
-    ("Teo" . "Tuesday 14:30")
-    ("Jamaal" . "Thursday 11:30")
     ("Brad" . "Wednesday 9:00")
+    ("Chris" . "Tuesday 12:30")
+    ("Jamaal" . "Thursday 11:30")
+    ("Mark" . "Wednesday 11:00")
+    ("Matt" . "Friday 11:30")
     ("Pierce" . "Wednesday 12:30")
     ("Preeti" . "Friday 12:00")
-    ("Mark" . "Wednesday 11:00")
+    ("Teo" . "Tuesday 14:30")
     ))
 
 (defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
@@ -95,6 +95,13 @@
                                                   ("o" "One on One" entry
                                                    (file "~/org/qcentrix/big_board.org")
                                                    "%(mcordell/create-one-on-one-heading-with-prompt)
+%?"
+                                                   :empty-lines 1
+                                                   :unnarrowed t
+                                                   :jump-to-captured t
+                                                   )
+                                                  ("g" "simple o3" entry (file mcordell/work-meeting-file)
+                                                   "%(mcordell/create-simple-one-on-one-heading-with-prompt)
 %?"
                                                    :empty-lines 1
                                                    :unnarrowed t

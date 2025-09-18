@@ -5,22 +5,27 @@
     (replace-regexp-in-string "[^a-z0-9_@#%]+" "_" lower)))
 
 ;;;###autoload
-(defun mcordell/agenda-one-on-one ()
-  "Prompt for a 1:1 name, then show open TODOs tagged with that person."
-  (interactive)
-  (let* ((names (mapcar #'car mcordell/one-on-one-list))
-         (choice (completing-read "1:1 with: " names nil t))
-         (when-str (or (cdr (assoc choice mcordell/one-on-one-list)) ""))  ; optional, for header
-         (tag (mcordell/normalize-name-to-tag choice))
+(defun mcordell/agenda-one-on-one-for-name (name)
+  "Show open TODOs tagged with the specified NAME."
+  (let* ((when-str (or (cdr (assoc name mcordell/one-on-one-list)) ""))  ; optional, for header
+         (tag (mcordell/normalize-name-to-tag name))
          ;; Localize agenda files only for this command:
          (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
          ;; Nice header
          (org-agenda-overriding-header
-          (format "Open TODOs for %s  %s" choice
+          (format "Open TODOs for %s  %s" name
                   (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
     ;; Show only TODO entries with the selected tag:
     ;; org-tags-view: first arg non-nil => TODO-only
     (org-tags-view t (concat "+" tag))))
+
+;;;###autoload
+(defun mcordell/agenda-one-on-one ()
+  "Prompt for a 1:1 name, then show open TODOs tagged with that person."
+  (interactive)
+  (let* ((names (mapcar #'car mcordell/one-on-one-list))
+         (choice (completing-read "1:1 with: " names nil t)))
+    (mcordell/agenda-one-on-one-for-name choice)))
 
 ;;;###autoload
 (defun mcordell/insert-rrp-jira ()
@@ -81,6 +86,15 @@
   (let* ((name (completing-read "Select a name: " (mapcar 'car mcordell/one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
+
+;;;###autoload
+(defun mcordell/create-simple-one-on-one-heading-with-prompt ()
+  (let* ((name (completing-read "Select a name: " (mapcar #'car mcordell/one-on-one-list))))
+    (mcordell/create-simple-one-on-one-heading name)))
+
+;;;###autoload
+(defun mcordell/create-simple-one-on-one-heading (name)
+    (concat "* " name " 1-1 %^t"))
 
 ;;;###autoload
 (defun mcordell/read-time (prompt)
@@ -145,3 +159,44 @@ Entries are appended to `mcordell/work-meeting-file`."
     (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
     ))
   )
+
+;;;###autoload
+(defun mcordell/one-on-one-workflow ()
+  "Start a one-on-one workflow: select person, find or create meeting, show agenda."
+  (interactive)
+  (let* ((names (mapcar #'car mcordell/one-on-one-list))
+         (chosen-name (completing-read "1:1 with: " names nil t))
+         (today-date (format-time-string "%Y-%m-%d"))
+         (meeting-heading-pattern (format "^\\* %s 1-1 <%s" chosen-name today-date))
+         (org-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
+         (found-meeting nil))
+    
+    ;; Search for existing meeting today
+    (catch 'meeting-found
+      (dolist (file org-files)
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (goto-char (point-min))
+            (when (re-search-forward meeting-heading-pattern nil t)
+              (setq found-meeting (list file (point)))
+              (throw 'meeting-found t))))))
+    
+    (if found-meeting
+        ;; Found existing meeting - focus on it
+        (progn
+          (find-file (car found-meeting))
+          (goto-char (cadr found-meeting))
+          (org-show-subtree)
+          (message "Found existing meeting for %s today" chosen-name))
+      ;; No existing meeting - create new one directly
+      (progn
+        ;; Temporarily override the prompt function to use our chosen name
+        (cl-letf (((symbol-function 'mcordell/create-simple-one-on-one-heading-with-prompt)
+                   (lambda () (mcordell/create-simple-one-on-one-heading chosen-name))))
+          (org-capture nil "g"))
+        (message "Created new meeting for %s" chosen-name)))
+    
+    ;; After meeting is set up, create vertical split with agenda view
+    (split-window-right)
+    (other-window 1)
+    (mcordell/agenda-one-on-one-for-name chosen-name)))

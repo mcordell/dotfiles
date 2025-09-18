@@ -17,6 +17,7 @@
                 )
                )
       (:prefix "o"
+               ("g" #'mcordell/one-on-one-workflow)
                ("c" #'cfw:open-org-calendar)
                ("w" (lambda ()
                       (interactive)

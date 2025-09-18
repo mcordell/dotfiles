@@ -9,25 +9,34 @@ Given a name, convert it to a org-header tag
     (replace-regexp-in-string "[^a-z0-9_@#%]+" "_" lower)))
 #+end_src
 
+** mcordell/agenda-one-on-one-for-name
+Core function that shows open TODOs tagged with a specific person's name. Takes the name as a parameter rather than prompting.
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/agenda-one-on-one-for-name (name)
+  "Show open TODOs tagged with the specified NAME."
+  (let* ((when-str (or (cdr (assoc name mcordell/one-on-one-list)) ""))  ; optional, for header
+         (tag (mcordell/normalize-name-to-tag name))
+         ;; Localize agenda files only for this command:
+         (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
+         ;; Nice header
+         (org-agenda-overriding-header
+          (format "Open TODOs for %s  %s" name
+                  (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
+    ;; Show only TODO entries with the selected tag:
+    ;; org-tags-view: first arg non-nil => TODO-only
+    (org-tags-view t (concat "+" tag))))
+#+end_src
 ** mcordell/agenda-one-on-one
+Prompts for a 1:1 name, then delegates to =mcordell/agenda-one-on-one-for-name= to show open TODOs tagged with that person.
 #+begin_src emacs-lisp :tangle autoload/my-org.el
 ;;;###autoload
 (defun mcordell/agenda-one-on-one ()
   "Prompt for a 1:1 name, then show open TODOs tagged with that person."
   (interactive)
   (let* ((names (mapcar #'car mcordell/one-on-one-list))
-         (choice (completing-read "1:1 with: " names nil t))
-         (when-str (or (cdr (assoc choice mcordell/one-on-one-list)) ""))  ; optional, for header
-         (tag (mcordell/normalize-name-to-tag choice))
-         ;; Localize agenda files only for this command:
-         (org-agenda-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
-         ;; Nice header
-         (org-agenda-overriding-header
-          (format "Open TODOs for %s  %s" choice
-                  (if (string-empty-p when-str) "" (format "(%s)" when-str)))))
-    ;; Show only TODO entries with the selected tag:
-    ;; org-tags-view: first arg non-nil => TODO-only
-    (org-tags-view t (concat "+" tag))))
+         (choice (completing-read "1:1 with: " names nil t)))
+    (mcordell/agenda-one-on-one-for-name choice)))
 #+end_src
 ** mcordell/insert-rrp-jira
 #+begin_src emacs-lisp :tangle autoload/my-org.el
@@ -99,6 +108,19 @@ Returns the formatted heading as a string.
   (let* ((name (completing-read "Select a name: " (mapcar 'car mcordell/one-on-one-list)))
          (heading (mcordell/create-one-on-one-heading name)))
     heading))
+#+end_src
+** mcordell/create-simple-one-on-one-heading-with-prompt
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/create-simple-one-on-one-heading-with-prompt ()
+  (let* ((name (completing-read "Select a name: " (mapcar #'car mcordell/one-on-one-list))))
+    (mcordell/create-simple-one-on-one-heading name)))
+#+end_src
+** mcordell/create-simple-one-on-one-heading-with-prompt
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/create-simple-one-on-one-heading (name)
+    (concat "* " name " 1-1 %^t"))
 #+end_src
 ** mcordell/read-time
 Read a time string like “09:00” (adds “:00” if only an hour is given).
@@ -180,6 +202,56 @@ Entries are appended to `mcordell/work-meeting-file`."
     ))
   )
 #+end_src
+** mcordell/one-on-one-workflow
+Complete workflow for one-on-one meetings. This function:
+1. Prompts for a person's name using =mcordell/one-on-one-list=
+2. Searches for an existing meeting scheduled for today with that person
+3. If found, focuses on that subtree
+4. If not found, invokes the org capture template for one-on-one with that person's name
+5. After the meeting is set up, creates a vertical split with the agenda/tag view using =mcordell/agenda-one-on-one-for-name= (no double prompting)
+
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/one-on-one-workflow ()
+  "Start a one-on-one workflow: select person, find or create meeting, show agenda."
+  (interactive)
+  (let* ((names (mapcar #'car mcordell/one-on-one-list))
+         (chosen-name (completing-read "1:1 with: " names nil t))
+         (today-date (format-time-string "%Y-%m-%d"))
+         (meeting-heading-pattern (format "^\\* %s 1-1 <%s" chosen-name today-date))
+         (org-files (directory-files-recursively mcordell/one-on-one-files-dir "\\.org\\'"))
+         (found-meeting nil))
+    
+    ;; Search for existing meeting today
+    (catch 'meeting-found
+      (dolist (file org-files)
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (goto-char (point-min))
+            (when (re-search-forward meeting-heading-pattern nil t)
+              (setq found-meeting (list file (point)))
+              (throw 'meeting-found t))))))
+    
+    (if found-meeting
+        ;; Found existing meeting - focus on it
+        (progn
+          (find-file (car found-meeting))
+          (goto-char (cadr found-meeting))
+          (org-show-subtree)
+          (message "Found existing meeting for %s today" chosen-name))
+      ;; No existing meeting - create new one directly
+      (progn
+        ;; Temporarily override the prompt function to use our chosen name
+        (cl-letf (((symbol-function 'mcordell/create-simple-one-on-one-heading-with-prompt)
+                   (lambda () (mcordell/create-simple-one-on-one-heading chosen-name))))
+          (org-capture nil "g"))
+        (message "Created new meeting for %s" chosen-name)))
+    
+    ;; After meeting is set up, create vertical split with agenda view
+    (split-window-right)
+    (other-window 1)
+    (mcordell/agenda-one-on-one-for-name chosen-name)))
+#+end_src
 * Config
 ** Vars
 *** mcordell/work-org-directory
@@ -191,15 +263,15 @@ Define a directory for work org files
 #+begin_src emacs-lisp :tangle config.el
 (defvar mcordell/one-on-one-list
   '(
-    ("Matt" . "Friday 11:30")
-    ("Chris" . "Tuesday 12:30")
     ("Andrew" . "Tuesday 13:00")
-    ("Teo" . "Tuesday 14:30")
-    ("Jamaal" . "Thursday 11:30")
     ("Brad" . "Wednesday 9:00")
+    ("Chris" . "Tuesday 12:30")
+    ("Jamaal" . "Thursday 11:30")
+    ("Mark" . "Wednesday 11:00")
+    ("Matt" . "Friday 11:30")
     ("Pierce" . "Wednesday 12:30")
     ("Preeti" . "Friday 12:00")
-    ("Mark" . "Wednesday 11:00")
+    ("Teo" . "Tuesday 14:30")
     ))
 #+end_src
 *** mcordell/one-on-one-files-dir
@@ -298,6 +370,13 @@ Org file where meeting headings are stored.
                                                   ("o" "One on One" entry
                                                    (file "~/org/qcentrix/big_board.org")
                                                    "%(mcordell/create-one-on-one-heading-with-prompt)
+%?"
+                                                   :empty-lines 1
+                                                   :unnarrowed t
+                                                   :jump-to-captured t
+                                                   )
+                                                  ("g" "simple o3" entry (file mcordell/work-meeting-file)
+                                                   "%(mcordell/create-simple-one-on-one-heading-with-prompt)
 %?"
                                                    :empty-lines 1
                                                    :unnarrowed t
