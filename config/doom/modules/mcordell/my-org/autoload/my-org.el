@@ -97,6 +97,40 @@
     (concat "* " name " 1-1 %^t"))
 
 ;;;###autoload
+(defun mcordell/round-time-up ()
+  "Round current time up to next 30-minute or hour boundary.
+Examples: 10:15 -> 10:30, 10:36 -> 11:00"
+  (let* ((now (decode-time))
+         (current-hour (nth 2 now))
+         (current-min (nth 1 now))
+         (target-hour current-hour)
+         (target-min 0))
+    (cond
+     ((= current-min 0) 
+      (setq target-min 30))
+     ((<= current-min 30) 
+      (setq target-min 30))
+     ((> current-min 30) 
+      (setq target-hour (1+ current-hour)
+            target-min 0)))
+    (format-time-string "%Y-%m-%d %a %H:%M" 
+                        (encode-time 0 target-min target-hour
+                                     (nth 3 now) (nth 4 now) (nth 5 now)))))
+
+;;;###autoload
+(defun mcordell/create-meeting-heading-directly (name)
+  "Create a meeting heading directly in work-meeting-file with rounded time."
+  (let* ((heading (format "* %s 1-1 <%s>" name (mcordell/round-time-up)))
+         (file-buffer (find-file-noselect mcordell/work-meeting-file)))
+    (with-current-buffer file-buffer
+      (goto-char (point-max))
+      (unless (bolp) (insert "\n"))
+      (insert heading "\n")
+      (save-buffer))
+    ;; Return the position for focusing
+    (list mcordell/work-meeting-file (with-current-buffer file-buffer (point)))))
+
+;;;###autoload
 (defun mcordell/read-time (prompt)
   "Read a time string like “09:00” (adds “:00” if only an hour is given)."
   (let* ((raw (read-string prompt nil nil
@@ -190,10 +224,10 @@ Entries are appended to `mcordell/work-meeting-file`."
           (message "Found existing meeting for %s today" chosen-name))
       ;; No existing meeting - create new one directly
       (progn
-        ;; Temporarily override the prompt function to use our chosen name
-        (cl-letf (((symbol-function 'mcordell/create-simple-one-on-one-heading-with-prompt)
-                   (lambda () (mcordell/create-simple-one-on-one-heading chosen-name))))
-          (org-capture nil "g"))
+        (let ((meeting-info (mcordell/create-meeting-heading-directly chosen-name)))
+          (find-file (car meeting-info))
+          (goto-char (cadr meeting-info))
+          (org-show-subtree))
         (message "Created new meeting for %s" chosen-name)))
     
     ;; After meeting is set up, create vertical split with agenda view
