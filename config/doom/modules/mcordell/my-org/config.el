@@ -6,6 +6,7 @@
     ("Brad" . "Wednesday 9:00")
     ("Chris" . "Tuesday 12:30")
     ("Jamaal" . "Thursday 11:30")
+    ("Jon" . "Friday 08:30")
     ("Mark" . "Wednesday 11:00")
     ("Matt" . "Friday 11:30")
     ("Pierce" . "Wednesday 12:30")
