@@ -1,0 +1,5 @@
+# vim: set ft=zsh:
+
+hoy() {
+  echo -n "$(date '+%Y-%m-%d')"
+}

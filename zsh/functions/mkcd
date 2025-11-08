@@ -1,0 +1,7 @@
+# vim: set ft=zsh:
+# Credit Evan Hahn: https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/zsh/.config/zsh/aliases.zsh#L38-L41
+
+mkcd () {
+  mkdir -p "$1"
+  cd "$1"
+}
