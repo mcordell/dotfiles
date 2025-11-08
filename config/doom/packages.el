@@ -7,6 +7,8 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! exec-path-from-shell)
+(package! chatgpt-shell)
+(package! auth-source-1password)
 ;; (package! some-package)
 
 ;; To install a package directly from a remote git repo, you must specify a

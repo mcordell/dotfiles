@@ -49,3 +49,17 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (load! "+bindings")
+
+(use-package! auth-source-1password
+  :after auth-source
+  :config
+  (auth-source-1password-enable))
+
+(use-package! chatgpt-shell
+  :after auth-source-1password
+  :init
+  (setq chatgpt-shell-anthropic-key
+        (lambda ()
+          (auth-source-pick-first-password :host "claude api key" :user "credential")))
+  )
+
