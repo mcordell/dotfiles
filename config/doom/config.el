@@ -63,3 +63,8 @@
           (auth-source-pick-first-password :host "claude api key" :user "credential")))
   )
 
+(use-package! obsidian
+  :custom
+  (obsidian-directory "/Users/michael/Documents/Obsidian Vault/")
+  (markdown-enable-wiki-links t)
+  )

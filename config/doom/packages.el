@@ -9,6 +9,7 @@
 (package! exec-path-from-shell)
 (package! chatgpt-shell)
 (package! auth-source-1password)
+(package! obsidian)
 ;; (package! some-package)
 
 ;; To install a package directly from a remote git repo, you must specify a
