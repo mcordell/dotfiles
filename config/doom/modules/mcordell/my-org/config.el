@@ -138,6 +138,7 @@
                                       ((agenda ""
                                                ((org-agenda-start-day "0d")
                                                 (org-agenda-span 1)
+                                                (org-deadline-warning-days 3)  ; Show deadlines only for the next 3 days
                                                 ;; Keep only TODO/QUEST items in the agenda block
                                                 (org-agenda-skip-function
                                                  (lambda ()
