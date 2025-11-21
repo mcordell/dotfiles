@@ -1,4 +1,0 @@
-% ssh
-
-# copy public key to remote host
-ssh-copy-id <remote-host>
