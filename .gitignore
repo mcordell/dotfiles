@@ -8,3 +8,4 @@ config/nvim/plugged/
 .spacemacs.d/.spacemacs.env
 zsh/pyenv_profile
 zsh/pyenv_zshrc
+config/navi/navi.log
