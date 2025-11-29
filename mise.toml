@@ -1,0 +1,8 @@
+[tasks.update_brewfile]
+description = "Update Brewfile from current Homebrew state"
+run = [
+  'rm Brewfile',
+  'brew bundle dump',
+  'git add -p Brewfile',
+  'git commit -m "brew: update brewfile"'
+]
