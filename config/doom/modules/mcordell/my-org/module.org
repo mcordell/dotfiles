@@ -305,11 +305,13 @@ Define a directory for work org files
 #+begin_src emacs-lisp :tangle config.el
 (defvar mcordell/one-on-one-list
   '(
-    ("Andrew" . "Tuesday 13:00")
-    ("Brad" . "Wednesday 9:00")
+    ("Andrew" . "Tuesday 12:00")
+    ("Brad" . "Wednesday 15:00")
     ("Chris" . "Tuesday 12:30")
+    ("David" . "Monday 13:00")
     ("Jamaal" . "Thursday 11:30")
     ("Jon" . "Friday 08:30")
+    ("Nitin" . "Tuesday 06:30")
     ("Mark" . "Wednesday 11:00")
     ("Matt" . "Friday 11:30")
     ("Pierce" . "Wednesday 12:30")
