@@ -1,11 +1,18 @@
-#! /usr/bin/env zsh
+#!/usr/bin/env zsh
+set -euo pipefail
 
-IFS=: read -A selected < <(
-  rg --color=always --line-number --no-heading --smart-case "${*:-}" |
-	fzf --ansi \
-		--color "hl:-1:underline,hl+:-1:underline:reverse" \
-		--delimiter : \
-		--preview 'bat --color=always {1} --highlight-line {2}' \
-		--preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
-)
-[ -n "${selected[1]}" ] && nvim "${selected[1]}" "+${selected[2]}"
+line="$(
+  rg --color=always \
+     --colors 'path:none' --colors 'line:none' --colors 'column:none' \
+     --line-number --no-heading --smart-case "${*:-}" |
+  fzf --ansi \
+    --delimiter : \
+    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+    --preview 'bat --color=always --highlight-line {2} -- {1}'
+)" || exit 0
+
+file="${line%%:*}"
+rest="${line#*:}"
+lnum="${rest%%:*}"
+
+nvim "+${lnum}" -- "$file"
