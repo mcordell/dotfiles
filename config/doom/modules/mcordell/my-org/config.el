@@ -221,4 +221,4 @@
             (message "No entry under cursor."))))))
 
   ;; Override RET key in calendar view
-  (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))
+ )
