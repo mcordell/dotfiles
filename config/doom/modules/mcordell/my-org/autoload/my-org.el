@@ -176,7 +176,7 @@ Entries are appended to `mcordell/work-meeting-file`."
                                  (string-match "\\.org$" (buffer-file-name x)))
                             (buffer-file-name x)))
                       (buffer-list)))
-    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    (directory-files-recursively "~/org/work/people/" "\\.org$" nil)
     ))
   )
 
@@ -190,7 +190,7 @@ Entries are appended to `mcordell/work-meeting-file`."
                                  (string-match "\\.org$" (buffer-file-name x)))
                             (buffer-file-name x)))
                       (buffer-list)))
-    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    (directory-files-recursively "~/org/work/people/" "\\.org$" nil)
     ))
   )
 

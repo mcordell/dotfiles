@@ -224,7 +224,7 @@ Entries are appended to `mcordell/work-meeting-file`."
                                  (string-match "\\.org$" (buffer-file-name x)))
                             (buffer-file-name x)))
                       (buffer-list)))
-    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    (directory-files-recursively "~/org/work/people/" "\\.org$" nil)
     ))
   )
 #+end_src
@@ -240,7 +240,7 @@ Entries are appended to `mcordell/work-meeting-file`."
                                  (string-match "\\.org$" (buffer-file-name x)))
                             (buffer-file-name x)))
                       (buffer-list)))
-    (directory-files-recursively "~/org/qcentrix/people/" "\\.org$" nil)
+    (directory-files-recursively "~/org/work/people/" "\\.org$" nil)
     ))
   )
 #+end_src
@@ -299,7 +299,7 @@ Complete workflow for one-on-one meetings. This function:
 *** mcordell/work-org-directory
 Define a directory for work org files
 #+begin_src emacs-lisp :tangle config.el
-(defvar mcordell/work-org-directory "~/org/qcentrix")
+(defvar mcordell/work-org-directory "~/org/work")
 #+end_src
 *** mcordell/one-on-one-list
 #+begin_src emacs-lisp :tangle config.el
@@ -321,12 +321,12 @@ Define a directory for work org files
 #+end_src
 *** mcordell/one-on-one-files-dir
 #+begin_src emacs-lisp :tangle config.el
-(defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
+(defvar mcordell/one-on-one-files-dir "~/org/work/" "Directory whose .org files are searched for 1:1 items.")
 #+end_src
 *** mcordell/work-meeting-file
 Org file where meeting headings are stored.
 #+begin_src emacs-lisp :tangle config.el
-(defvar mcordell/work-meeting-file "~/org/qcentrix/meetings.org" "Org file where meeting headings are stored.")
+(defvar mcordell/work-meeting-file "~/org/work/meetings.org" "Org file where meeting headings are stored.")
 #+end_src
 
 ** Main Config
@@ -408,12 +408,12 @@ Org file where meeting headings are stored.
 %a
 ")
                                                   ("r" "review" entry (file+headline
-                                                                       "~/org/qcentrix/qcentrix.org"
+                                                                       "~/org/work/qcentrix.org"
                                                                        "Reviews")
                                                    "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
 
                                                   ("o" "One on One" entry
-                                                   (file "~/org/qcentrix/big_board.org")
+                                                   (file "~/org/work/big_board.org")
                                                    "%(mcordell/create-one-on-one-heading-with-prompt)
 %?"
                                                    :empty-lines 1
@@ -427,16 +427,16 @@ Org file where meeting headings are stored.
                                                    :unnarrowed t
                                                    :jump-to-captured t
                                                    )
-                                                  ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
+                                                  ("m" "Meeting" entry (file "~/org/work/qcentrix.org")
                                                    "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
 %?
 ")
-                                                  ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
+                                                  ("a" "q-centrix task" entry (file+headline "~/org/work/big_board.org" "Tasks")
                                                    "* TODO %^{Subject}
 %?
 ")
                                                   ("x" "Q-Centrix Note" entry (file
-                                                                               "~/org/qcentrix/qcentrix.org")
+                                                                               "~/org/work/qcentrix.org")
                                                    "* %? %t
 "))
 
@@ -454,7 +454,7 @@ Org file where meeting headings are stored.
                                                   ((org-agenda-overriding-header "Work tasks")))
                                        )
                                       ((org-agenda-files
-                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'")))
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'")))
                                       )
                                      ("w" "multiple"
                                       ((agenda ""
@@ -545,5 +545,4 @@ Org file where meeting headings are stored.
             (message "No entry under cursor."))))))
 
   ;; Override RET key in calendar view
-  (define-key cfw:calendar-mode-map (kbd "RET") #'my/cfw-open-entry-at-point))
 #+end_src

@@ -1,4 +1,4 @@
-(defvar mcordell/work-org-directory "~/org/qcentrix")
+(defvar mcordell/work-org-directory "~/org/work")
 
 (defvar mcordell/one-on-one-list
   '(
@@ -16,9 +16,9 @@
     ("Teo" . "Tuesday 14:30")
     ))
 
-(defvar mcordell/one-on-one-files-dir "~/org/qcentrix/" "Directory whose .org files are searched for 1:1 items.")
+(defvar mcordell/one-on-one-files-dir "~/org/work/" "Directory whose .org files are searched for 1:1 items.")
 
-(defvar mcordell/work-meeting-file "~/org/qcentrix/meetings.org" "Org file where meeting headings are stored.")
+(defvar mcordell/work-meeting-file "~/org/work/meetings.org" "Org file where meeting headings are stored.")
 
 (after! org
   (setq org-todo-keywords
@@ -91,12 +91,12 @@
 %a
 ")
                                                   ("r" "review" entry (file+headline
-                                                                       "~/org/qcentrix/qcentrix.org"
+                                                                       "~/org/work/qcentrix.org"
                                                                        "Reviews")
                                                    "** TODO [[%c][%^{description}]] :%^{repo|reg-api|reg-imp|reg-web}:")
 
                                                   ("o" "One on One" entry
-                                                   (file "~/org/qcentrix/big_board.org")
+                                                   (file "~/org/work/big_board.org")
                                                    "%(mcordell/create-one-on-one-heading-with-prompt)
 %?"
                                                    :empty-lines 1
@@ -110,16 +110,16 @@
                                                    :unnarrowed t
                                                    :jump-to-captured t
                                                    )
-                                                  ("m" "Meeting" entry (file "~/org/qcentrix/qcentrix.org")
+                                                  ("m" "Meeting" entry (file "~/org/work/qcentrix.org")
                                                    "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
 %?
 ")
-                                                  ("a" "q-centrix task" entry (file+headline "~/org/qcentrix/big_board.org" "Tasks")
+                                                  ("a" "q-centrix task" entry (file+headline "~/org/work/big_board.org" "Tasks")
                                                    "* TODO %^{Subject}
 %?
 ")
                                                   ("x" "Q-Centrix Note" entry (file
-                                                                               "~/org/qcentrix/qcentrix.org")
+                                                                               "~/org/work/qcentrix.org")
                                                    "* %? %t
 "))
 
@@ -134,7 +134,7 @@
                                                   ((org-agenda-overriding-header "Work tasks")))
                                        )
                                       ((org-agenda-files
-                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'")))
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'")))
                                       )
                                      ("w" "multiple"
                                       ((agenda ""
