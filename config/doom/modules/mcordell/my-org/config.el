@@ -110,7 +110,7 @@
                                                    :unnarrowed t
                                                    :jump-to-captured t
                                                    )
-                                                  ("m" "Meeting" entry (file "~/org/work/qcentrix.org")
+                                                  ("m" "Meeting" entry (file "~/org/work/meetings.org")
                                                    "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
 %?
 ")
@@ -155,7 +155,7 @@
                                                    (org-agenda-sorting-strategy '(priority-down)))))
                                       ;; Settings applied to all blocks in this command
                                       ((org-agenda-files
-                                        (directory-files-recursively "~/org/qcentrix/" "\\.org\\'"))))                                       )
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'"))))                                       )
         )
   )
 

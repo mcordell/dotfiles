@@ -13,7 +13,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/"
-      org-agenda-files '("~/org/" "~/org/qcentrix/" "~/org/qcentrix/people/" "~/org/qcentrix/mro/" "~/org/qcentrix/mro/products/")
+      org-agenda-files '("~/org/" "~/org/work/" "~/org/work/people/" "~/org/work/mro/" "~/org/work/mro/products/")
       zot_bib "~/org/mylibrary/mylibrary.bib" 
       )
 
