@@ -19,9 +19,9 @@
       (:prefix "o"
                ("g" #'mcordell/one-on-one-workflow)
                ("c" #'cfw:open-org-calendar)
-               ("w" (lambda ()
-                      (interactive)
-                      (org-agenda nil "o")))
+               (:desc "All work tasks" "w" (lambda ()
+                                             (interactive)
+                                             (org-agenda nil "o")))
                )
       )
 

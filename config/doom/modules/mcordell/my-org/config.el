@@ -136,7 +136,7 @@
                                       ((org-agenda-files
                                         (directory-files-recursively "~/org/work/" "\\.org\\'")))
                                       )
-                                     ("w" "multiple"
+                                     ("w" "Work day and hi priority stuff"
                                       ((agenda ""
                                                ((org-agenda-start-day "0d")
                                                 (org-agenda-span 1)
@@ -221,4 +221,4 @@
             (message "No entry under cursor."))))))
 
   ;; Override RET key in calendar view
- )
+)
