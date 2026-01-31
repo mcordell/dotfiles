@@ -67,6 +67,8 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user} = {
+            home.username = user;
+            home.homeDirectory = lib.mkForce (getHomeDirectory system user);
             imports = hmModulesFor { inherit system hostname; };
           };
         };
@@ -96,8 +98,8 @@
 
 
             # Home Manager integrated into nix-darwin
-            # home-manager.darwinModules.home-manager
-            # (mkHomeManagerConfig { system = validated.system; user = validated.user; inherit hostname; })
+            home-manager.darwinModules.home-manager
+            (mkHomeManagerConfig { system = validated.system; user = validated.user; inherit hostname; })
           ];
         };
 
