@@ -57,12 +57,6 @@ fi
 # Use ripgrep to find files for fzf (respects gitignore)
 export FZF_DEFAULT_COMMAND='rg --files'
 
-if which "asdf" &> /dev/null; then
-	export DIRENV_LOG_FORMAT=''
-	eval "$(asdf exec direnv hook zsh)"
-	direnv() { asdf exec direnv "$@"; }
-fi
-
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
