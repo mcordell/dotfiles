@@ -87,7 +87,6 @@ args git branch -D";
       DIRENV_LOG_FORMAT = "";
     };
 
-
     envExtra = ''
       if type brew &>/dev/null; then
         FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -120,6 +119,54 @@ args git branch -D";
       # pyenv profile
       [[ -f "$HOME/.zsh/pyenv_profile" ]] && source "$HOME/.zsh/pyenv_profile"
     '';
+
+    initContent = ''
+      # Powerlevel10k instant prompt (must stay near top of .zshrc)
+      setopt EXTENDED_GLOB
+      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+      fi
+
+      # PATH must run before instant prompt so brew/commands are available at first prompt
+      source ~/.zsh/zsh_path.zsh
+
+
+      files=(
+        "''${HOME}/.zsh/zprezto_init"
+        "''${HOME}/.zsh/zsh_aliases"
+        "''${HOME}/.zsh_this_computer"
+        "''${HOME}/.zsh/gnupg.zsh"
+        "''${HOME}/.zsh/git_keys"
+        "''${HOME}/.zsh/zsh_keybindings"
+      )
+      for f ($^files(.N)) source $f
+      unset files
+
+      source ~/.zsh/plugins/forgit/forgit.plugin.zsh
+
+      fpath=($HOME/.zsh/dot $fpath)
+      source $HOME/.zsh/dot/dot.sh
+
+      fpath=( "$HOME/.zsh/functions" "''${fpath[@]}" )
+      autoload -U $fpath[1]/*(.:t)
+
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      [[ ! -f ~/.oai ]] || source ~/.oai
+    '';
+  };
+
+  # HM-managed integrations (init added to .zshrc automatically)
+  programs.zoxide.enable = true;
+  programs.fzf.enable = true;
+
+  programs.navi = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.mise = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   # Configure programs

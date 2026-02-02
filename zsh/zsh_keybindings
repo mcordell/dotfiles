@@ -1,3 +1,5 @@
+# Restore Ctrl+R for reverse history search (vi key-bindings in Prezto don't set this)
+bindkey '^R' history-incremental-search-backward
 bindkey '^f' fzf-gf-widget
 bindkey -s '^s' "rgs\n"
 bindkey -s '^k' "com\n"

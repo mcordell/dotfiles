@@ -14,6 +14,15 @@
     BROWSER = "open";
   };
 
+  # iTerm2 shell integration (Darwin only; appended to .zshrc)
+  programs.zsh.initExtra = ''
+    if [ "$TERM" != "dumb" ]; then
+      export ITERM2_SQUELCH_MARK=1
+      f="''${HOME}/.iterm2_shell_integration.zsh"
+      [ -f $f ] && source $f
+    fi
+  '';
+
   # Configure macOS-specific programs
   # programs.brew.enable = true;
 }

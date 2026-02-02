@@ -9,3 +9,4 @@ config/nvim/plugged/
 zsh/pyenv_profile
 zsh/pyenv_zshrc
 config/navi/navi.log
+result
