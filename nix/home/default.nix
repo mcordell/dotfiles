@@ -133,7 +133,6 @@ args git branch -D";
 
       files=(
         "''${HOME}/.zsh/zprezto_init"
-        "''${HOME}/.zsh/zsh_aliases"
         "''${HOME}/.zsh_this_computer"
         "''${HOME}/.zsh/gnupg.zsh"
         "''${HOME}/.zsh/git_keys"
@@ -167,6 +166,19 @@ args git branch -D";
   programs.mise = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    defaultCacheTtl = 60;
+    maxCacheTtl = 120;
+    extraConfig = ''
+      pinentry-program /opt/homebrew/bin/pinentry-mac
+      ttyname $GPG_TTY
+    '';
+ 
+
   };
 
   # Configure programs
