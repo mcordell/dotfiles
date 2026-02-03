@@ -14,9 +14,6 @@
   home.packages = with pkgs; [
     git
     neovim
-    fzf
-    navi
-    ripgrep
     less
   ];
 
@@ -156,11 +153,18 @@ args git branch -D";
 
   # HM-managed integrations (init added to .zshrc automatically)
   programs.zoxide.enable = true;
-  programs.fzf.enable = true;
 
   programs.navi = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      cheats = {
+        paths = [
+          "/Users/michael/code/cheatsheets/navi-cheats"
+          "/Users/michael/.dotfiles/navi/cheats"
+        ];
+      };
+    };
   };
 
   programs.mise = {
@@ -191,7 +195,17 @@ args git branch -D";
     };
   };
 
-  # Configure programs
-  # programs.git.enable = true;
-  # programs.neovim.enable = true;
+  programs.pay-respects = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.ripgrep.enable = true;
+  programs.fd.enable = true;
+  programs.pandoc.enable = true;
 }
