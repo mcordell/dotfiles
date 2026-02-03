@@ -181,6 +181,16 @@ args git branch -D";
 
   };
 
+  programs.bat = {
+    enable = true;
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+    ];
+    config = {
+      theme = "Nord";
+    };
+  };
+
   # Configure programs
   # programs.git.enable = true;
   # programs.neovim.enable = true;
