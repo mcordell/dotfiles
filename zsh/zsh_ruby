@@ -1,8 +1,0 @@
-if [ -d "$HOME/.rbenv/versions" ]; then
-	RUBIES+=(~/.rbenv/versions/*)
-fi
-
-if [ -d "$HOME/.rubies" ]; then
-	RUBIES+=(~/.rubies/*)
-fi
-

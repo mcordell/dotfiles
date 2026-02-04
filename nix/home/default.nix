@@ -100,9 +100,6 @@ args git branch -D";
       
       TMPPREFIX="''${TMPDIR%/}/zsh"
 
-      # Dotfiles zsh_ruby
-      [[ -f "$HOME/.zsh/zsh_ruby" ]] && source "$HOME/.zsh/zsh_ruby"
-
       # Less input preprocessor (lesspipe)
       if (( $#commands[(i)lesspipe(|.sh)] )); then
         export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
