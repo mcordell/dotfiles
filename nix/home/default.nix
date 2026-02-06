@@ -154,29 +154,6 @@ in
       fpath=( "$HOME/.zsh/functions" "''${fpath[@]}" )
       autoload -U $fpath[1]/*(.:t)
 
-      # zsh-histdb configuration (from https://github.com/larkery/zsh-histdb)
-      # Required on macOS - must be set before sourcing
-      HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
-
-      # Source zsh-histdb from nix-managed location
-      source ~/.zsh/plugins/zsh-histdb/sqlite-history.zsh
-      autoload -Uz add-zsh-hook
-
-      # Custom autosuggest strategy using histdb
-      _zsh_autosuggest_strategy_histdb_top() {
-          local query="
-              select commands.argv from history
-              left join commands on history.command_id = commands.rowid
-              left join places on history.place_id = places.rowid
-              where commands.argv LIKE '$(sql_escape $1)%'
-              group by commands.argv, places.dir
-              order by places.dir != '$(sql_escape $PWD)', count(*) desc
-              limit 1
-          "
-          suggestion=$(_histdb_query "$query")
-      }
-      ZSH_AUTOSUGGEST_STRATEGY=histdb_top
-
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       [[ ! -f ~/.oai ]] || source ~/.oai
     '';
