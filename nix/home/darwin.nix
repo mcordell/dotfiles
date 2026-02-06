@@ -7,6 +7,11 @@
     # Add macOS-specific packages here
   ];
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+
   # macOS-only zsh config (merged with default.nix)
   programs.zsh = {
     shellAliases = {

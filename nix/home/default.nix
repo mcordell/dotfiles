@@ -250,6 +250,166 @@ in
     };
   };
 
+  programs.git = {
+    enable = true;
+
+    # Global gitignore patterns
+    ignores = [
+      "rails_best_practices_output.html"
+      ".rubocop.yml"
+      ".DS_Store"
+      "dump.rdb"
+      "*.sublime-workspace"
+      "*.sublime-project"
+      "*.swp"
+      ".#*"
+      "codeception.yml"
+      ".projections.json"
+      ".dir-locals.el"
+      ".registries.yml"
+      ".licenses/"
+      "zeus.json"
+      "custom_plan.rb"
+      ".gemrelease"
+      ".rubocop-*"
+      ".stfolder"
+      ".tool-versions"
+      ".envrc"
+      ".stignore"
+    ];
+
+    # # Include computer-specific config
+    # includes = [
+    #   { path = "~/.computer_gitconfig"; }
+    # ];
+
+    # Enable Git LFS
+    lfs.enable = true;
+
+    settings = {
+      # User configuration
+      user = {
+        name = "Michael Cordell";
+        email = "mike@mikecordell.com";
+      };
+
+      # Core settings
+      core = {
+        editor = "nvim";
+        autocrlf = "input";
+      };
+
+      # Branch, tag, and init
+      init.defaultBranch = "master";
+      branch.sort = "committerdate";
+      tag.sort = "version:refname";
+
+      # Pull, push, and fetch
+      pull.rebase = true;
+      push = {
+        default = "current";
+        autoSetupRemote = true;
+        followTags = true;
+      };
+      fetch = {
+        prune = true;
+        pruneTags = true;
+        all = true;
+      };
+
+      # Rebase settings
+      rebase = {
+        autosquash = true;
+        autostash = true;
+        updateRefs = true;
+      };
+
+      # Rerere (reuse recorded resolution)
+      rerere = {
+        enabled = true;
+        autoupdate = true;
+      };
+
+      # UI settings
+      color.ui = true;
+      column.ui = "auto";
+
+      # Diff settings
+      diff = {
+        colorMoved = "zebra";
+        algorithm = "histogram";
+        mnemoicPrefix = true;
+        renames = true;
+      };
+
+      # Merge settings
+      merge = {
+        tool = "fugitive";
+        conflictstyle = "zdiff3";
+      };
+      mergetool.fugitive.cmd = "nvim -f --cmd \"let g:fugitivediff=1\" -c \"Gvdiffsplit!\" \"$MERGED\"";
+
+      # Third party integrations
+      github.user = "mcordell";
+      hub.protocol = "ssh";
+
+      # Aliases
+      alias = {
+        lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+        ir = "rebase -i --autosquash @{u}";
+        a = "add";
+        c = "commit";
+        s = "status --short";
+        please = "push --force-with-lease";
+        cam = "commit --amend --no-edit";
+        rh = "reset HEAD";
+        cob = "checkout -b";
+        co = "checkout";
+        staged = "diff --cached";
+        rc = "rebase --continue";
+        dtc = "diff --name-only HEAD HEAD~1";
+        df = "diff --name-only";
+        compare = "log --left-right --graph --cherry-pick --oneline --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --no-merges";
+        g = "grep --break --heading --line-number";
+        uncommit = "reset --soft HEAD~1";
+        ctags = "!.git/hooks/ctags";
+        soft = "reset --soft HEAD~1";
+        hard = "reset --hard";
+        cleanup = "clean -f **/*orig";
+        branchr = "branch --sort=committerdate";
+        basebranch = "!gh pr view --json baseRefName -q .baseRefName";
+        files = "!git diff --name-only $(git merge-base HEAD \"$MERGE_BASE\")";
+        stat = "!git diff --stat $(git merge-base HEAD \"$MERGE_BASE\")";
+        review = "!nvim -p $(git files) +\"tabdo Gdiff $MERGE_BASE\" +\"let g:gitgutter_diff_base = '$MERGE_BASE'\"";
+        recentb = "!zsh_function_wrapper recent_branches";
+      };
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+
+    options = {
+      features = "decorations side-by-side";
+      dark = true;
+      navigate = true;
+      side-by-side = true;
+      decorations = {
+        commit-decoration-style = "blue ol";
+        commit-style = "raw";
+        file-style = "omit";
+        hunk-header-decoration-style = "blue box";
+        hunk-header-file-style = "red";
+        hunk-header-line-number-style = "#067a00";
+        hunk-header-style = "file line-number syntax";
+      };
+      interactive = {
+        keep-plus-minus-markers = false;
+      };
+    };
+  };
+
   # HM-managed integrations (init added to .zshrc automatically)
   programs.zoxide.enable = true;
 
