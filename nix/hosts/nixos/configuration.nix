@@ -66,6 +66,7 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxenC8C00c4bZnFe0HUqBCRwQSOMnSwtYkTjiaDdbrc5StkI/lPtmqvN2TFfh0eTP1xdwNUnf6f4AjooGVUZQ7VErt3k/mkOyLJPJnlBAyf+bA146oLuyIfxmbeOU95+wrSPxM/ujqSjtnWBhClOjnEtK8xUTXJHILCioPvjx3Vc9FkqRC2MEDLsilaKQgZgKf0mGhDVRCzr6vMHFTrrwl60Qh2a6PllIczvNZtsKMce9HxYK0TDiaYwFGcjS136kRpRk2qg1JkOcMUKXRBapVKtp01KRMat2NvbuzRX/j+0Lp8I2016quzRIMIzYfS0ILJSOsKIZp//aEdx42BinSETekKj1MmLNx6YUcAMEVO2r1NITEc17n/ARxp34A4z618tqo/UtayPsmROcUdyMJTOp+XTd6spL4kx/T6ez5Pf2xQX3v2OqhGwlWg1kp86MwTK8J+M6VLHPjWjlaZLuV5Fs7wQxPU0ZmvIY1KG1HY9G5aHv1izRSt72fIYFr4FU= michael@Michaels-MacBook-Air.local"
     ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
@@ -78,6 +79,8 @@
     fzf
     navi
   ];
+
+  programs.zsh.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -30,7 +30,6 @@ in
   # Add packages that should be installed to the user environment.
   home.packages = with pkgs; [
     git
-    neovim
     less
     sqlite  # Required for zsh-histdb
   ];
