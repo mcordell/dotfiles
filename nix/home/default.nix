@@ -2,14 +2,6 @@
 { config, pkgs, ... }:
 
 let
-  # Fetch zsh-histdb plugin
-  zsh-histdb = pkgs.fetchFromGitHub {
-    owner = "larkery";
-    repo = "zsh-histdb";
-    rev = "90a6c104d0fcc0410d665e148fa7da28c49684eb";
-    sha256 = "sha256-vtG1poaRVbfb/wKPChk1WpPgDq+7udLqLfYfLqap4Vg=";
-  };
-
   # Fetch forgit - interactive git commands with fzf
   forgit = pkgs.fetchFromGitHub {
     owner = "wfxr";
@@ -36,11 +28,9 @@ in
 
   # Place zsh plugins in .zsh/plugins directory
   # Sourced directly in initContent since nix-managed prezto runs from nix store
-  home.file.".zsh/plugins/zsh-histdb".source = zsh-histdb;
   home.file.".zsh/plugins/forgit".source = forgit;
 
   # Powerlevel10k configuration
-  home.file.".p10k.zsh".source = ./../../zsh/.p10k.zsh;
   home.file.".zsh/functions".source = ./../../zsh/functions;
   home.file.".zsh/zsh_path.zsh".source = ./../../zsh/zsh_path.zsh;
 
@@ -190,64 +180,6 @@ in
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       [[ ! -f ~/.oai ]] || source ~/.oai
     '';
-
-    # Prezto configuration - replaces .zpreztorc
-    prezto = {
-      enable = true;
-      
-      # Color output (auto set to 'no' on dumb terminals)
-      color = true;
-
-      # Prezto modules to load (order matters)
-      pmodules = [
-        "environment"
-        "terminal"
-        "editor"
-        "history"
-        "directory"
-        "spectrum"
-        "utility"
-        "completion"
-        "git"
-        "homebrew"
-        "history-substring-search"
-        "autosuggestions"
-        "osx"
-        "rsync"
-        "prompt"
-      ];
-
-      # Editor module configuration
-      editor = {
-        keymap = "vi";
-        promptContext = true;
-      };
-
-      # Git module configuration
-      git = {
-        submoduleIgnore = "all";
-      };
-
-      # Prompt module configuration
-      prompt = {
-        theme = "powerlevel10k";
-      };
-
-      # SSH module configuration
-      ssh = {
-        identities = [ "id_rsa" "id_rsa2" "id_github" ];
-      };
-
-      # Additional zstyle configurations not covered by home-manager options
-      extraConfig = ''
-        # Autosuggestions color configuration
-        zstyle ':prezto:module:autosuggestions' color 'yes'
-        zstyle ':prezto:module:autosuggestions:color' found 'fg=10'
-
-        # OS X module - Dash.app man pages keyword
-        zstyle ':prezto:module:osx:man' dash-keyword 'manpages'
-      '';
-    };
   };
 
   programs.git = {
