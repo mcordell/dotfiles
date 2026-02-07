@@ -11,8 +11,8 @@
 
 {
   imports = (
-    lib.optionals (builtins.pathExists ./hardware-configuration.nix) [
-      ./hardware-configuration.nix
+    lib.optionals (builtins.pathExists /etc/nixos/hardware-configuration.nix) [
+      /etc/nixos/hardware-configuration.nix
     ]
   );
 
