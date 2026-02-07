@@ -22,6 +22,14 @@
       icloud = "cd \"$ICLOUD_DIR\"";
       showhidden = "defaults write com.apple.finder AppleShowAllFiles YES";
     };
+    envExtra = ''
+      if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+        FPATH=$(brew --prefix)/share/zsh/functions:$FPATH
+        autoload -Uz compinit
+        compinit
+      fi
+    '';
     initContent = ''
       if [ "$TERM" != "dumb" ]; then
         export ITERM2_SQUELCH_MARK=1

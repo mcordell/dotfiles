@@ -1,11 +1,26 @@
 # Linux-specific Home Manager configuration
 { config, pkgs, ... }:
 
+let
+  powerlevel = pkgs.fetchFromGitHub {
+    owner = "romkatv";
+    repo = "powerlevel10k";
+    rev = "8ed1f58e082e1cce85e1d69235d1a906cf3c643e";
+    sha256 = "sha256-xiUNt2zomP3TNiCW/PZn6rS/3pv+uW17YjkzEPc227I=";
+  };
+in
 {
   # Add Linux-specific packages
   home.packages = with pkgs; [
     # Add Linux-specific packages here
   ];
+  home.file.".zsh/plugins/powerlevel10k".source = powerlevel;
+
+  programs.zsh = {
+  initContent = ''
+      source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
+  '';
+  };
 
   # Configure Linux-specific programs
   # programs.firefox.enable = true;

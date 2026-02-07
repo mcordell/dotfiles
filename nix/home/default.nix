@@ -1,5 +1,5 @@
 # Common Home Manager configuration shared across all systems
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   # Fetch forgit - interactive git commands with fzf
@@ -24,10 +24,10 @@ in
     git
     less
     sqlite  # Required for zsh-histdb
+    eza
   ];
 
   # Place zsh plugins in .zsh/plugins directory
-  # Sourced directly in initContent since nix-managed prezto runs from nix store
   home.file.".zsh/plugins/forgit".source = forgit;
 
   # Powerlevel10k configuration
@@ -96,14 +96,21 @@ in
       FZF_DEFAULT_COMMAND = "rg --files";
       DIRENV_LOG_FORMAT = "";
     };
+    completionInit = ''
+autoload -Uz compinit
+: ''${XDG_CACHE_HOME:=$HOME/.cache}
+mkdir -p "$XDG_CACHE_HOME/zsh"
+
+# Stable, host+version-specific dump; adjust to taste
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
+	
+local dump="$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
+if [[ -f "$dump" && (! -f "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+  zcompile -R -- "$dump" 2>/dev/null
+fi
+	  '';
 
     envExtra = ''
-      if type brew &>/dev/null; then
-        FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-        FPATH=$(brew --prefix)/share/zsh/functions:$FPATH
-        autoload -Uz compinit
-        compinit
-      fi
 
       # TMPDIR / TMPPREFIX (from .zshenv)
       if [[ -z "$TMPDIR" ]]; then
@@ -112,6 +119,49 @@ in
       fi
       
       TMPPREFIX="''${TMPDIR%/}/zsh"
+
+    '';
+
+    # Use mkOrder to control ordering: lower numbers appear first in .zshrc
+    # Default is 1000, mkBefore is 500, mkAfter is 1500
+    initContent = lib.mkMerge [
+      # Priority 100: Powerlevel10k instant prompt (must be at very top of .zshrc)
+      (lib.mkOrder 505 ''
+        # Powerlevel10k instant prompt (must stay near top of .zshrc)
+        setopt EXTENDED_GLOB
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
+
+        # PATH must run before instant prompt so brew/commands are available at first prompt
+        source ~/.zsh/zsh_path.zsh
+
+        # Forgit - interactive git commands with fzf (https://github.com/wfxr/forgit)
+        # Add completions to fpath before sourcing (for git forgit tab completion)
+        fpath=(~/.zsh/plugins/forgit/completions $fpath)
+        source ~/.zsh/plugins/forgit/forgit.plugin.zsh
+
+        fpath=( "$HOME/.zsh/functions" "''${fpath[@]}" )
+        autoload -U $fpath[1]/*(.:t)
+      '')
+
+      # Priority 1000 (default): Regular shell configuration
+      (lib.mkOrder 1000 ''
+        files=(
+          "''${HOME}/.zsh_this_computer"
+          "''${HOME}/.zsh/gnupg.zsh"
+          "''${HOME}/.zsh/git_keys"
+          "''${HOME}/.zsh/zsh_keybindings"
+        )
+        for f ($^files(.N)) source $f
+        unset files
+
+      '')
+
+      # Priority 1500: Final configuration (after everything else)
+      (lib.mkOrder 1500 ''
+        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+        [[ ! -f ~/.oai ]] || source ~/.oai
 
       # Less input preprocessor (lesspipe)
       if (( $#commands[(i)lesspipe(|.sh)] )); then
@@ -125,38 +175,8 @@ in
 
       # pyenv profile
       [[ -f "$HOME/.zsh/pyenv_profile" ]] && source "$HOME/.zsh/pyenv_profile"
-    '';
-
-    initContent = ''
-      # Powerlevel10k instant prompt (must stay near top of .zshrc)
-      setopt EXTENDED_GLOB
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-
-      # PATH must run before instant prompt so brew/commands are available at first prompt
-      source ~/.zsh/zsh_path.zsh
-
-      files=(
-        "''${HOME}/.zsh_this_computer"
-        "''${HOME}/.zsh/gnupg.zsh"
-        "''${HOME}/.zsh/git_keys"
-        "''${HOME}/.zsh/zsh_keybindings"
-      )
-      for f ($^files(.N)) source $f
-      unset files
-
-      # Forgit - interactive git commands with fzf (https://github.com/wfxr/forgit)
-      # Add completions to fpath before sourcing (for git forgit tab completion)
-      fpath=(~/.zsh/plugins/forgit/completions $fpath)
-      source ~/.zsh/plugins/forgit/forgit.plugin.zsh
-
-      fpath=( "$HOME/.zsh/functions" "''${fpath[@]}" )
-      autoload -U $fpath[1]/*(.:t)
-
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-      [[ ! -f ~/.oai ]] || source ~/.oai
-    '';
+      '')
+    ];
   };
 
   programs.git = {
@@ -349,8 +369,6 @@ in
       pinentry-program /opt/homebrew/bin/pinentry-mac
       ttyname $GPG_TTY
     '';
- 
-
   };
 
   programs.bat = {
