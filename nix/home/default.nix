@@ -1,12 +1,17 @@
 # Common Home Manager configuration shared across all systems
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   # Fetch forgit - interactive git commands with fzf
   forgit = pkgs.fetchFromGitHub {
     owner = "wfxr";
     repo = "forgit";
-    rev = "53da496336305b8896e9cc2c8c5fbb016f31847c";  # v24.12.0
+    rev = "53da496336305b8896e9cc2c8c5fbb016f31847c"; # v24.12.0
     sha256 = "sha256-ERVSEmFfjkcmNML8SVjDnvZYxARaukiie2/lnKHJy58=";
   };
 in
@@ -23,7 +28,7 @@ in
   home.packages = with pkgs; [
     git
     less
-    sqlite  # Required for zsh-histdb
+    sqlite # Required for zsh-histdb
     eza
   ];
 
@@ -97,18 +102,18 @@ in
       DIRENV_LOG_FORMAT = "";
     };
     completionInit = ''
-autoload -Uz compinit
-: ''${XDG_CACHE_HOME:=$HOME/.cache}
-mkdir -p "$XDG_CACHE_HOME/zsh"
+      autoload -Uz compinit
+      : ''${XDG_CACHE_HOME:=$HOME/.cache}
+      mkdir -p "$XDG_CACHE_HOME/zsh"
 
-# Stable, host+version-specific dump; adjust to taste
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
-	
-local dump="$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
-if [[ -f "$dump" && (! -f "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
-  zcompile -R -- "$dump" 2>/dev/null
-fi
-	  '';
+      # Stable, host+version-specific dump; adjust to taste
+      compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
+      	
+      local dump="$XDG_CACHE_HOME/zsh/zcompdump-''${HOST}-''${ZSH_VERSION}"
+      if [[ -f "$dump" && (! -f "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+        zcompile -R -- "$dump" 2>/dev/null
+      fi
+      	  '';
 
     envExtra = ''
 
@@ -117,7 +122,7 @@ fi
         export TMPDIR="/tmp/$LOGNAME"
         mkdir -p -m 700 "$TMPDIR"
       fi
-      
+
       TMPPREFIX="''${TMPDIR%/}/zsh"
 
     '';
@@ -160,21 +165,21 @@ fi
 
       # Priority 1500: Final configuration (after everything else)
       (lib.mkOrder 1500 ''
-        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-        [[ ! -f ~/.oai ]] || source ~/.oai
+          [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+          [[ ! -f ~/.oai ]] || source ~/.oai
 
-      # Less input preprocessor (lesspipe)
-      if (( $#commands[(i)lesspipe(|.sh)] )); then
-        export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
-      fi
+        # Less input preprocessor (lesspipe)
+        if (( $#commands[(i)lesspipe(|.sh)] )); then
+          export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+        fi
 
-      # Python virtualenv
-      if [[ -n $VIRTUAL_ENV && -e "''${VIRTUAL_ENV}/bin/activate" ]]; then
-        source "''${VIRTUAL_ENV}/bin/activate"
-      fi
+        # Python virtualenv
+        if [[ -n $VIRTUAL_ENV && -e "''${VIRTUAL_ENV}/bin/activate" ]]; then
+          source "''${VIRTUAL_ENV}/bin/activate"
+        fi
 
-      # pyenv profile
-      [[ -f "$HOME/.zsh/pyenv_profile" ]] && source "$HOME/.zsh/pyenv_profile"
+        # pyenv profile
+        [[ -f "$HOME/.zsh/pyenv_profile" ]] && source "$HOME/.zsh/pyenv_profile"
       '')
     ];
   };
@@ -360,17 +365,6 @@ fi
     enableZshIntegration = true;
   };
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    defaultCacheTtl = 60;
-    maxCacheTtl = 120;
-    extraConfig = ''
-      pinentry-program /opt/homebrew/bin/pinentry-mac
-      ttyname $GPG_TTY
-    '';
-  };
-
   programs.bat = {
     enable = true;
     extraPackages = with pkgs.bat-extras; [
@@ -393,5 +387,4 @@ fi
 
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
-  programs.pandoc.enable = true;
 }

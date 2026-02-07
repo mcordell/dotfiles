@@ -17,9 +17,9 @@ in
   home.file.".zsh/plugins/powerlevel10k".source = powerlevel;
 
   programs.zsh = {
-  initContent = ''
+    initContent = ''
       source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
-  '';
+    '';
   };
 
   # Configure Linux-specific programs

@@ -48,7 +48,7 @@ in
     # Prezto configuration - replaces .zpreztorc
     prezto = {
       enable = true;
-      
+
       # Color output (auto set to 'no' on dumb terminals)
       color = true;
 
@@ -89,7 +89,11 @@ in
 
       # SSH module configuration
       ssh = {
-        identities = [ "id_rsa" "id_rsa2" "id_github" ];
+        identities = [
+          "id_rsa"
+          "id_rsa2"
+          "id_github"
+        ];
       };
 
       # Additional zstyle configurations not covered by home-manager options
@@ -102,5 +106,18 @@ in
         zstyle ':prezto:module:osx:man' dash-keyword 'manpages'
       '';
     };
+  };
+
+  programs.pandoc.enable = true;
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    defaultCacheTtl = 60;
+    maxCacheTtl = 120;
+    extraConfig = ''
+      pinentry-program /opt/homebrew/bin/pinentry-mac
+      ttyname $GPG_TTY
+    '';
   };
 }

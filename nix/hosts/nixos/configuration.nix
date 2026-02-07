@@ -2,13 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
- 
 {
-  imports =
-    (lib.optionals (builtins.pathExists ./hardware-configuration.nix) [
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+{
+  imports = (
+    lib.optionals (builtins.pathExists ./hardware-configuration.nix) [
       ./hardware-configuration.nix
-    ]);
+    ]
+  );
 
   # Minimal fileSystems configuration for flake validation
   # This placeholder satisfies NixOS requirements and will be overridden by
@@ -61,11 +67,14 @@
   users.users.michael = {
     isNormalUser = true;
     description = "Michael";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCxenC8C00c4bZnFe0HUqBCRwQSOMnSwtYkTjiaDdbrc5StkI/lPtmqvN2TFfh0eTP1xdwNUnf6f4AjooGVUZQ7VErt3k/mkOyLJPJnlBAyf+bA146oLuyIfxmbeOU95+wrSPxM/ujqSjtnWBhClOjnEtK8xUTXJHILCioPvjx3Vc9FkqRC2MEDLsilaKQgZgKf0mGhDVRCzr6vMHFTrrwl60Qh2a6PllIczvNZtsKMce9HxYK0TDiaYwFGcjS136kRpRk2qg1JkOcMUKXRBapVKtp01KRMat2NvbuzRX/j+0Lp8I2016quzRIMIzYfS0ILJSOsKIZp//aEdx42BinSETekKj1MmLNx6YUcAMEVO2r1NITEc17n/ARxp34A4z618tqo/UtayPsmROcUdyMJTOp+XTd6spL4kx/T6ez5Pf2xQX3v2OqhGwlWg1kp86MwTK8J+M6VLHPjWjlaZLuV5Fs7wQxPU0ZmvIY1KG1HY9G5aHv1izRSt72fIYFr4FU= michael@Michaels-MacBook-Air.local"
     ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
     shell = pkgs.zsh;
   };
 
@@ -113,5 +122,8 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }

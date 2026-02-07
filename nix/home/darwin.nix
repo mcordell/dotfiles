@@ -16,7 +16,7 @@
   programs.zsh = {
     shellAliases = {
       darwin-build = "(cd ~/.dotfiles && nix run --extra-experimental-features nix-command --extra-experimental-features flakes nix-darwin -- build --flake '.#Michaels-MacBook-Pro')";
-      
+
       desk = "cd ~/Desktop";
       hidehidden = "defaults write com.apple.finder AppleShowAllFiles NO";
       icloud = "cd \"$ICLOUD_DIR\"";

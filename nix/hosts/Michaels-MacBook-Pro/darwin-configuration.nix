@@ -1,5 +1,13 @@
 # macOS system configuration managed by nix-darwin
-{ config, pkgs, lib, inputs, hostname, user, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  hostname,
+  user,
+  ...
+}:
 
 {
   # List packages installed in system profile. To search, run:
@@ -8,7 +16,7 @@
     # Add system-wide packages here
   ];
 
-  system.primaryUser = "michael"; 
+  system.primaryUser = "michael";
 
   homebrew = {
     enable = true;
@@ -22,7 +30,10 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # Enable nix flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Configure system defaults
   # system.defaults.dock.autohide = true;
