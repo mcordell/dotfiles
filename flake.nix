@@ -55,6 +55,12 @@
           type = "nixos";
         };
 
+        cattle = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "nixos";
+        };
+
         # macOS example
         "Michaels-MacBook-Pro" = {
           system = "aarch64-darwin";
