@@ -15,39 +15,57 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nix-darwin,
+      ...
+    }@inputs:
     let
       lib = nixpkgs.lib;
 
       # System type helpers
       isLinux = system: lib.hasSuffix "linux" system;
       isDarwin = system: lib.hasSuffix "darwin" system;
-      getHomeDirectory = system: user:
-        if isDarwin system then "/Users/${user}" else "/home/${user}";
+      getHomeDirectory = system: user: if isDarwin system then "/Users/${user}" else "/home/${user}";
 
       # Path helpers
       hostPath = hostname: file: lib.path.append ./nix/hosts "${hostname}/${file}";
 
       # Host validation
-      validateHost = hostname: cfg:
+      validateHost =
+        hostname: cfg:
         assert lib.assertMsg (cfg ? system) "Host ${hostname} must have 'system'";
         assert lib.assertMsg (cfg ? user) "Host ${hostname} must have 'user'";
         assert lib.assertMsg (cfg ? type) "Host ${hostname} must have 'type'";
-        assert lib.assertMsg (lib.elem cfg.type [ "nixos" "darwin" ]) 
-          "Host ${hostname} has invalid type: ${cfg.type}";
+        assert lib.assertMsg (lib.elem cfg.type [
+          "nixos"
+          "darwin"
+        ]) "Host ${hostname} has invalid type: ${cfg.type}";
         cfg;
 
       # ---- central "inventory" of machines/users ----
       hosts = {
         # NixOS examples
-        nixos = { system = "x86_64-linux";  user = "michael"; type = "nixos"; };
+        nixos = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "nixos";
+        };
 
         # macOS example
-        "Michaels-MacBook-Pro" = { system = "aarch64-darwin"; user = "michael"; type = "darwin"; };
+        "Michaels-MacBook-Pro" = {
+          system = "aarch64-darwin";
+          user = "michael";
+          type = "darwin";
+        };
       };
 
       # Common Home Manager module set
-      hmModulesFor = { system, hostname }:
+      hmModulesFor =
+        { system, hostname }:
         [
           ./nix/home/default.nix
         ]
@@ -62,7 +80,12 @@
         ];
 
       # Shared Home Manager configuration
-      mkHomeManagerConfig = { system, user, hostname }:
+      mkHomeManagerConfig =
+        {
+          system,
+          user,
+          hostname,
+        }:
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -74,43 +97,68 @@
         };
 
       # NixOS system constructor
-      mkNixos = hostname: cfg:
-        let validated = validateHost hostname cfg;
-        in lib.nixosSystem {
+      mkNixos =
+        hostname: cfg:
+        let
+          validated = validateHost hostname cfg;
+        in
+        lib.nixosSystem {
           system = validated.system;
-          specialArgs = { inherit inputs hostname; user = validated.user; };
+          specialArgs = {
+            inherit inputs hostname;
+            user = validated.user;
+          };
           modules = [
             (hostPath hostname "configuration.nix")
 
             # Home Manager integrated into NixOS
             home-manager.nixosModules.home-manager
-            (mkHomeManagerConfig { system = validated.system; user = validated.user; inherit hostname; })
+            (mkHomeManagerConfig {
+              system = validated.system;
+              user = validated.user;
+              inherit hostname;
+            })
           ];
         };
 
       # nix-darwin system constructor
-      mkDarwin = hostname: cfg:
-        let validated = validateHost hostname cfg;
-        in nix-darwin.lib.darwinSystem {
-          specialArgs = { inherit inputs hostname; user = validated.user; };
+      mkDarwin =
+        hostname: cfg:
+        let
+          validated = validateHost hostname cfg;
+        in
+        nix-darwin.lib.darwinSystem {
+          specialArgs = {
+            inherit inputs hostname;
+            user = validated.user;
+          };
           modules = [
-          (hostPath hostname "darwin-configuration.nix")
-
+            (hostPath hostname "darwin-configuration.nix")
 
             # Home Manager integrated into nix-darwin
             home-manager.darwinModules.home-manager
-            (mkHomeManagerConfig { system = validated.system; user = validated.user; inherit hostname; })
+            (mkHomeManagerConfig {
+              system = validated.system;
+              user = validated.user;
+              inherit hostname;
+            })
           ];
         };
 
       # Optional: standalone HM configs (useful for non-NixOS Linux boxes
       # where you don't want full NixOS rebuilds, or for experimenting)
-      mkHome = name: cfg:
-        let validated = validateHost name cfg;
-        in home-manager.lib.homeManagerConfiguration {
+      mkHome =
+        name: cfg:
+        let
+          validated = validateHost name cfg;
+        in
+        home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = validated.system; };
           modules =
-            (hmModulesFor { system = validated.system; hostname = name; })
+            (hmModulesFor {
+              system = validated.system;
+              hostname = name;
+            })
             ++ [
               {
                 home.username = validated.user;
@@ -120,10 +168,11 @@
         };
 
       # Helper to build configs by type
-      mkConfigsByType = type: mkConfig:
-        lib.mapAttrs (hostname: cfg:
-          mkConfig hostname cfg
-        ) (lib.filterAttrs (_: cfg: cfg.type == type) hosts);
+      mkConfigsByType =
+        type: mkConfig:
+        lib.mapAttrs (hostname: cfg: mkConfig hostname cfg) (
+          lib.filterAttrs (_: cfg: cfg.type == type) hosts
+        );
     in
     {
       # ---- System-level configs ----
@@ -133,5 +182,10 @@
 
       # ---- Optional: standalone Home Manager configs ----
       homeConfigurations = lib.mapAttrs mkHome hosts;
+
+      # ---- Formatter ----
+      formatter = lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+        system: nixpkgs.legacyPackages.${system}.nixfmt
+      );
     };
 }
