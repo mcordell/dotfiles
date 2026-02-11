@@ -15,26 +15,23 @@
   ];
 
   boot.initrd.availableKernelModules = [
-    "uhci_hcd"
-    "ehci_pci"
     "ahci"
+    "xhci_pci"
     "virtio_pci"
     "virtio_scsi"
     "sd_mod"
     "sr_mod"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/9661583a-28ec-4023-a141-e4ab125646bb";
+    device = "/dev/disk/by-uuid/6ebeaebe-b099-440b-a710-1188f3627faf";
     fsType = "ext4";
   };
 
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/79f1575a-1f82-4411-9475-97ecd72f37a8"; }
-  ];
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
