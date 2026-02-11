@@ -139,6 +139,11 @@
             user = validated.user;
           };
           modules = [
+            {
+              nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+                "claude-code"
+              ];
+            }
             (hostPath hostname "darwin-configuration.nix")
 
             # Home Manager integrated into nix-darwin
