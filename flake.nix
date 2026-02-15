@@ -61,8 +61,13 @@
           type = "nixos";
         };
 
-        # macOS example
         "Michaels-MacBook-Pro" = {
+          system = "aarch64-darwin";
+          user = "michael";
+          type = "darwin";
+        };
+
+        "Michaels-MacBook-Air" = {
           system = "aarch64-darwin";
           user = "michael";
           type = "darwin";
