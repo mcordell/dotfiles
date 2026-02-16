@@ -149,7 +149,12 @@
                 "claude-code"
               ];
             }
+            ./nix/darwin-configuration.nix
+          ]
+          ++ lib.optionals (builtins.pathExists (hostPath hostname "darwin-configuration.nix")) [
             (hostPath hostname "darwin-configuration.nix")
+          ]
+          ++ [
 
             # Home Manager integrated into nix-darwin
             home-manager.darwinModules.home-manager
