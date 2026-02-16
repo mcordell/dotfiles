@@ -98,6 +98,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  # services.openssh.openFirewall = false
   services.openssh.settings = {
     PasswordAuthentication = false;
     KbdInteractiveAuthentication = false;
@@ -140,4 +141,14 @@
   };
 
   services.fail2ban.enable = true;
+
+  # Tailscale VPN
+  # Phase 1: Enable Tailscale with public SSH still available
+  # After running `sudo tailscale up` and authenticating, proceed to phase 2:
+  services.tailscale.enable = true;
+
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+  };
 }
