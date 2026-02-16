@@ -4,7 +4,7 @@
 {
   # Add macOS-specific packages
   home.packages = with pkgs; [
-    # Add macOS-specific packages here
+    pngpaste
   ];
 
   programs.neovim = {

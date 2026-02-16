@@ -26,10 +26,41 @@ in
 
   # Add packages that should be installed to the user environment.
   home.packages = with pkgs; [
-    git
-    less
-    sqlite # Required for zsh-histdb
+    ansible
+    aspell
+    awscli2
+    difftastic
+    exiftool
     eza
+    findutils
+    gawk
+    git
+    graphviz
+    hugo
+    iperf3
+    jq
+    just
+    less
+    mediainfo
+    moreutils
+    nmap
+    p7zip
+    rclone
+    rdfind
+    rename
+    restic
+    rust-analyzer
+    shellcheck
+    shfmt
+    sqlite # Required for zsh-histdb
+    tealdeer
+    topgrade
+    tree
+    wget
+    whois
+    wireguard-tools
+    yq
+    zellij
   ];
 
   # Place zsh plugins in .zsh/plugins directory
@@ -385,6 +416,8 @@ in
     enableZshIntegration = true;
   };
 
+  programs.gh.enable = true;
+  programs.tmux.enable = true;
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
 }
