@@ -98,7 +98,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  # services.openssh.openFirewall = false
+  services.openssh.openFirewall = false;
   services.openssh.settings = {
     PasswordAuthentication = false;
     KbdInteractiveAuthentication = false;
