@@ -20,6 +20,22 @@
 
 (defvar mcordell/work-meeting-file "~/org/work/meetings.org" "Org file where meeting headings are stored.")
 
+(defvar mcordell/direct-reports
+  '("Brad" "David" "Nitin" "Teo")
+  "List of direct report names.")
+
+(defvar mcordell/manager-name
+  '("Mark")
+  "Manager's name")
+
+(defvar mcordell/skip-levels
+  '("Andrew" "Matt" "Pierce")
+  "List of people that report to directs.")
+
+(defvar mcordell/key-collaborators
+  '("Chris" "Jamaal" "Jon")
+  "List of people that we collaborate with frequently.")
+
 (after! org
   (setq org-todo-keywords
         '((sequence
@@ -69,7 +85,7 @@
         )
   )
 
-(after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
+(after! org (setq-default org-capture-templates `(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
 #+BEGIN_SRC %^{sourcetype}
  %c
@@ -121,7 +137,16 @@
                                                   ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/work/qcentrix.org")
                                                    "* %? %t
-"))
+")
+                                                  ("d" "Delegate" entry (here)
+                                                   ,(format "* DELG %%^{Task} :%%^{Delegate to|%s}:\n:LOGBOOK:\n- State \"DELG\"       from              %%U \\\\\n  %%^{Waiting on}\n:END:\n%%?"
+                                                            (mapconcat #'mcordell/normalize-name-to-tag
+                                                                       (append mcordell/direct-reports
+                                                                               mcordell/key-collaborators
+                                                                               mcordell/skip-levels
+                                                                               mcordell/manager-name)
+                                                                       "|"))
+                                                   :empty-lines 1))
 
 
                           )

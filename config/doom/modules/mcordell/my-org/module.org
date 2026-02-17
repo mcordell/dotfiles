@@ -244,19 +244,6 @@ Entries are appended to `mcordell/work-meeting-file`."
     ))
   )
 #+end_src
-** mcordell/select-delegate-person
-Prompt for a direct report name and return it as a tag-friendly string for use in capture templates.
-#+begin_src emacs-lisp :tangle autoload/my-org.el
-;;;###autoload
-(defun mcordell/select-delegate-person ()
-  "Prompt for a person and return as a tag-friendly string."
-  (let* ((people (append mcordell/direct-reports
-                         mcordell/key-collaborators
-                         mcordell/skip-levels
-                         mcordell/manager-name))
-         (name (completing-read "Delegate to: " people nil t)))
-    (mcordell/normalize-name-to-tag name)))
-#+end_src
 ** mcordell/one-on-one-workflow
 Complete workflow for one-on-one meetings. This function:
 1. Prompts for a person's name using =mcordell/one-on-one-list=
@@ -427,7 +414,7 @@ List of people that we collaborate with frequently.
 #+end_src
 *** capture templates
 #+begin_src emacs-lisp :tangle config.el
-(after! org (setq-default org-capture-templates '(("s" "ruby snippet" entry (file "~/org/notes.org")
+(after! org (setq-default org-capture-templates `(("s" "ruby snippet" entry (file "~/org/notes.org")
                                                    "* Snippet: %a
 ,#+BEGIN_SRC %^{sourcetype}
  %c
@@ -481,8 +468,13 @@ List of people that we collaborate with frequently.
                                                    "* %? %t
 ")
                                                   ("d" "Delegate" entry (here)
-                                                   "* DELG %^{Task} :%(mcordell/select-delegate-person):
-%?"
+                                                   ,(format "* DELG %%^{Task} :%%^{Delegate to|%s}:\n:LOGBOOK:\n- State \"DELG\"       from              %%U \\\\\n  %%^{Waiting on}\n:END:\n%%?"
+                                                            (mapconcat #'mcordell/normalize-name-to-tag
+                                                                       (append mcordell/direct-reports
+                                                                               mcordell/key-collaborators
+                                                                               mcordell/skip-levels
+                                                                               mcordell/manager-name)
+                                                                       "|"))
                                                    :empty-lines 1))
 
 
