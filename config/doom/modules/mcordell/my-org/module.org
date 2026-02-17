@@ -244,6 +244,19 @@ Entries are appended to `mcordell/work-meeting-file`."
     ))
   )
 #+end_src
+** mcordell/select-delegate-person
+Prompt for a direct report name and return it as a tag-friendly string for use in capture templates.
+#+begin_src emacs-lisp :tangle autoload/my-org.el
+;;;###autoload
+(defun mcordell/select-delegate-person ()
+  "Prompt for a person and return as a tag-friendly string."
+  (let* ((people (append mcordell/direct-reports
+                         mcordell/key-collaborators
+                         mcordell/skip-levels
+                         mcordell/manager-name))
+         (name (completing-read "Delegate to: " people nil t)))
+    (mcordell/normalize-name-to-tag name)))
+#+end_src
 ** mcordell/one-on-one-workflow
 Complete workflow for one-on-one meetings. This function:
 1. Prompts for a person's name using =mcordell/one-on-one-list=
@@ -327,6 +340,34 @@ Define a directory for work org files
 Org file where meeting headings are stored.
 #+begin_src emacs-lisp :tangle config.el
 (defvar mcordell/work-meeting-file "~/org/work/meetings.org" "Org file where meeting headings are stored.")
+#+end_src
+*** mcordell/direct-reports
+List of direct reports.
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/direct-reports
+  '("Brad" "David" "Nitin" "Teo")
+  "List of direct report names.")
+#+end_src
+*** mcordell/manager-name
+Manager's name
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/manager-name
+  '("Mark")
+  "Manager's name")
+#+end_src
+*** mcordell/skip-levels
+List of people that report to directs
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/skip-levels
+  '("Andrew" "Matt" "Pierce")
+  "List of people that report to directs.")
+#+end_src
+*** mcordell/key-collaborators
+List of people that we collaborate with frequently.
+#+begin_src emacs-lisp :tangle config.el
+(defvar mcordell/key-collaborators
+  '("Chris" "Jamaal" "Jon")
+  "List of people that we collaborate with frequently.")
 #+end_src
 
 ** Main Config
@@ -438,7 +479,11 @@ Org file where meeting headings are stored.
                                                   ("x" "Q-Centrix Note" entry (file
                                                                                "~/org/work/qcentrix.org")
                                                    "* %? %t
-"))
+")
+                                                  ("d" "Delegate" entry (here)
+                                                   "* DELG %^{Task} :%(mcordell/select-delegate-person):
+%?"
+                                                   :empty-lines 1))
 
 
                           )
