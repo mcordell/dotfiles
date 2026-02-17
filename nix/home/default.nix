@@ -27,7 +27,7 @@ in
   # Add packages that should be installed to the user environment.
   home.packages = with pkgs; [
     ansible
-    aspell
+    (aspellWithDicts (dicts: with dicts; [ en ]))
     awscli2
     difftastic
     exiftool
