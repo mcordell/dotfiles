@@ -64,7 +64,16 @@
   )
 
 (use-package! obsidian
+  :defer t
   :custom
   (obsidian-directory "/Users/michael/Documents/Obsidian Vault/")
   (markdown-enable-wiki-links t)
-  )
+  :init
+  (add-hook 'markdown-mode-hook
+            (defun mcordell/maybe-enable-obsidian ()
+              (when (and buffer-file-name
+                         (string-prefix-p
+                          (expand-file-name "/Users/michael/Documents/Obsidian Vault/")
+                          (expand-file-name buffer-file-name)))
+                (require 'obsidian)
+                (obsidian-mode t)))))
