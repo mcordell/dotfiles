@@ -153,7 +153,7 @@
   )
 
 (after! org
-  (setq org-agenda-custom-commands '(
+  (setq org-agenda-custom-commands `(
                                      ("o" "Work tasks"
                                       ((tags-todo "*"
                                                   ((org-agenda-overriding-header "Work tasks")))
@@ -165,8 +165,7 @@
                                       ((agenda ""
                                                ((org-agenda-start-day "0d")
                                                 (org-agenda-span 1)
-                                                (org-deadline-warning-days 3)  ; Show deadlines only for the next 3 days
-                                                ;; Keep only TODO/QUEST items in the agenda block
+                                                (org-deadline-warning-days 3)
                                                 (org-agenda-skip-function
                                                  (lambda ()
                                                    (save-excursion
@@ -174,13 +173,23 @@
                                                      (let ((kw (org-get-todo-state)))
                                                        (unless (member kw '("TODO" "QUEST"))
                                                          (or (outline-next-heading) (point-max)))))))))
-                                       ;; High priority list, limited to TODO|QUEST and A/B priority
                                        (tags-todo "+TODO={TODO\\|QUEST}+PRIORITY={A\\|B}"
                                                   ((org-agenda-overriding-header "High Priority:")
                                                    (org-agenda-sorting-strategy '(priority-down)))))
-                                      ;; Settings applied to all blocks in this command
                                       ((org-agenda-files
-                                        (directory-files-recursively "~/org/work/" "\\.org\\'"))))                                       )
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'"))))
+                                     ("D" "Delegated tasks"
+                                      ,(mapcar (lambda (name)
+                                                 (let ((tag (mcordell/normalize-name-to-tag name)))
+                                                   `(tags-todo ,(format "TODO=\"DELG\"+%s" tag)
+                                                               ((org-agenda-overriding-header ,(format "%s:" name))))))
+                                               (append mcordell/direct-reports
+                                                       mcordell/key-collaborators
+                                                       mcordell/skip-levels
+                                                       mcordell/manager-name))
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'"))))
+                                     )
         )
   )
 
