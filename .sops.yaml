@@ -1,0 +1,9 @@
+keys:
+  - &cattle age1zh32g32rhhujlat55fpsp397ucv74hv242vkv67xwtmv5hutdawsd9gy8u
+  - &local age1pss5rjp67x3acr4ll0xxp753wzwcpklge2z5helgcarflq0q0a5qvzh4px
+creation_rules:
+  - path_regex: nix/hosts/cattle/secrets\.yaml$
+    key_groups:
+      - age:
+          - *cattle
+          - *local
