@@ -13,6 +13,9 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./secrets.nix
+    ./pangolin.nix
+    ./crowdsec.nix
   ];
 
   # Bootloader.
