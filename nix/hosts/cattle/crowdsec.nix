@@ -2,6 +2,26 @@
 {
   services.crowdsec = {
     enable = true;
+
+    settings.general = {
+      api.server = {
+        enable = true;
+        listen_uri = "127.0.0.1:8080";
+      };
+    };
+
+    localConfig.acquisitions = [
+      {
+        filenames = [ "/var/log/traefik/access.log" ];
+        labels.type = "traefik";
+      }
+    ];
+
+    hub.collections = [
+      "crowdsecurity/traefik"
+      "crowdsecurity/http-cve"
+      "crowdsecurity/base-http-scenarios"
+    ];
   };
 
   # Ensure data/log directories exist
@@ -11,6 +31,8 @@
   ];
 
   # CrowdSec firewall bouncer for IP-level blocking via nftables
+  # registerBouncer.enable defaults to true when services.crowdsec is enabled,
+  # so no manual API key management is needed.
   services.crowdsec-firewall-bouncer = {
     enable = true;
     settings = {
