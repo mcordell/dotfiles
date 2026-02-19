@@ -18,7 +18,6 @@
   sops.templates."pangolin.env" = {
     content = ''
       SERVER_SECRET=${config.sops.placeholder."pangolin/server_secret"}
-      PANGOLIN_SETUP_TOKEN=${config.sops.placeholder."pangolin/setup_token"}
       CF_DNS_API_TOKEN=${config.sops.placeholder."pangolin/cf_dns_api_token"}
     '';
   };
