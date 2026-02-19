@@ -2,8 +2,6 @@
 {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.sshRSAKeyConversion = true;
-    # Use the host's SSH key for decryption
     age.keyFile = "/var/lib/sops-nix/key.txt";
 
     secrets = {
