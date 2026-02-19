@@ -3,11 +3,9 @@
   services.crowdsec = {
     enable = true;
 
-    settings.general = {
-      api.server = {
-        enable = true;
-        listen_uri = "127.0.0.1:8080";
-      };
+    settings= {
+        general.api.server.enable = true;
+	lapi.credentialsFile = "/var/lib/crowdsec/lapi-credentials.yaml";
     };
 
     localConfig.acquisitions = [
@@ -40,6 +38,8 @@
     };
   };
 
+  # Enable nftables (required by the firewall bouncer)
+  networking.nftables.enable = true;
   # Workaround for #476253: fix bouncer systemd ordering
   systemd.services.crowdsec-firewall-bouncer = {
     after = [ "nftables.service" "crowdsec.service" ];

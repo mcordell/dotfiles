@@ -14,7 +14,9 @@
         disable_signup_without_invite = true;
         disable_user_create_org = true;
         require_email_verification = false;
+	enable_integration_api = true;
       };
     };
   };
+  networking.firewall.allowedUDPPorts = [ 21820 ];
 }

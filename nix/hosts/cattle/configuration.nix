@@ -97,6 +97,7 @@
   # Enable zsh system-wide
   programs.zsh.enable = true;
 
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -145,13 +146,14 @@
 
   services.fail2ban.enable = true;
 
+
   # Tailscale VPN
   # Phase 1: Enable Tailscale with public SSH still available
   # After running `sudo tailscale up` and authenticating, proceed to phase 2:
   services.tailscale.enable = true;
 
   networking.firewall = {
-    trustedInterfaces = [ "tailscale0" ];
+    trustedInterfaces = [ "tailscale0" "wg0" ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 }

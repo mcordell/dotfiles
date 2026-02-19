@@ -10,7 +10,7 @@
       "pangolin/cf_dns_api_token" = { };
       # After first boot, generate with: sudo cscli bouncers add traefik-bouncer
       # Then add to secrets.yaml and re-encrypt
-      # "crowdsec/bouncer_api_key" = {};
+      "crowdsec/bouncer_api_key" = {};
     };
   };
 
