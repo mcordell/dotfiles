@@ -2,14 +2,6 @@
 {
   services.crowdsec = {
     enable = true;
-
-    # Workaround for #445342: explicitly enable local API
-    settings = {
-      api.server = {
-        enable = true;
-        listen_uri = "127.0.0.1:8080";
-      };
-    };
   };
 
   # Ensure data/log directories exist
@@ -22,8 +14,6 @@
   services.crowdsec-firewall-bouncer = {
     enable = true;
     settings = {
-      api_url = "http://127.0.0.1:8080";
-      api_key = ""; # placeholder — set after first boot via cscli
       mode = "nftables";
     };
   };
