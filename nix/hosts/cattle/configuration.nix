@@ -153,7 +153,7 @@
   services.tailscale.enable = true;
 
   networking.firewall = {
-    trustedInterfaces = [ "tailscale0" "wg0" ];
+    trustedInterfaces = [ "tailscale0" ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 }

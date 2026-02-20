@@ -14,11 +14,5 @@
     };
   };
 
-  # Pangolin environment file assembled from sops secrets
-  sops.templates."pangolin.env" = {
-    content = ''
-      SERVER_SECRET=${config.sops.placeholder."pangolin/server_secret"}
-      CF_DNS_API_TOKEN=${config.sops.placeholder."pangolin/cf_dns_api_token"}
-    '';
-  };
+  # Pangolin sops templates are defined in pangolin.nix
 }
