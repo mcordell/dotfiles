@@ -50,7 +50,7 @@ in
       colorscheme nord
     '';
 
-    extraLuaConfig = ''
+    initLua = ''
       -- Set space as leader key
       vim.g.mapleader = ' '
 
