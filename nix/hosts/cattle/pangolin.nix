@@ -80,13 +80,18 @@ let
         badger:
           moduleName: "github.com/fosrl/badger"
           version: "v1.3.1"
+        geoblock:
+          moduleName: "github.com/david-garcia-garcia/traefik-geoblock"
+          version: "v1.1.1"
+      settings:
+        useunsafe: true
 
     log:
       level: "INFO"
 
     accessLog:
       filePath: "/var/log/traefik/access.log"
-      format: "common"
+      format: "json"
 
     certificatesResolvers:
       letsencrypt:
@@ -106,6 +111,9 @@ let
           respondingTimeouts:
             readTimeout: "30m"
         http:
+          middlewares:
+            - geoblock@file
+            - security-headers@file
           tls:
             certResolver: "letsencrypt"
 
@@ -123,6 +131,35 @@ let
           plugin:
             badger:
               disableForwardAuth: true
+        geoblock:
+          plugin:
+            geoblock:
+              enabled: true
+              defaultAllow: false
+              allowPrivate: true
+              disallowedStatusCode: 403
+              allowedCountries:
+                - US
+                - CA
+              allowedIPBlocks:
+                - "192.168.0.0/16"
+                - "10.0.0.0/8"
+        security-headers:
+          headers:
+            contentTypeNosniff: true
+            customFrameOptionsValue: SAMEORIGIN
+            customResponseHeaders:
+              Server: ""
+              X-Powered-By: ""
+            forceSTSHeader: true
+            hostsProxyHeaders:
+              - X-Forwarded-Host
+            referrerPolicy: strict-origin-when-cross-origin
+            sslProxyHeaders:
+              X-Forwarded-Proto: https
+            stsIncludeSubdomains: true
+            stsPreload: true
+            stsSeconds: 63072000
         redirect-to-https:
           redirectScheme:
             scheme: https

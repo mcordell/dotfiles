@@ -10,6 +10,7 @@
       # (online_client.credentials_path defaults to null without this).
       # The preStart script auto-registers with CAPI when this path is set.
       capi.credentialsFile = "/var/lib/crowdsec/state/online_api_credentials.yaml";
+      console.tokenFile = config.sops.secrets."crowdsec/console_enrollment_key".path;
     };
 
     localConfig.acquisitions = [
@@ -17,18 +18,31 @@
         filenames = [ "/var/lib/pangolin/config/traefik/logs/access.log" ];
         labels.type = "traefik";
       }
+      {
+        source = "journalctl";
+        journalctl_filter = [ "_SYSTEMD_UNIT=sshd.service" ];
+        labels.type = "syslog";
+      }
+    ];
+
+    hub.parsers = [
+      "crowdsecurity/syslog-logs"
     ];
 
     hub.collections = [
       "crowdsecurity/traefik"
       "crowdsecurity/http-cve"
       "crowdsecurity/base-http-scenarios"
+      "crowdsecurity/sshd"
     ];
   };
 
-  # Ensure data/log directories exist
+  # Ensure data/log directories exist and are traversable by crowdsec
   systemd.tmpfiles.rules = [
     "d /var/lib/crowdsec 0755 crowdsec crowdsec -"
+    "d /var/lib/pangolin 0755 root root -"
+    "d /var/lib/pangolin/config 0755 root root -"
+    "d /var/lib/pangolin/config/traefik 0755 root root -"
     "d /var/lib/pangolin/config/traefik/logs 0755 root root -"
   ];
 
