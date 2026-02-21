@@ -143,6 +143,8 @@ let
               allowedIPBlocks:
                 - "192.168.0.0/16"
                 - "10.0.0.0/8"
+              databaseAutoUpdate: true
+              databaseAutoUpdateDir: "/plugins-storage/geoblock-db"
         security-headers:
           headers:
             contentTypeNosniff: true
