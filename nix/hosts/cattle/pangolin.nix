@@ -83,8 +83,6 @@ let
         geoblock:
           moduleName: "github.com/david-garcia-garcia/traefik-geoblock"
           version: "v1.1.1"
-      settings:
-        useunsafe: true
 
     log:
       level: "INFO"
@@ -138,6 +136,7 @@ let
               defaultAllow: false
               allowPrivate: true
               disallowedStatusCode: 403
+              databaseFilePath: "/plugins-storage/"
               allowedCountries:
                 - US
                 - CA
