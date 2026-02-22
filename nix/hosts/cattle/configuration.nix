@@ -16,6 +16,7 @@
     ./secrets.nix
     ./pangolin.nix
     ./crowdsec.nix
+    ./real-estate.nix
   ];
 
   # Bootloader.
@@ -109,7 +110,7 @@
   };
   virtualisation.docker = {
     enable = true;
-    extraOptions = ''--insecure-registry truenas:30095 --insecure-registry 10.20.30.40:30095'';
+    extraOptions = "--insecure-registry truenas:30095 --insecure-registry 10.20.30.40:30095";
   };
 
   # Open ports in the firewall.

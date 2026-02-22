@@ -122,110 +122,6 @@ let
       entryPoint: "web"
   '';
 
-  traefikDynamicConfig = pkgs.writeText "dynamic_config.yml" ''
-    http:
-      middlewares:
-        badger:
-          plugin:
-            badger:
-              disableForwardAuth: true
-        geoblock:
-          plugin:
-            geoblock:
-              enabled: true
-              defaultAllow: false
-              allowPrivate: true
-              disallowedStatusCode: 403
-              databaseFilePath: "/plugins-storage/"
-              allowedCountries:
-                - US
-                - CA
-              allowedIPBlocks:
-                - "192.168.0.0/16"
-                - "10.0.0.0/8"
-              databaseAutoUpdate: true
-              databaseAutoUpdateDir: "/plugins-storage/geoblock-db"
-        security-headers:
-          headers:
-            contentTypeNosniff: true
-            customFrameOptionsValue: SAMEORIGIN
-            customResponseHeaders:
-              Server: ""
-              X-Powered-By: ""
-            forceSTSHeader: true
-            hostsProxyHeaders:
-              - X-Forwarded-Host
-            referrerPolicy: strict-origin-when-cross-origin
-            sslProxyHeaders:
-              X-Forwarded-Proto: https
-            stsIncludeSubdomains: true
-            stsPreload: true
-            stsSeconds: 63072000
-        redirect-to-https:
-          redirectScheme:
-            scheme: https
-
-      routers:
-        main-app-router-redirect:
-          rule: "Host(`pangolin.mcordell.dev`)"
-          service: next-service
-          entryPoints:
-            - web
-          middlewares:
-            - redirect-to-https
-            - badger
-
-        next-router:
-          rule: "Host(`pangolin.mcordell.dev`) && !PathPrefix(`/api/v1`)"
-          service: next-service
-          entryPoints:
-            - websecure
-          middlewares:
-            - badger
-          tls:
-            certResolver: letsencrypt
-
-        api-router:
-          rule: "Host(`pangolin.mcordell.dev`) && PathPrefix(`/api/v1`)"
-          service: api-service
-          entryPoints:
-            - websecure
-          middlewares:
-            - badger
-          tls:
-            certResolver: letsencrypt
-
-        ws-router:
-          rule: "Host(`pangolin.mcordell.dev`)"
-          service: api-service
-          entryPoints:
-            - websecure
-          middlewares:
-            - badger
-          tls:
-            certResolver: letsencrypt
-
-      services:
-        next-service:
-          loadBalancer:
-            servers:
-              - url: "http://pangolin:3002"
-
-        api-service:
-          loadBalancer:
-            servers:
-              - url: "http://pangolin:3000"
-
-    tcp:
-      serversTransports:
-        pp-transport-v1:
-          proxyProtocol:
-            version: 1
-        pp-transport-v2:
-          proxyProtocol:
-            version: 2
-  '';
-
 in
 {
   # Enable Docker
@@ -273,6 +169,134 @@ in
     '';
   };
 
+  # Traefik dynamic config (contains real estate hostname from sops)
+  sops.templates."traefik-dynamic-config.yml" = {
+    content = ''
+      http:
+        middlewares:
+          badger:
+            plugin:
+              badger:
+                disableForwardAuth: true
+          geoblock:
+            plugin:
+              geoblock:
+                enabled: true
+                defaultAllow: false
+                allowPrivate: true
+                disallowedStatusCode: 403
+                databaseFilePath: "/plugins-storage/"
+                allowedCountries:
+                  - US
+                  - CA
+                allowedIPBlocks:
+                  - "192.168.0.0/16"
+                  - "10.0.0.0/8"
+                databaseAutoUpdate: true
+                databaseAutoUpdateDir: "/plugins-storage/geoblock-db"
+          security-headers:
+            headers:
+              contentTypeNosniff: true
+              customFrameOptionsValue: SAMEORIGIN
+              customResponseHeaders:
+                Server: ""
+                X-Powered-By: ""
+              forceSTSHeader: true
+              hostsProxyHeaders:
+                - X-Forwarded-Host
+              referrerPolicy: strict-origin-when-cross-origin
+              sslProxyHeaders:
+                X-Forwarded-Proto: https
+              stsIncludeSubdomains: true
+              stsPreload: true
+              stsSeconds: 63072000
+          redirect-to-https:
+            redirectScheme:
+              scheme: https
+
+        routers:
+          main-app-router-redirect:
+            rule: "Host(`pangolin.mcordell.dev`)"
+            service: next-service
+            entryPoints:
+              - web
+            middlewares:
+              - redirect-to-https
+              - badger
+
+          next-router:
+            rule: "Host(`pangolin.mcordell.dev`) && !PathPrefix(`/api/v1`)"
+            service: next-service
+            entryPoints:
+              - websecure
+            middlewares:
+              - badger
+            tls:
+              certResolver: letsencrypt
+
+          api-router:
+            rule: "Host(`pangolin.mcordell.dev`) && PathPrefix(`/api/v1`)"
+            service: api-service
+            entryPoints:
+              - websecure
+            middlewares:
+              - badger
+            tls:
+              certResolver: letsencrypt
+
+          ws-router:
+            rule: "Host(`pangolin.mcordell.dev`)"
+            service: api-service
+            entryPoints:
+              - websecure
+            middlewares:
+              - badger
+            tls:
+              certResolver: letsencrypt
+
+          real-estate-router:
+            rule: "Host(`${config.sops.placeholder."real_estate/phx_host"}`)"
+            service: real-estate-service
+            entryPoints:
+              - websecure
+            tls:
+              certResolver: letsencrypt
+
+          real-estate-router-redirect:
+            rule: "Host(`${config.sops.placeholder."real_estate/phx_host"}`)"
+            service: real-estate-service
+            entryPoints:
+              - web
+            middlewares:
+              - redirect-to-https
+
+        services:
+          next-service:
+            loadBalancer:
+              servers:
+                - url: "http://pangolin:3002"
+
+          api-service:
+            loadBalancer:
+              servers:
+                - url: "http://pangolin:3000"
+
+          real-estate-service:
+            loadBalancer:
+              servers:
+                - url: "http://real-estate-web:4000"
+
+      tcp:
+        serversTransports:
+          pp-transport-v1:
+            proxyProtocol:
+              version: 1
+          pp-transport-v2:
+            proxyProtocol:
+              version: 2
+    '';
+  };
+
   # Traefik env file (contains Cloudflare API token from sops)
   sops.templates."traefik.env" = {
     content = ''
@@ -310,9 +334,11 @@ in
       cp -f ${config.sops.templates."pangolin-config.yml".path} ${configDir}/config.yml
       cp -f ${config.sops.templates."traefik.env".path} ${configDir}/traefik.env
 
-      # Copy static traefik configs from nix store
+      # Copy traefik configs
       cp -f ${traefikStaticConfig} ${configDir}/traefik/traefik_config.yml
-      cp -f ${traefikDynamicConfig} ${configDir}/traefik/dynamic_config.yml
+      cp -f ${
+        config.sops.templates."traefik-dynamic-config.yml".path
+      } ${configDir}/traefik/dynamic_config.yml
     '';
 
     script = ''
