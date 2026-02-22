@@ -31,6 +31,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/mnt/docker-data" = {
+    device = "/dev/disk/by-uuid/80bf1f3f-a72f-4681-9d26-a383a96a566a";
+    fsType = "ext4";
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
