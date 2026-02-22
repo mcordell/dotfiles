@@ -12,6 +12,15 @@
       # Then add to secrets.yaml and re-encrypt
       "crowdsec/bouncer_api_key" = { };
       "crowdsec/console_enrollment_key" = { };
+      "real_estate/db_user" = { };
+      "real_estate/db_password" = { };
+      "real_estate/db_name" = { };
+      "real_estate/secret_key_base" = { };
+      "real_estate/mailgun_key" = { };
+      "real_estate/phx_host" = { };
+      "real_estate/aws_access_key" = { };
+      "real_estate/aws_secret_access_key" = { };
+      "real_estate/s3_file_upload_bucket" = { };
     };
   };
 
