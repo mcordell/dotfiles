@@ -97,7 +97,6 @@
   # Enable zsh system-wide
   programs.zsh.enable = true;
 
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -145,7 +144,6 @@
   };
 
   services.fail2ban.enable = true;
-
 
   # Tailscale VPN
   # Phase 1: Enable Tailscale with public SSH still available

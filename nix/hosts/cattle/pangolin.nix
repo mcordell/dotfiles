@@ -283,7 +283,11 @@ in
   # Systemd service for Pangolin Docker Compose stack
   systemd.services.pangolin = {
     description = "Pangolin Docker Compose Stack";
-    after = [ "docker.service" "network-online.target" "sops-nix.service" ];
+    after = [
+      "docker.service"
+      "network-online.target"
+      "sops-nix.service"
+    ];
     wants = [ "network-online.target" ];
     requires = [ "docker.service" ];
     wantedBy = [ "multi-user.target" ];
@@ -322,7 +326,13 @@ in
 
   # Firewall: TCP 80/443 for web, UDP for WireGuard tunnels
   networking.firewall = {
-    allowedTCPPorts = [ 80 443 ];
-    allowedUDPPorts = [ 51820 21820 ];
+    allowedTCPPorts = [
+      80
+      443
+    ];
+    allowedUDPPorts = [
+      51820
+      21820
+    ];
   };
 }

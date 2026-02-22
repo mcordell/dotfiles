@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   services.crowdsec = {
     enable = true;
@@ -63,7 +68,10 @@
   networking.nftables.enable = true;
   # Workaround for #476253: fix bouncer systemd ordering
   systemd.services.crowdsec-firewall-bouncer = {
-    after = [ "nftables.service" "crowdsec.service" ];
+    after = [
+      "nftables.service"
+      "crowdsec.service"
+    ];
     requires = [ "crowdsec.service" ];
   };
 }
