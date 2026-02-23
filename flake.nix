@@ -200,7 +200,12 @@
           validated = validateHost name cfg;
         in
         home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = validated.system; };
+          pkgs = import nixpkgs {
+            system = validated.system;
+            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+              "claude-code"
+            ];
+          };
           modules =
             (hmModulesFor {
               system = validated.system;
