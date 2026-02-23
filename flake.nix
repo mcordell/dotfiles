@@ -46,14 +46,15 @@
         assert lib.assertMsg (cfg ? user) "Host ${hostname} must have 'user'";
         assert lib.assertMsg (cfg ? type) "Host ${hostname} must have 'type'";
         assert lib.assertMsg (lib.elem cfg.type [
-          "nixos"
-          "darwin"
+          "nixos"   # Full NixOS system
+          "darwin"  # macOS with nix-darwin
+          "linux"   # Regular Linux with standalone Home Manager (Debian, Ubuntu, etc.)
         ]) "Host ${hostname} has invalid type: ${cfg.type}";
         cfg;
 
       # ---- central "inventory" of machines/users ----
       hosts = {
-        # NixOS examples
+        # NixOS systems (full system management)
         nixos = {
           system = "x86_64-linux";
           user = "michael";
@@ -66,6 +67,7 @@
           type = "nixos";
         };
 
+        # macOS systems (nix-darwin)
         "Michaels-MacBook-Pro" = {
           system = "aarch64-darwin";
           user = "michael";
@@ -77,6 +79,20 @@
           user = "michael";
           type = "darwin";
         };
+
+        # Non-NixOS Linux systems (standalone Home Manager only)
+        # Examples for Debian/Ubuntu homelab servers:
+        # "homelab-node-1" = {
+        #   system = "x86_64-linux";
+        #   user = "michael";
+        #   type = "linux";
+        # };
+        #
+        # "homelab-pi" = {
+        #   system = "aarch64-linux";
+        #   user = "michael";
+        #   type = "linux";
+        # };
       };
 
       # Common Home Manager module set
@@ -211,8 +227,8 @@
 
       darwinConfigurations = mkConfigsByType "darwin" mkDarwin;
 
-      # ---- Optional: standalone Home Manager configs ----
-      homeConfigurations = lib.mapAttrs mkHome hosts;
+      # ---- Standalone Home Manager configs (for non-NixOS Linux systems) ----
+      homeConfigurations = mkConfigsByType "linux" mkHome;
 
       # ---- Formatter ----
       formatter = lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
