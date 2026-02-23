@@ -82,11 +82,11 @@
 
         # Non-NixOS Linux systems (standalone Home Manager only)
         # Examples for Debian/Ubuntu homelab servers:
-        # "homelab-node-1" = {
-        #   system = "x86_64-linux";
-        #   user = "michael";
-        #   type = "linux";
-        # };
+        "charlie" = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "linux";
+        };
         #
         # "homelab-pi" = {
         #   system = "aarch64-linux";
