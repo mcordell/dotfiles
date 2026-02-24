@@ -82,17 +82,23 @@
 
         # Non-NixOS Linux systems (standalone Home Manager only)
         # Examples for Debian/Ubuntu homelab servers:
-        "charlie" = {
+        charlie = {
           system = "x86_64-linux";
           user = "michael";
           type = "linux";
         };
-        #
-        # "homelab-pi" = {
-        #   system = "aarch64-linux";
-        #   user = "michael";
-        #   type = "linux";
-        # };
+
+        shadow = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "linux";
+        };
+
+        stella = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "linux";
+        };
       };
 
       # Common Home Manager module set
