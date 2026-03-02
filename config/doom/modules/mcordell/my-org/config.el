@@ -138,6 +138,10 @@
                                                                                "~/org/work/qcentrix.org")
                                                    "* %? %t
 ")
+                                                  ("p" "PR Review" entry (file "~/org/work/reviews.org")
+                                                   "%(mcordell/fetch-pr-org-entry)"
+                                                   :empty-lines 1
+                                                   :jump-to-captured t)
                                                   ("d" "Delegate" entry (here)
                                                    ,(format "* DELG %%^{Task} :%%^{Delegate to|%s}:\n:LOGBOOK:\n- State \"DELG\"       from              %%U \\\\\n  %%^{Waiting on}\n:END:\n%%?"
                                                             (mapconcat #'mcordell/normalize-name-to-tag

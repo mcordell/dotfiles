@@ -195,6 +195,144 @@ Entries are appended to `mcordell/work-meeting-file`."
   )
 
 ;;;###autoload
+(defun mcordell/gh-pr-fetch-info (url)
+  "Fetch PR data for URL via gh CLI. Returns parsed hash table or nil on failure."
+  (let* ((json-str (shell-command-to-string
+                    (format "gh pr view %s --json title,number,url,author,headRefName,baseRefName,state,isDraft,reviewDecision,reviewRequests,latestReviews,statusCheckRollup,mergeStateStatus 2>&1"
+                            (shell-quote-argument url))))
+         (info (condition-case nil
+                   (json-parse-string json-str)
+                 (error nil))))
+    (when (and info (hash-table-p info) (gethash "title" info))
+      info)))
+
+;;;###autoload
+(defun mcordell/gh-pr-ci-status (rollup)
+  "Derive overall CI status string from a statusCheckRollup vector."
+  (if (or (null rollup) (zerop (length rollup)))
+      "NONE"
+    (let (has-failure has-pending)
+      (mapc (lambda (check)
+              (let* ((typename (gethash "__typename" check ""))
+                     (state (if (string= typename "StatusContext")
+                                (gethash "state" check "")
+                              (let ((conclusion (gethash "conclusion" check))
+                                    (status (gethash "status" check "")))
+                                (if (string= status "COMPLETED")
+                                    (or conclusion "")
+                                  "PENDING")))))
+                (cond
+                 ((member state '("FAILURE" "ERROR" "TIMED_OUT" "CANCELLED" "ACTION_REQUIRED"))
+                  (setq has-failure t))
+                 ((member state '("PENDING" "IN_PROGRESS" "QUEUED" "EXPECTED"))
+                  (setq has-pending t)))))
+            rollup)
+      (cond (has-failure "FAILURE")
+            (has-pending "PENDING")
+            (t "SUCCESS")))))
+
+;;;###autoload
+(defun mcordell/gh-pr-properties (info url)
+  "Return an alist of org property key-value pairs derived from a parsed gh PR INFO hash table."
+  (let* ((author      (let ((a (gethash "author" info)))
+                        (if (hash-table-p a) (gethash "login" a "") "")))
+         (branch      (gethash "headRefName" info ""))
+         (base        (gethash "baseRefName" info ""))
+         (state       (gethash "state" info ""))
+         (draft       (gethash "isDraft" info :false))
+         (decision    (or (gethash "reviewDecision" info) ""))
+         (merge-state (or (gethash "mergeStateStatus" info) ""))
+         (rollup      (gethash "statusCheckRollup" info []))
+         (ci          (mcordell/gh-pr-ci-status rollup))
+         (latest-reviews  (gethash "latestReviews" info []))
+         (review-requests (gethash "reviewRequests" info []))
+         (status      (cond ((string= state "MERGED") "MERGED")
+                            ((string= state "CLOSED") "CLOSED")
+                            ((eq draft t)             "DRAFT")
+                            (t                        "OPEN")))
+         (next-action (cond
+                       ((string= status "MERGED")                        "MERGED")
+                       ((string= status "CLOSED")                        "CLOSED")
+                       ((string= status "DRAFT")                         "AUTHOR")
+                       ((member merge-state '("DIRTY" "BEHIND"))         "AUTHOR")
+                       ((string= decision "CHANGES_REQUESTED")           "AUTHOR")
+                       ((> (length review-requests) 0)                   "AWAITING_REVIEW")
+                       ((string= decision "REVIEW_REQUIRED")             "AWAITING_REVIEW")
+                       ((and (string= decision "APPROVED")
+                             (member ci '("FAILURE" "PENDING")))         "CI")
+                       ((and (string= decision "APPROVED")
+                             (string= ci "SUCCESS"))                      "MERGEABLE")
+                       (t                                                 "UNKNOWN")))
+         (reviews-str (mapconcat (lambda (r)
+                                   (let* ((ra (gethash "author" r (make-hash-table)))
+                                          (login (gethash "login" ra "?"))
+                                          (rstate (gethash "state" r "")))
+                                     (format "%s:%s" login rstate)))
+                                 latest-reviews " "))
+         (pending-str (mapconcat (lambda (r)
+                                   (or (gethash "login" r) (gethash "name" r) "?"))
+                                 review-requests " ")))
+    `(("PR_URL"         . ,url)
+      ("PR_AUTHOR"      . ,author)
+      ("PR_BRANCH"      . ,branch)
+      ("PR_BASE"        . ,base)
+      ("PR_STATUS"      . ,status)
+      ("PR_CI"          . ,ci)
+      ("PR_DECISION"    . ,decision)
+      ("PR_NEXT_ACTION" . ,next-action)
+      ("PR_REVIEWS"     . ,reviews-str)
+      ("PR_PENDING"     . ,pending-str))))
+
+;;;###autoload
+(defun mcordell/fetch-pr-org-entry ()
+  "Prompt for a GitHub PR URL, fetch details via gh CLI, return org entry string."
+  (let* ((clipboard (with-temp-buffer
+                      (call-process "pbpaste" nil t)
+                      (buffer-string)))
+         (default-url (if (string-match-p "https://github\\.com/.*/pull/[0-9]+" clipboard)
+                          (string-trim clipboard) ""))
+         (url (string-trim (read-string "GitHub PR URL: " default-url)))
+         (info (mcordell/gh-pr-fetch-info url)))
+    (if info
+        (let* ((title     (gethash "title" info ""))
+               (number    (gethash "number" info 0))
+               (props       (mcordell/gh-pr-properties info url))
+               (status      (cdr (assoc "PR_STATUS" props)))
+               (next-action (cdr (assoc "PR_NEXT_ACTION" props)))
+               (todo-kw     (cond ((string= status "MERGED")                "DONE")
+                                  ((string= status "CLOSED")                "KILL")
+                                  ((string= next-action "AWAITING_REVIEW")  "WAIT")
+                                  (t                                        "TODO")))
+               (props-str (mapconcat (lambda (p) (format ":%s: %s" (car p) (cdr p)))
+                                     props "\n")))
+          (format "* %s Review [[%s][PR #%s: %s]] :pr_review:\n:PROPERTIES:\n%s\n:END:"
+                  todo-kw url number title props-str))
+      (format "* TODO Review PR :pr_review:\n:PROPERTIES:\n:PR_URL: %s\n:END:" url))))
+
+;;;###autoload
+(defun mcordell/update-pr-statuses-in-buffer ()
+  "Scan current buffer for org headings with PR_URL property and refresh their status."
+  (interactive)
+  (let ((count 0))
+    (org-map-entries
+     (lambda ()
+       (let ((pr-url (org-entry-get (point) "PR_URL")))
+         (when (and pr-url (not (string-empty-p pr-url)))
+           (let ((info (mcordell/gh-pr-fetch-info pr-url)))
+             (when info
+               (let* ((props       (mcordell/gh-pr-properties info pr-url))
+                      (status      (cdr (assoc "PR_STATUS" props)))
+                      (next-action (cdr (assoc "PR_NEXT_ACTION" props))))
+                 (dolist (prop props)
+                   (org-entry-put (point) (car prop) (cdr prop)))
+                 (cond ((string= status "MERGED")                (org-todo "DONE"))
+                       ((string= status "CLOSED")                (org-todo "KILL"))
+                       ((string= next-action "AWAITING_REVIEW")  (org-todo "WAIT")))
+                 (cl-incf count)))))))
+     nil 'file)
+    (message "Updated %d PR heading%s" count (if (= count 1) "" "s"))))
+
+;;;###autoload
 (defun mcordell/one-on-one-workflow ()
   "Start a one-on-one workflow: select person, find or create meeting, show agenda."
   (interactive)
