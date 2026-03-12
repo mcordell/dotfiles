@@ -6,3 +6,9 @@ run = [
   'git add -p Brewfile',
   'git commit -m "brew: update brewfile"'
 ]
+
+[tasks.build]
+description = "build nix"
+run = [
+  'nix run --extra-experimental-features nix-command --extra-experimental-features flakes nix-darwin -- build --flake ".#$(scutil --get ComputerName)"'
+]
