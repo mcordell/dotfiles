@@ -128,7 +128,7 @@ in
       EDITOR = "nvim";
       BUNDLER_EDITOR = "nvim";
       VISUAL = "nvim";
-      LESS = "-F -g -i -M -R -S -w -X -z-4";
+      LESS = "-F -g -i -M -R -S -w -X";
       FZF_DEFAULT_COMMAND = "rg --files";
       DIRENV_LOG_FORMAT = "";
     };
