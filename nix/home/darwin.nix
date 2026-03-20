@@ -13,6 +13,7 @@ in
 {
   # Add macOS-specific packages
   home.packages = with pkgs; [
+    pinentry_mac
     pngpaste
   ];
 
@@ -155,13 +156,15 @@ in
     BROWSER = "open";
   };
 
+  programs.gpg.enable = true;
+
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
     defaultCacheTtl = 60;
     maxCacheTtl = 120;
+    pinentryPackage = pkgs.pinentry_mac;
     extraConfig = ''
-      pinentry-program /opt/homebrew/bin/pinentry-mac
       ttyname $GPG_TTY
     '';
   };
