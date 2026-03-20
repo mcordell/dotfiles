@@ -20,6 +20,16 @@
 
   homebrew = {
     enable = true;
+    casks = [
+      "1password"
+      "alfred"
+      "claude"
+      "hammerspoon"
+      "iterm2"
+      "karabiner-elements"
+      "mailmate@beta"
+      "proton-mail-bridge"
+    ];
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
