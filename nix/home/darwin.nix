@@ -19,6 +19,7 @@ in
 
   home.file.".zsh/plugins/zsh-histdb".source = zsh-histdb;
   home.file.".p10k.zsh".source = ./../../zsh/.p10k.zsh;
+  home.file.".config/karabiner/karabiner.json".source = ./../../config/karabiner/karabiner.json;
 
   programs.neovim = {
     enable = true;
@@ -163,7 +164,7 @@ in
     enableSshSupport = true;
     defaultCacheTtl = 60;
     maxCacheTtl = 120;
-    pinentryPackage = pkgs.pinentry_mac;
+    pinentry.package = pkgs.pinentry_mac;
     extraConfig = ''
       ttyname $GPG_TTY
     '';
