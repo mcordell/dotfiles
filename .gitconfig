@@ -73,6 +73,7 @@
     dark = true
     colorMoved = true
   	navigate = true
+    pager = less -RFX
 [delta "interactive"]
     keep-plus-minus-markers = false
 [delta "decorations"]

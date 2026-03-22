@@ -423,7 +423,7 @@ in
 
   home.activation.cloneAstroNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/nvim/.git" ]; then
-      $DRY_RUN_CMD ${pkgs.git}/bin/git clone git@github.com:mcordell/astronvim_config.git "${config.home.homeDirectory}/.config/nvim"
+      $DRY_RUN_CMD GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh" ${pkgs.git}/bin/git clone git@github.com:mcordell/astronvim_config.git "${config.home.homeDirectory}/.config/nvim"
     fi
   '';
 }
