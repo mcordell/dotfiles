@@ -20,6 +20,7 @@ in
   home.file.".zsh/plugins/zsh-histdb".source = zsh-histdb;
   home.file.".p10k.zsh".source = ./../../zsh/.p10k.zsh;
   home.file.".config/karabiner/karabiner.json".source = ./../../config/karabiner/karabiner.json;
+  home.file.".hammerspoon".source = ./../../hammerspoon;
 
   programs.neovim = {
     enable = true;
