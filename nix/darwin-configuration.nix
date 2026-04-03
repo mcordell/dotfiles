@@ -31,6 +31,7 @@
       "karabiner-elements"
       "mailmate@beta"
       "proton-mail-bridge"
+      "tailscale-app"
     ];
   };
 
