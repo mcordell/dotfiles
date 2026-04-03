@@ -20,12 +20,11 @@
 
   homebrew = {
     enable = true;
-    brews = [
-      "1password-cli"
-    ];
     casks = [
       "1password"
+      "1password-cli"
       "alfred"
+      "brave-browser"
       "claude"
       "hammerspoon"
       "iterm2"
