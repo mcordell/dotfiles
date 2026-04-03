@@ -11,6 +11,10 @@ run = [
 description = "Update nix flake inputs"
 run = "nix flake update"
 
+[tasks.fmt]
+description = "Format nix files"
+run = "nix fmt nix/"
+
 [tasks.build]
 description = "build nix"
 run = [
