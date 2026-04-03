@@ -7,6 +7,10 @@ run = [
   'git commit -m "brew: update brewfile"'
 ]
 
+[tasks.update]
+description = "Update nix flake inputs"
+run = "nix flake update"
+
 [tasks.build]
 description = "build nix"
 run = [
