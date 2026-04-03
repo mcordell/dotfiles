@@ -20,6 +20,9 @@
 
   homebrew = {
     enable = true;
+    brews = [
+      "1password-cli"
+    ];
     casks = [
       "1password"
       "alfred"
@@ -46,7 +49,7 @@
   ];
 
   # Configure system defaults
-  # system.defaults.dock.autohide = true;
+  system.defaults.dock.autohide = true;
   # system.defaults.finder.AppleShowAllFiles = true;
   system.defaults.NSGlobalDomain = {
     InitialKeyRepeat = 12;
