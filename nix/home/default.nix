@@ -82,6 +82,7 @@ in
       randpw = "openssl rand -base64";
       reset_db = "./bin/rails db:drop RAILS_ENV=test; ./bin/rails db:create RAILS_ENV=test; ./bin/rails db:migrate RAILS_ENV=test";
       rspec = "nocorrect rspec";
+      fdi = "fd --no-ignore";
 
       # git
       clean_branches = "git checkout \${DEFAULT_GIT_BRANCH:=\"master\"} && git recentb | fzf -m --ansi | awk '{ print $3 }' | xargs git branch -D";
