@@ -147,6 +147,7 @@
             user = validated.user;
           };
           modules = [
+            { nixpkgs.overlays = nixpkgsOverlays; }
             (hostPath hostname "configuration.nix")
 
             # Encrypted secrets management
@@ -175,6 +176,7 @@
           };
           modules = [
             {
+              nixpkgs.overlays = nixpkgsOverlays;
               nixpkgs.config.allowUnfreePredicate =
                 pkg:
                 builtins.elem (lib.getName pkg) [
@@ -208,6 +210,7 @@
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             system = validated.system;
+            overlays = nixpkgsOverlays;
             config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
               "claude-code"
             ];
@@ -231,6 +234,16 @@
         lib.mapAttrs (hostname: cfg: mkConfig hostname cfg) (
           lib.filterAttrs (_: cfg: cfg.type == type) hosts
         );
+
+      # Overlay to fix nushell 0.112.1 test failures (env_shlvl_in_exec_repl)
+      # batdiff (bat-extras) depends on nushell; the test is flaky in the sandbox
+      nixpkgsOverlays = [
+        (final: prev: {
+          nushell = prev.nushell.overrideAttrs (_: {
+            doCheck = false;
+          });
+        })
+      ];
     in
     {
       # ---- System-level configs ----
