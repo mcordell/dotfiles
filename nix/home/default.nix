@@ -77,11 +77,8 @@ in
     shellAliases = {
       # ruby/rails
       be = "bundle exec";
-      berspec = "nocorrect bundle exec rspec";
-      bp = "bundle exec rails_best_practices --format html; open rails_best_practices_output.html";
       randpw = "openssl rand -base64";
       reset_db = "./bin/rails db:drop RAILS_ENV=test; ./bin/rails db:create RAILS_ENV=test; ./bin/rails db:migrate RAILS_ENV=test";
-      rspec = "nocorrect rspec";
       fdi = "fd --no-ignore";
 
       # git
@@ -94,7 +91,6 @@ in
       gb = "git for-each-ref --sort=committerdate refs/heads/ --format='%(refname:short)'";
       gras = "git rebase -i --autosquash";
       lg = "nocorrect git lg";
-      wip = "git commit -m \"wip\"";
       gdu = "git diff @{u}";
 
       # fzf
