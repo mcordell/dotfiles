@@ -13,6 +13,7 @@ in
 {
   # Add macOS-specific packages
   home.packages = with pkgs; [
+    neovim
     pinentry_mac
     pngpaste
   ];
@@ -21,13 +22,6 @@ in
   home.file.".p10k.zsh".source = ./../../zsh/.p10k.zsh;
   home.file.".config/karabiner/karabiner.json".source = ./../../config/karabiner/karabiner.json;
   home.file.".hammerspoon".source = ./../../hammerspoon;
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    withRuby = false;
-    withPython3 = false;
-  };
 
   programs.git = {
     settings.user.email = "mike@mikecordell.com";
