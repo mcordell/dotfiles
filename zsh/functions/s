@@ -1,0 +1,3 @@
+# vim: set ft=zsh:
+
+s() { cmd=$(suggest "$@" | vipe) && [ -n "$cmd" ] && print -s "$cmd" && echo "$cmd" && eval "$cmd" }

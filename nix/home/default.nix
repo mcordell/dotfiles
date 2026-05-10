@@ -7,6 +7,12 @@
 }:
 
 let
+  suggest = pkgs.writeShellApplication {
+    name = "suggest";
+    runtimeInputs = with pkgs; [ curl jq ];
+    text = builtins.readFile ./../../zsh/scripts/suggest;
+  };
+
   # Fetch forgit - interactive git commands with fzf
   forgit = pkgs.fetchFromGitHub {
     owner = "wfxr";
@@ -26,6 +32,7 @@ in
 
   # Add packages that should be installed to the user environment.
   home.packages = with pkgs; [
+    suggest
     ansible
     (aspellWithDicts (dicts: with dicts; [ en ]))
     awscli2

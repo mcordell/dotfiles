@@ -1,0 +1,45 @@
+#!/bin/bash
+# Ask AI to suggest a shell command for a task.
+#
+# requires jq
+# Adapted from: https://github.com/isene/bare/blob/master/plugins/suggest
+#
+# Usage:
+#   suggest find all .log files modified today
+#   suggest compress this directory into a tar.gz
+#   suggest show disk usage sorted by size
+
+set -e
+
+# Read API key
+if [ -n "$ANTHROPIC_API_KEY" ]; then
+    API_KEY="$ANTHROPIC_API_KEY"
+elif [ -f "$HOME/.config/helpers/anthropic_key" ]; then
+    API_KEY=$(cat "$HOME/.config/helpers/anthropic_key" | tr -d '\n')
+else
+    echo "No API key found. Set ANTHROPIC_API_KEY or create ~/.config/helpers/anthropic_key"
+    exit 1
+fi
+
+DESCRIPTION="$*"
+if [ -z "$DESCRIPTION" ]; then
+    echo "Usage: :suggest <what you want to do>"
+    exit 1
+fi
+
+ESCAPED=$(echo "$DESCRIPTION" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\n/\\n/g')
+
+RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+    -H "Content-Type: application/json" \
+    -H "x-api-key: $API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -d "{
+        \"model\": \"claude-haiku-4-5-20251001\",
+        \"max_tokens\": 256,
+        \"system\": \"You are a shell command expert. Respond with ONLY the command, nothing else. No explanation, no markdown, no backticks. Just the exact command to run.\",
+        \"messages\": [
+            {\"role\": \"user\", \"content\": \"$ESCAPED\"}
+        ]
+    }" 2>/dev/null)
+
+echo "$RESPONSE" | jq -r '.content[0].text'
