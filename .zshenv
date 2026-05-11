@@ -31,7 +31,6 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-source ~/.zsh/zsh_ruby
 # Editors
 export DEFAULT_USER='michael'
 export EDITOR='nvim'
