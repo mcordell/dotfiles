@@ -10,6 +10,14 @@
 (package! chatgpt-shell)
 (package! auth-source-1password)
 (package! obsidian)
+(package! mcp-server-lib
+  :recipe (:local-repo "/Users/michael/Code/mcp/mcp-server-lib"
+           :files ("mcp-server-lib.el"
+                   "mcp-server-lib-commands.el"
+                   "mcp-server-lib-metrics.el")))
+(package! org-mcp
+  :recipe (:local-repo "/Users/michael/Code/mcp/org-mcp"
+           :files ("org-mcp.el")))
 ;; (package! some-package)
 
 ;; To install a package directly from a remote git repo, you must specify a

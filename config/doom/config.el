@@ -77,3 +77,13 @@
                           (expand-file-name buffer-file-name)))
                 (require 'obsidian)
                 (obsidian-mode t)))))
+(use-package! mcp-server-lib
+  :demand t
+  :config
+  (mcp-server-lib-start))
+
+(use-package! org-mcp
+  :after (org mcp-server-lib)
+  :config
+  (setq org-mcp-allowed-files '("/Users/michael/org/work/big_board.org" "/Users/michael/org/work/weekly-reviews.org"))
+  (org-mcp-enable))
