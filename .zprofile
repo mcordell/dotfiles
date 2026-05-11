@@ -17,4 +17,4 @@ typeset -gU cdpath fpath mailpath path
 
 [ -f ~/.zsh/pyenv_profile ] && source ~/.zsh/pyenv_profile
 
-eval "$(mise activate zsh --shims)"
+eval "$(/opt/homebrew/bin/mise activate zsh --shims)"
