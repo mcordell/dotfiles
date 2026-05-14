@@ -37,8 +37,10 @@ zsh, ~/.zsh
 .zpreztorc, .zpreztorc
 .zprofile, .zprofile
 zsh/zsh_aliases, .zsh_aliases
-zsh/scripts/rgs, /usr/local/bin/rgs
-zsh/zsh_function_wrapper /usr/local/bin/zsh_function_wrapper
+zsh/scripts/rgs, ~/.local/bin/rgs
+zsh/scripts/suggest, ~/.local/bin/suggest
+zsh/scripts/rubocop-diff, ~/.local/bin/rubocop-diff
+zsh/zsh
 zsh/.p10k.zsh, ~/.p10k.zsh
 
 # Vim
@@ -68,8 +70,5 @@ config/bat, ~/.config/bat
 
 #bat
 config/zellij, ~/.config/zellij
-
-#navi
-navi/cheats, "$HOME/Library/Application Support/navi/cheats"
 
 hammerspoon, ~/.hammerspoon

@@ -1,0 +1,71 @@
+#! /bin/bash
+#
+# rubocop-diff.sh — Run RuboCop autocorrect and report only on lines changed
+# relative to an upstream branch.
+#
+# Usage: bash rubocop-diff.sh [main]
+#   (no arg)  Diff against the tracking branch (@{u})
+#   main      Diff against origin/master
+#
+# Steps:
+#   1. Identify changed Ruby files and their modified line numbers via git diff.
+#   2. Run RuboCop once; exit early if no offenses touch changed lines.
+#   3. For each autocorrectable cop with an offense on a changed line, run
+#      --autocorrect --only <cop> scoped to only the files it affects.
+#   4. Re-run RuboCop and print any remaining offenses on changed lines in
+#      short format (file:line:col: S: CopName: Message).
+
+UPSTREAM=$([[ "$1" == "main" ]] && echo "origin/master" || echo "@{u}")
+RUBY_FILES=$(git diff --name-only $UPSTREAM | grep '.rb$')
+DIFF_LINES=$(git diff $UPSTREAM -U0 $RUBY_FILES | awk '
+  /^\+\+\+ / { file = substr($2, 3) }
+  /^@@ / {
+    line = $0; sub(/.*\+/, "", line); sub(/,.*/, "", line); start = int(line)
+    if ($0 ~ /\+[0-9]+,[0-9]+/) {
+      count = $0; sub(/.*\+[0-9]+,/, "", count); sub(/ .*/, "", count); count = int(count)
+    } else { count = 1 }
+    if (count > 0)
+      for (i = start; i < start + count; i++) print file ":" i
+  }
+  ' | jq -Rn '[inputs | split(":") | {file: .[0], line: (.[1] | tonumber)}] | group_by(.file) | map({(.[0].file): [.[].line]}) | add')
+
+RUBOCOP_JSON=$(bundle exec rubocop --format json $RUBY_FILES 2>/dev/null)
+
+OFFENSES=$(echo "$RUBOCOP_JSON" | jq --argjson diff "$DIFF_LINES" '
+  [.files[] | .path as $path | ($diff[$path] // []) as $lines |
+   .offenses[] | select(.location.line as $l | $lines | index($l) != null)] | length
+')
+
+if [ "$OFFENSES" -eq 0 ]; then
+  echo "No RuboCop offenses on changed lines."
+  exit 0
+fi
+
+echo "$RUBOCOP_JSON" | jq -r --argjson diff "$DIFF_LINES" '
+  [
+    .files[] |
+    .path as $path |
+    ($diff[$path] // []) as $lines |
+    .offenses[] |
+    select(.correctable and (.location.line as $l | $lines | index($l) != null)) |
+    {cop: .cop_name, file: $path}
+  ] |
+  group_by(.cop) |
+  map({cop: .[0].cop, files: [.[].file] | unique}) |
+  .[]
+' | jq -r '"\(.cop) \(.files | join(" "))"' | while IFS= read -r line; do
+  cop=$(echo "$line" | awk '{print $1}')
+  files=$(echo "$line" | cut -d' ' -f2-)
+  echo "Autocorrecting $cop in: $files"
+  bundle exec rubocop --autocorrect --only "$cop" $files
+done
+
+bundle exec rubocop --format json $RUBY_FILES 2>/dev/null | jq -r --argjson diff "$DIFF_LINES" '
+  .files[] |
+  .path as $path |
+  ($diff[$path] // []) as $lines |
+  .offenses[] |
+  select(.location.line as $l | $lines | index($l) != null) |
+  {c: "C", w: "W", e: "E", f: "F", r: "R"}[.severity[:1]] as $sev |
+  "\($path):\(.location.line):\(.location.column): \($sev): \(.cop_name): \(.message)"
+'
