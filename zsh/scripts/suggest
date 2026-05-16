@@ -42,4 +42,13 @@ RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
         ]
     }" 2>/dev/null)
 
-echo "$RESPONSE" | jq -r '.content[0].text'
+RESULT=$(echo "$RESPONSE" | jq -r '.content[0].text')
+
+echo "$RESULT"
+
+CHEAT_FILE="/Users/michael/Code/cheatsheets/navi-cheats/suggestions.cheat"
+if [ ! -f "$CHEAT_FILE" ]; then
+    echo "% suggestions" > "$CHEAT_FILE"
+    echo "" >> "$CHEAT_FILE"
+fi
+printf "\n# %s\n%s\n" "$DESCRIPTION" "$RESULT" >> "$CHEAT_FILE"
