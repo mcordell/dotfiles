@@ -126,7 +126,7 @@
                                                    :unnarrowed t
                                                    :jump-to-captured t
                                                    )
-                                                  ("m" "Meeting" entry (file "~/org/work/meetings.org")
+                                                  ("M" "Meeting" entry (file "~/org/work/meetings.org")
                                                    "* %^{Subject} %^t<%<%Y-%m-%d %H:00>>
 %?
 ")
@@ -142,6 +142,9 @@
                                                    "%(mcordell/fetch-pr-org-entry)"
                                                    :empty-lines 1
                                                    :jump-to-captured t)
+                                                  ("m" "Meridian Task" entry (file+headline "~/org/work/projects/meridian.org" "Tasks")
+                                                   "* TODO %? :meridian:"
+                                                   :empty-lines 1)
                                                   ("d" "Delegate" entry (here)
                                                    ,(format "* DELG %%^{Task} :%%^{Delegate to|%s}:\n:LOGBOOK:\n- State \"DELG\"       from              %%U \\\\\n  %%^{Waiting on}\n:END:\n%%?"
                                                             (mapconcat #'mcordell/normalize-name-to-tag
@@ -156,12 +159,36 @@
                           )
   )
 
+(use-package! org-super-agenda
+  :after org-agenda
+  :config
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+  (org-super-agenda-mode))
+
 (after! org
   (setq org-agenda-custom-commands `(
+                                     ("h" "Meridian"
+                                      ((tags-todo "*"
+                                                  ((org-agenda-overriding-header "")
+                                                   (org-agenda-skip-function
+                                                    (lambda ()
+                                                      (let ((in-meridian-file (string-match-p "meridian\\.org" (buffer-file-name)))
+                                                            (has-meridian-tag (member "meridian" (org-get-tags)))
+                                                            (is-idea (string= (org-get-todo-state) "IDEA")))
+                                                        (when (or is-idea (and (not in-meridian-file) (not has-meridian-tag)))
+                                                          (or (outline-next-heading) (point-max))))))
+                                                   (org-super-agenda-groups
+                                                    '((:auto-outline-path t))))))
+                                      ((org-agenda-files
+                                        (directory-files-recursively "~/org/work/" "\\.org\\'")))
+                                      )
                                      ("o" "Work tasks"
                                       ((tags-todo "*"
-                                                  ((org-agenda-overriding-header "Work tasks")))
-                                       )
+                                                  ((org-agenda-overriding-header "")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("IDEA")))
+                                                   (org-super-agenda-groups
+                                                    '((:auto-parent t))))))
                                       ((org-agenda-files
                                         (directory-files-recursively "~/org/work/" "\\.org\\'")))
                                       )
