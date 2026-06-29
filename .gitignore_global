@@ -19,3 +19,5 @@ custom_plan.rb
 .tool-versions
 .envrc
 .stignore
+
+**/.claude/settings.local.json
