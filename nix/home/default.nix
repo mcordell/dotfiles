@@ -61,7 +61,6 @@ in
     shfmt
     sqlite # Required for zsh-histdb
     tealdeer
-    topgrade
     tree
     wget
     whois
