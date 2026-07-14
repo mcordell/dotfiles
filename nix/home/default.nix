@@ -76,6 +76,7 @@ in
   # Powerlevel10k configuration
   home.file.".zsh/functions".source = ./../../zsh/functions;
   home.file.".zsh/zsh_path.zsh".source = ./../../zsh/zsh_path.zsh;
+  home.file.".zsh/zsh_keybindings".source = ./../../zsh/zsh_keybindings;
 
   programs.zsh = {
     enable = true;
