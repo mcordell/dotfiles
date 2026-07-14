@@ -242,6 +242,10 @@
           nushell = prev.nushell.overrideAttrs (_: {
             doCheck = false;
           });
+          # mise 2026.6.11 OCI layer test fails in Nix sandbox (setuid bits not preserved)
+          mise = prev.mise.overrideAttrs (_: {
+            doCheck = false;
+          });
         })
       ];
     in
