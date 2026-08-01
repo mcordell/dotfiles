@@ -27,7 +27,7 @@
       "brave-browser"
       "claude"
       "hammerspoon"
-      "iterm2"
+      "iterm2@beta"
       "karabiner-elements"
       "mailmate@beta"
       "proton-mail-bridge"
