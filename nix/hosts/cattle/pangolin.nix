@@ -7,7 +7,7 @@ let
     name: pangolin
     services:
       pangolin:
-        image: docker.io/fosrl/pangolin:latest
+        image: fosrl/pangolin:ee-latest
         container_name: pangolin
         restart: unless-stopped
         volumes:
