@@ -18,6 +18,17 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # sherpa machine wiring (configs + launchd agents). Private Gitea, so the
+    # fetch is SSH and costs a smartcard touch. While iterating on the module,
+    # skip that with:
+    #   darwin-rebuild switch --flake . \
+    #     --override-input pimalaya path:/Users/michael/Code/rust/pimalaya
+    pimalaya = {
+      url = "git+ssh://git@git.westeros.lan/michael/pimalaya.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =

@@ -56,11 +56,35 @@
         "type": "github"
       }
     },
+    "pimalaya": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786544455,
+        "narHash": "sha256-rs/QowOVskfGGZQZ84KCb1WYJiQl9O+6jx2nEnUCgdw=",
+        "ref": "refs/heads/master",
+        "rev": "d3851236a3abb7373266eaac9d4bf7c0e7085f64",
+        "revCount": 112,
+        "type": "git",
+        "url": "ssh://git@git.westeros.lan/michael/pimalaya.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@git.westeros.lan/michael/pimalaya.git"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
+        "pimalaya": "pimalaya",
         "sops-nix": "sops-nix"
       }
     },
