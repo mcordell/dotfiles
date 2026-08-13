@@ -246,19 +246,23 @@
           lib.filterAttrs (_: cfg: cfg.type == type) hosts
         );
 
-      # Overlay to fix nushell 0.112.1 test failures (env_shlvl_in_exec_repl)
-      # batdiff (bat-extras) depends on nushell; the test is flaky in the sandbox
-      nixpkgsOverlays = [
-        (final: prev: {
-          nushell = prev.nushell.overrideAttrs (_: {
-            doCheck = false;
-          });
-          # mise 2026.6.11 OCI layer test fails in Nix sandbox (setuid bits not preserved)
-          mise = prev.mise.overrideAttrs (_: {
-            doCheck = false;
-          });
-        })
-      ];
+      # Empty on purpose. Two `doCheck = false` overrides lived here — nushell
+      # 0.112.1 (flaky env_shlvl_in_exec_repl) and mise 2026.6.11 (OCI layer test
+      # needs setuid bits the sandbox drops). Both upstream failures are gone as
+      # of nushell 0.114.1 and mise 2026.7.17, which now substitute from
+      # cache.nixos.org.
+      #
+      # Removing them is not just tidying. Any override changes the derivation
+      # hash, so the binary cache is forfeited and the package is built locally —
+      # and mise does not survive that: it lists `cmake`, `git` and `cacert` under
+      # `nativeCheckInputs`, so `doCheck = false` strips them, and its
+      # `libz-ng-sys` build script then dies with "is `cmake` not installed?".
+      # Upstream only builds because running the tests happens to drag cmake in.
+      #
+      # So before adding an override here, check whether the failure it works
+      # around is still real, and whether disabling checks removes something the
+      # *build* silently depends on.
+      nixpkgsOverlays = [ ];
     in
     {
       # ---- System-level configs ----
