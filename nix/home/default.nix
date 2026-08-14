@@ -76,6 +76,8 @@ in
   home.file.".zsh/functions".source = ./../../zsh/functions;
   home.file.".zsh/zsh_path.zsh".source = ./../../zsh/zsh_path.zsh;
   home.file.".zsh/zsh_keybindings".source = ./../../zsh/zsh_keybindings;
+  home.file.".zsh/git_keys".source = ./../../zsh/git_keys;
+  home.file.".zsh/gnupg.zsh".source = ./../../zsh/gnupg.zsh;
 
   programs.zsh = {
     enable = true;
@@ -193,7 +195,9 @@ in
           "''${HOME}/.zsh/git_keys"
           "''${HOME}/.zsh/zsh_keybindings"
         )
-        for f ($^files(.N)) source $f
+        # (-.N): the "-" follows symlinks, needed since home-manager links
+        # these to /nix/store; a bare (.N) skips them entirely.
+        for f ($^files(-.N)) source $f
         unset files
 
       '')
