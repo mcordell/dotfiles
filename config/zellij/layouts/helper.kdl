@@ -4,7 +4,7 @@ layout {
 
     tab name="org" focus=true {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
         }
         pane command="claude" cwd="org/work" {
             start_suspended true
@@ -15,7 +15,7 @@ layout {
     }
     tab name="objectives" hide_floating_panes=true {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
         }
         pane command="/opt/homebrew/bin/mise" cwd="objectives" {
             args "r" "web"
@@ -27,7 +27,7 @@ layout {
     }
     new_tab_template {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
         }
         pane
         pane size=1 borderless=true {
@@ -37,7 +37,7 @@ layout {
     swap_tiled_layout name="vertical" {
         tab max_panes=5 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane split_direction="vertical" {
@@ -53,7 +53,7 @@ layout {
         }
         tab max_panes=8 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane split_direction="vertical" {
@@ -74,7 +74,7 @@ layout {
         }
         tab max_panes=12 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane split_direction="vertical" {
@@ -103,7 +103,7 @@ layout {
     swap_tiled_layout name="horizontal" {
         tab max_panes=4 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane
@@ -115,7 +115,7 @@ layout {
         }
         tab max_panes=8 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane {
@@ -136,7 +136,7 @@ layout {
         }
         tab max_panes=12 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane {
@@ -165,7 +165,7 @@ layout {
     swap_tiled_layout name="stacked" {
         tab min_panes=5 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="https://github.com/mcordell/zellaude/releases/latest/download/zellaude.wasm"
             }
             pane {
                 pane split_direction="vertical" {

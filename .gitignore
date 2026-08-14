@@ -10,3 +10,6 @@ zsh/pyenv_profile
 zsh/pyenv_zshrc
 config/navi/navi.log
 result
+config/zellij/plugins/zellaude.wasm
+config/zellij/plugins/falcode-zellij-sessions.wasm
+config/zellij/plugins/zellaude-hook.sh

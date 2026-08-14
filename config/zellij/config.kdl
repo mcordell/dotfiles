@@ -164,6 +164,12 @@ keybinds {
                 quick_jump true
             }
         }
+        bind "Alt o" {
+            LaunchOrFocusPlugin "https://github.com/victor-falcon/falcode-zellij/releases/latest/download/falcode-zellij-sessions.wasm" {
+                floating true
+                state_dir "/Users/michael/.local/state/falcode-zellij"
+            }
+        }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
