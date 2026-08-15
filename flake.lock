@@ -66,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786544455,
-        "narHash": "sha256-rs/QowOVskfGGZQZ84KCb1WYJiQl9O+6jx2nEnUCgdw=",
+        "lastModified": 1786820485,
+        "narHash": "sha256-aOk5+hNts+THQxI9xt7JNCUP7JG2l1hrJxel280tcqY=",
         "ref": "refs/heads/master",
-        "rev": "d3851236a3abb7373266eaac9d4bf7c0e7085f64",
-        "revCount": 112,
+        "rev": "db6ee0debe0ea7fa444ffe06298567eb1ae5c11f",
+        "revCount": 122,
         "type": "git",
         "url": "ssh://git@git.westeros.lan/michael/pimalaya.git"
       },
