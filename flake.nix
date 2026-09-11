@@ -110,6 +110,16 @@
           user = "michael";
           type = "linux";
         };
+
+        # Quoted and hyphenated because the attribute name has to match the
+        # machine's real hostname, which is `big-box` — the Ansible inventory
+        # calls the same box `bigbox`. provision-lix.yml derives the flake
+        # target from ansible_facts['hostname'], so `bigbox` would not resolve.
+        "big-box" = {
+          system = "x86_64-linux";
+          user = "michael";
+          type = "linux";
+        };
       };
 
       # Common Home Manager module set
