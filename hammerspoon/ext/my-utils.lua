@@ -31,6 +31,8 @@ module.startWork = function()
 end
 
 module.movePlaces = function()
+  spaces.ensureSpaces()
+
   local spaceMap = {}
   spaceMap[v.teams] = spaces.vars.comToolsSpace
   spaceMap[v.zoom] = spaces.vars.comToolsSpace
@@ -44,7 +46,7 @@ module.movePlaces = function()
     if (mainApp ~= nil) then
       window = mainApp:mainWindow()
 
-      if (window ~= nil) then
+      if (window ~= nil and spaceid ~= nil) then
         hs.spaces.moveWindowToSpace(window, spaceid)
       end
     end
