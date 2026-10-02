@@ -198,11 +198,6 @@
           modules = [
             {
               nixpkgs.overlays = nixpkgsOverlays;
-              nixpkgs.config.allowUnfreePredicate =
-                pkg:
-                builtins.elem (lib.getName pkg) [
-                  "claude-code"
-                ];
             }
             ./nix/darwin-configuration.nix
           ]
@@ -232,9 +227,6 @@
           pkgs = import nixpkgs {
             system = validated.system;
             overlays = nixpkgsOverlays;
-            config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-              "claude-code"
-            ];
           };
           modules =
             (hmModulesFor {

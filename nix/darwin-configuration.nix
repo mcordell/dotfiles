@@ -26,6 +26,7 @@
       "alfred"
       "brave-browser"
       "claude"
+      "claude-code@latest"
       "hammerspoon"
       "iterm2@beta"
       "karabiner-elements"

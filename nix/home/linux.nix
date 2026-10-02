@@ -21,9 +21,6 @@ in
       source ~/.zsh/plugins/powerlevel10k/powerlevel10k.zsh-theme
     '';
   };
-  programs.claude-code = {
-    enable = true;
-  };
 
   # Configure Linux-specific programs
   # programs.firefox.enable = true;

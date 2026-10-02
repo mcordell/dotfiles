@@ -33,10 +33,6 @@ in
 
   programs.pandoc.enable = true;
 
-  programs.claude-code = {
-    enable = true;
-  };
-
   # macOS-only zsh config (merged with default.nix)
   programs.zsh = {
     shellAliases = {
