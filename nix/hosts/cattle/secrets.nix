@@ -11,7 +11,13 @@
       # After first boot, generate with: sudo cscli bouncers add traefik-bouncer
       # Then add to secrets.yaml and re-encrypt
       "crowdsec/bouncer_api_key" = { };
-      "crowdsec/console_enrollment_key" = { };
+      # crowdsec.service runs ExecStartPre as User=crowdsec, which cats this
+      # key to run `cscli console enroll`. sops-nix defaults to root:root 0400,
+      # which that user cannot read.
+      "crowdsec/console_enrollment_key" = {
+        owner = config.services.crowdsec.user;
+        mode = "0400";
+      };
       "real_estate/db_user" = { };
       "real_estate/db_password" = { };
       "real_estate/db_name" = { };
