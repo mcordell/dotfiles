@@ -1,5 +1,10 @@
 # macOS/Darwin-specific Home Manager configuration
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   # Fetch zsh-histdb plugin
   zsh-histdb = pkgs.fetchFromGitHub {
@@ -149,6 +154,19 @@ in
     ICLOUD_DIR = "$HOME/Library/Mobile Documents/com~apple~CloudDocs";
     BROWSER = "open";
   };
+
+  # Moved here from the shared home module: on Linux, linux.nix enables
+  # programs.neovim, which writes ~/.config/nvim/init.lua, and git clone refuses
+  # a non-empty destination -- so this step could never succeed there.
+  home.activation.cloneAstroNvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -d "${config.home.homeDirectory}/.config/nvim/.git" ]; then
+      # `env` is required. $DRY_RUN_CMD is the first word at parse time, so bash
+      # decides then that this line has no assignment prefix; when the variable
+      # expands to nothing, `GIT_SSH_COMMAND=...` becomes the command name and
+      # the step dies with "No such file or directory" (exit 127).
+      $DRY_RUN_CMD ${pkgs.coreutils}/bin/env GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh" ${pkgs.git}/bin/git clone git@github.com:mcordell/astronvim_config.git "${config.home.homeDirectory}/.config/nvim"
+    fi
+  '';
 
   programs.gpg.enable = true;
 

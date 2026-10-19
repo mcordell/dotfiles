@@ -9,7 +9,10 @@
 let
   suggest = pkgs.writeShellApplication {
     name = "suggest";
-    runtimeInputs = with pkgs; [ curl jq ];
+    runtimeInputs = with pkgs; [
+      curl
+      jq
+    ];
     text = builtins.readFile ./../../zsh/scripts/suggest;
   };
 
@@ -429,9 +432,7 @@ in
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
 
-  home.activation.cloneAstroNvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    if [ ! -d "${config.home.homeDirectory}/.config/nvim/.git" ]; then
-      $DRY_RUN_CMD GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh" ${pkgs.git}/bin/git clone git@github.com:mcordell/astronvim_config.git "${config.home.homeDirectory}/.config/nvim"
-    fi
-  '';
+  # cloneAstroNvimConfig lives in darwin.nix, not here: on Linux, linux.nix
+  # enables programs.neovim, which owns ~/.config/nvim/init.lua, and git clone
+  # refuses a non-empty destination.
 }
