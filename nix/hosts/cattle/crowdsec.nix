@@ -74,6 +74,9 @@ let
   consoleSeed =
     (pkgs.formats.yaml { }).generate "console.yaml"
       config.services.crowdsec.settings.console.configuration;
+
+  # Table/chain/set names for the hand-written nftables rulesets below.
+  bouncerSettings = config.services.crowdsec-firewall-bouncer.settings;
 in
 {
   disabledModules = [ "services/security/crowdsec.nix" ];
@@ -180,10 +183,75 @@ in
     settings = {
       mode = "nftables";
     };
+    # The module's own ruleset puts the drop rule in `hook input`, which never
+    # sees traffic bound for a Docker container: Docker DNATs published ports in
+    # nat/PREROUTING (priority -100), after which the packet is routed to the
+    # container and traverses `hook forward` instead. Pangolin publishes 80/443
+    # on gerbil and Traefik shares its netns, so every HTTP ban landed in a set
+    # the traffic never passed through. Declare the rulesets below instead,
+    # hooked ahead of DNAT. (Upstream documents this option for exactly this:
+    # "You may disable this option to manually configure it.")
+    createRulesets = false;
   };
 
   # Enable nftables (required by the firewall bouncer)
   networking.nftables.enable = true;
+
+  # Replaces the rulesets the module would have generated. Each set must live in
+  # the same table as the rule reading it -- nftables sets are table-scoped --
+  # and must keep the names the bouncer is configured with, because in set-only
+  # mode the bouncer only adds and expires elements of an existing set. Names
+  # are taken from the bouncer settings rather than hardcoded so the two cannot
+  # drift apart.
+  networking.nftables.tables = {
+    ${bouncerSettings.nftables.ipv4.table} = {
+      family = "ip";
+      content = ''
+        set ${bouncerSettings.blacklists_ipv4} {
+          type ipv4_addr
+          flags timeout
+        }
+
+        chain ${bouncerSettings.nftables.ipv4.chain} {
+          # priority raw (-300) runs ahead of nat prerouting (-100), so this
+          # covers host-bound and container-bound traffic alike. `hook input`
+          # (the upstream default) only ever saw the former.
+          type filter hook prerouting priority raw; policy accept;
+          # This chain now also sees forwarded and inter-container packets, so
+          # never let a decision on a private address break the Docker network
+          # or LAN access. CrowdSec should never ban these -- Traefik logs the
+          # real public client IP -- but the blast radius if it did is too big.
+          ip saddr {
+            127.0.0.0/8,
+            10.0.0.0/8,
+            172.16.0.0/12,
+            192.168.0.0/16,
+          } return
+          ip saddr @${bouncerSettings.blacklists_ipv4} counter drop
+        }
+      '';
+    };
+    ${bouncerSettings.nftables.ipv6.table} = {
+      family = "ip6";
+      content = ''
+        set ${bouncerSettings.blacklists_ipv6} {
+          type ipv6_addr
+          flags timeout
+        }
+
+        chain ${bouncerSettings.nftables.ipv6.chain} {
+          type filter hook prerouting priority raw; policy accept;
+          # Loopback, unique-local and link-local -- see the ipv4 chain above.
+          ip6 saddr {
+            ::1/128,
+            fc00::/7,
+            fe80::/10,
+          } return
+          ip6 saddr @${bouncerSettings.blacklists_ipv6} counter drop
+        }
+      '';
+    };
+  };
   # Workaround for #476253: fix bouncer systemd ordering
   systemd.services.crowdsec-firewall-bouncer = {
     after = [
