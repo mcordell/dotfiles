@@ -50,8 +50,6 @@ let
             condition: service_healthy
         command:
           - --configFile=/etc/traefik/traefik_config.yml
-        env_file:
-          - ${configDir}/traefik.env
         volumes:
           - ${configDir}/traefik:/etc/traefik:ro
           - ${configDir}/letsencrypt:/letsencrypt
@@ -94,8 +92,14 @@ let
     certificatesResolvers:
       letsencrypt:
         acme:
-          dnsChallenge:
-            provider: cloudflare
+          # HTTP-01 on :80, as Pangolin's default install and this host's
+          # pre-Nix (Ansible) setup did. Certificates are per-host, not
+          # wildcard, so DNS-01 and its Cloudflare API token bought nothing,
+          # and a deleted token silently stopped every renewal (Nov 2026).
+          # Switch back to dnsChallenge only if a wildcard cert is wanted
+          # (prefer_wildcard_cert on the domain).
+          httpChallenge:
+            entryPoint: web
           email: "surpher@gmail.com"
           storage: "/letsencrypt/acme.json"
           caServer: "https://acme-v02.api.letsencrypt.org/directory"
@@ -297,13 +301,6 @@ in
     '';
   };
 
-  # Traefik env file (contains Cloudflare API token from sops)
-  sops.templates."traefik.env" = {
-    content = ''
-      CF_DNS_API_TOKEN=${config.sops.placeholder."pangolin/cf_dns_api_token"}
-    '';
-  };
-
   # Systemd service for Pangolin Docker Compose stack
   systemd.services.pangolin = {
     description = "Pangolin Docker Compose Stack";
@@ -332,7 +329,6 @@ in
 
       # Copy secret-bearing configs from sops
       cp -f ${config.sops.templates."pangolin-config.yml".path} ${configDir}/config.yml
-      cp -f ${config.sops.templates."traefik.env".path} ${configDir}/traefik.env
 
       # Copy traefik configs
       cp -f ${traefikStaticConfig} ${configDir}/traefik/traefik_config.yml
