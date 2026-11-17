@@ -81,13 +81,22 @@ in
 
   systemd.services.real-estate = {
     description = "Real Estate Docker Compose Stack";
+    # The web container joins the `pangolin` network as `external`, and that
+    # network is created by pangolin's compose `up` and deleted by its `down`.
+    # Without this, a switch that restarts both stacks can start this one in the
+    # gap ("network pangolin declared as external, but could not be found").
+    # Requires= also stops/restarts this stack whenever pangolin's is.
     after = [
       "docker.service"
       "network-online.target"
       "sops-nix.service"
+      "pangolin.service"
     ];
     wants = [ "network-online.target" ];
-    requires = [ "docker.service" ];
+    requires = [
+      "docker.service"
+      "pangolin.service"
+    ];
     wantedBy = [ "multi-user.target" ];
 
     path = [ pkgs.docker ];
