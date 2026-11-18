@@ -93,6 +93,29 @@ in
     ];
   };
 
+  # Known-good client traffic that trips the HTTP scenarios (http-probing and
+  # friends). Matching events are dropped before any scenario counts them.
+  #
+  # The expression is kept in sops, not in settings.parsers.s02Enrich: that is
+  # rendered into the world-readable Nix store at eval time, so the expression
+  # would have to be in this (public) repo. Render it at activation instead and
+  # link it into the parser directory beside the module's generated files.
+  # The secret holds a single expr-lang expression over evt.Meta fields
+  # (target_fqdn, http_path, http_status, ...) with no double quotes in it.
+  sops.templates."crowdsec-local-http-whitelist.yaml" = {
+    owner = "crowdsec";
+    restartUnits = [ "crowdsec.service" ];
+    content = ''
+      name: local/http-whitelist
+      description: Ignore known-good client traffic
+      filter: "evt.Meta.log_type == 'http_access-log'"
+      whitelist:
+        reason: Known-good client traffic
+        expression:
+          - "${config.sops.placeholder."crowdsec/http_whitelist_expr"}"
+    '';
+  };
+
   # lapi-credentials.yaml sits directly in /var/lib/crowdsec, outside the
   # module's ReadWritePaths (which cover data_dir, i.e. state/). Reading it works
   # as is; this grant lets crowdsec-setup's `cscli machines add --file` create it
@@ -111,6 +134,10 @@ in
     "d /var/lib/pangolin/config 0755 root root -"
     "d /var/lib/pangolin/config/traefik 0755 root root -"
     "d /var/lib/pangolin/config/traefik/logs 0755 root root -"
+    # See the sops template above.
+    "L+ /etc/crowdsec/parsers/s02-enrich/local-http-whitelist.yaml - - - - ${
+      config.sops.templates."crowdsec-local-http-whitelist.yaml".path
+    }"
   ];
 
   # CrowdSec firewall bouncer for IP-level blocking via nftables

@@ -14,6 +14,8 @@
       # (PID 1, root) resolves before dropping to User=crowdsec, so the sops-nix
       # default of root:root 0400 is enough.
       "crowdsec/console_enrollment_key" = { };
+      # Whitelist expression for the local parser whitelist in crowdsec.nix.
+      "crowdsec/http_whitelist_expr" = { };
       "real_estate/db_user" = { };
       "real_estate/db_password" = { };
       "real_estate/db_name" = { };
