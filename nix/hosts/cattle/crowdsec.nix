@@ -73,6 +73,18 @@ in
           labels.type = "syslog";
         }
       ];
+
+      # Everything behind Traefik is a self-hosted app UI, and their page loads
+      # fire bursts of non-static API calls that http-crawl-non_statics scores
+      # as a crawler -- in practice it only ever banned our own browsing. Keep
+      # it alerting (visible in `cscli alerts list` and the console) but never
+      # banning. Real scanners still trip http-probing, http-sensitive-files,
+      # the CVE scenarios and the rest. With simulation false, exclusions lists
+      # the scenarios that run simulated.
+      simulation = {
+        simulation = false;
+        exclusions = [ "crowdsecurity/http-crawl-non_statics" ];
+      };
     };
 
     hub.parsers = [
@@ -121,6 +133,13 @@ in
           - "evt.Meta.log_type == 'http_access-log' && (${config.sops.placeholder."crowdsec/http_whitelist_expr"})"
     '';
   };
+
+  # Upstream writes simulation.yaml with tmpfiles and declares no restart
+  # triggers, so a switch that only changes settings.simulation would leave
+  # the running engine on the old file.
+  systemd.services.crowdsec.restartTriggers = [
+    (builtins.toJSON config.services.crowdsec.settings.simulation)
+  ];
 
   # lapi-credentials.yaml sits directly in /var/lib/crowdsec, outside the
   # module's ReadWritePaths (which cover data_dir, i.e. state/). Reading it works
