@@ -93,26 +93,32 @@ in
     ];
   };
 
-  # Known-good client traffic that trips the HTTP scenarios (http-probing and
-  # friends). Matching events are dropped before any scenario counts them.
+  # Known-good clients and traffic that trip the scenarios (http-probing,
+  # http-crawl-non_statics and friends). Matching events are dropped before any
+  # scenario counts them; an event matching either list below is whitelisted.
   #
-  # The expression is kept in sops, not in settings.parsers.s02Enrich: that is
-  # rendered into the world-readable Nix store at eval time, so the expression
-  # would have to be in this (public) repo. Render it at activation instead and
-  # link it into the parser directory beside the module's generated files.
-  # The secret holds a single expr-lang expression over evt.Meta fields
-  # (target_fqdn, http_path, http_status, ...) with no double quotes in it.
+  # Both values are kept in sops, not in settings.parsers.s02Enrich: that is
+  # rendered into the world-readable Nix store at eval time, so they would have
+  # to be in this (public) repo. Render them at activation instead and link the
+  # file into the parser directory beside the module's generated files.
+  # - crowdsec/whitelist_ip: one trusted client IP, matched against
+  #   evt.Meta.source_ip for every log source (HTTP and sshd). It is a dynamic
+  #   address; when it changes, update the secret and redeploy.
+  # - crowdsec/http_whitelist_expr: an expr-lang expression over the Traefik
+  #   evt.Meta fields (target_fqdn, http_path, http_status, ...), with no double
+  #   quotes in it. Applied to HTTP access-log events only.
   sops.templates."crowdsec-local-http-whitelist.yaml" = {
     owner = "crowdsec";
     restartUnits = [ "crowdsec.service" ];
     content = ''
       name: local/http-whitelist
-      description: Ignore known-good client traffic
-      filter: "evt.Meta.log_type == 'http_access-log'"
+      description: Ignore known-good clients and traffic
       whitelist:
-        reason: Known-good client traffic
+        reason: Known-good clients and traffic
+        ip:
+          - "${config.sops.placeholder."crowdsec/whitelist_ip"}"
         expression:
-          - "${config.sops.placeholder."crowdsec/http_whitelist_expr"}"
+          - "evt.Meta.log_type == 'http_access-log' && (${config.sops.placeholder."crowdsec/http_whitelist_expr"})"
     '';
   };
 
